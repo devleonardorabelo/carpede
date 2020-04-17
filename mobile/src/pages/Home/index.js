@@ -39,7 +39,7 @@ export default function Home() {
 	return(
 		<View style={styles.container}>
 			
-			<Text style={styles.title}>Encontre tudo que precisa</Text>
+			<Text style={[styles.title, { marginTop: 50 }]}>Encontre tudo que precisa</Text>
 			<Image style={styles.illustration} source={boxImg} />
 			<TouchableOpacity style={styles.buttonOrange} onPress={navigateToSearch}>
 				<Text style={styles.buttonWhiteText}>Eu quero encontrar</Text>

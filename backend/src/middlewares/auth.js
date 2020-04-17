@@ -4,6 +4,8 @@ module.exports = (req, res, next) => {
 	
 	const authorization = req.headers.authorization;
 
+	(authorization)
+
 	if(!authorization) return res.status(401).send({ error: 'No token provided' });
 	
 	const parts = authorization.split(' ');

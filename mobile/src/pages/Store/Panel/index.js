@@ -9,21 +9,20 @@ import image from '../../../assets/illustrations/store.png';
 
 export default function Panel() {
 
-	const navigation = useNavigation();
-	const [ user, setUser ] = useState()
+	const [ store, setStore ] = useState('');
+
+	async function loadPanel() {
+		const storeToken = await AsyncStorage.getItem('@Carpede:storeToken');
+		const response = await api.get('panel', { headers : { 'Authorization': `Bearer ${storeToken}` } });
+		setStore(response.data.name)
+	};
 	
-	useEffect(() => {
+	useEffect(() => {		
+		loadPanel();
+	}, []);
 
-		async function loadPanel() {
-			const storeToken = await AsyncStorage.getItem('@Carpede:storeToken');
-			//const response = await api.post('', { headers: { Authorization: `Bearer ${storeToken}` } })
-			console.log(response.data)
-			setUser(response.data)
-		}
-
-		loadPanel()
-
-	}, [])
+	
+	const navigation = useNavigation();
 
 	function navigateToProfile() {
 		navigation.navigate('StoreProfile');
@@ -35,7 +34,7 @@ export default function Panel() {
     return(
 		<View style={styles.containerYBetween}>
 			<View style={styles.box}>
-				<Header title={'Lanchão do Zeca'}/> 
+				<Header title={store}/> 
 				<View style={styles.groupInput}>
 					<TouchableOpacity style={styles.action} onPress={navigateToProfile}>
 						<Feather style={styles.iconAction} name="user" size={24} color="#585858" />

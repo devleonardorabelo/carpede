@@ -7,7 +7,7 @@ export default StyleSheet.create({
         flex: 1,
         backgroundColor: '#fff',
         paddingHorizontal: 40,
-        paddingTop: Constants.statusBarHeight + 40,
+        paddingTop: Constants.statusBarHeight + 20,
     },
     containerYBetween: {
         flex:1,
@@ -42,7 +42,9 @@ export default StyleSheet.create({
     illustration: {
         backgroundColor: '#fff',
         marginBottom: 60,
-        maxWidth: '100%'
+        maxHeight: '40%',
+        resizeMode: 'contain',
+        alignSelf: 'center'
     },
     buttonOrange: {
         height: 50,
@@ -149,14 +151,13 @@ export default StyleSheet.create({
     },
     listProducts: {
         flexDirection: 'row',
-        justifyContent: 'space-between',
         flexWrap: 'wrap'
     },
     listStores: {
         flexDirection: 'column',
     },
     card: {
-        width: '45%',
+        width: 200,
         backgroundColor: '#FFFCDB',
         borderRadius: 8,
         marginBottom: 30,
@@ -181,6 +182,20 @@ export default StyleSheet.create({
         height: 200,
         borderRadius: 8,
         marginBottom: 20,
+    },
+    alertError: {
+        position: 'absolute',
+        top: 0,
+        backgroundColor: '#FF3A4F',
+        width: '100%',
+        alignItems: 'center',
+        paddingTop: Constants.statusBarHeight + 20,
+    },
+    alertText: {
+        color: '#fff',
+        fontFamily: 'roboto-bold',
+        fontSize: 14,
+        padding: 10
     }
 
 

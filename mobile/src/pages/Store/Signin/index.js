@@ -2,48 +2,76 @@ import React, { useState, useRef } from 'react';
 import { View, Text, TextInput, TouchableOpacity, Alert, Button, AsyncStorage } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Header from '../../../components/Header'; 
-import Input from '../../../components/Input';
 import styles from '../../global';
 import api from '../../../services/axios';
-import { Form } from '@unform/core';
 
-export default function Signin({ onSubmit, initialValues }){
+
+export default function Signin(){
+
+    const [ email, setEmail ] = useState('');
+    const [ password, setPassword ] = useState('');
+    const [ alertZ, setAlertZ ] = useState(-999);
+    const [ alert, setAlert ] = useState('');
 
     const navigation = useNavigation();
 
+    async function saveUser(store) {
+        await AsyncStorage.clear();
+        await AsyncStorage.setItem('@Carpede:storeToken', store);
+        return navigation.navigate('StorePanel');
+    }
+    async function handleSignin() {
+        const { data } = await api.post('signin', { email, password });
+
+        if(data.error !== undefined) {
+            setAlert(data.error);
+            setAlertZ(999);
+
+            return setTimeout(() => {
+                setAlertZ(-999);
+            }, 3000)
+
+        };
+
+        const store = data;
+
+        await saveUser(store);
+    }
+
     function navigateToSignup() {
-        navigation.navigate('StoreSignup');
+        navigation.navigate('StoreSignup')
     }
 
-    const formRef = useRef(null);
-
-    async function handleSubmit(data) {
-        const response = await api.post('signin', data);
-        await AsyncStorage.setItem('@Carpede:storeToken', JSON.stringify(response.data));
-
-        navigation.navigate('StorePanel')
-        
-    }
-
-    return (
+    return(<>
         <View style={styles.container}>
             <Header title={'Entrar na minha conta'} />
-            <Form ref={formRef} onSubmit={handleSubmit}>
-                <View style={styles.groupInput}>
-                    <Text style={styles.labelInput}>seu email</Text>
-                    <Input style={styles.textInput} name={'email'}/>
-                </View>
-                <View style={styles.groupInput}>
-                    <Text style={styles.labelInput}>sua senha</Text>
-                    <Input style={styles.textInput} name={'password'}/>
-                </View>
-                <TouchableOpacity style={styles.buttonGreen} onPress={() => formRef.current.submitForm()}>
-                    <Text style={styles.buttonWhiteText}>Entrar</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.buttonTransparent} onPress={navigateToSignup}>
-                    <Text style={styles.buttonBlackText}>Quero criar uma conta</Text>
-                </TouchableOpacity>
-            </Form>
+            <View style={styles.groupInput}>
+                <Text style={styles.labelInput}>Seu email</Text>
+                <TextInput
+                    style={styles.textInput}
+                    onChangeText={email => setEmail(email)}
+                    autoCapitalize='none'
+                    autoFocus={true}
+                />
+            </View>
+            <View style={styles.groupInput}>
+                <Text style={styles.labelInput}>Sua senha</Text>
+                <TextInput 
+                    style={styles.textInput} 
+                    onChangeText={password => setPassword(password)}
+                    secureTextEntry={true}
+                    password={true}
+                />
+            </View>
+            <TouchableOpacity style={styles.buttonGreen} onPress={handleSignin}>
+                <Text style={styles.buttonWhiteText}>Entrar</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.buttonTransparent} onPress={navigateToSignup}>
+                <Text style={styles.buttonBlackText}>Quero criar uma conta</Text>
+            </TouchableOpacity>
         </View>
-    )
+        <View style={[styles.alertError, { zIndex: alertZ }]}>
+            <Text style={styles.alertText}>{alert}</Text>
+        </View>
+    </>)
 }
