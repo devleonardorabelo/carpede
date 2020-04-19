@@ -16,5 +16,6 @@ routes.get('/profile', CheckAuth, ProfileController.index);
 routes.post('/profile', CheckAuth, ProfileController.update);
 routes.get('/products', CheckAuth, ProductsController.index);
 routes.post('/products/new', CheckAuth, ProductsController.store);
+routes.post('/products/edit', CheckAuth, ProductsController.update);
 
 module.exports = routes

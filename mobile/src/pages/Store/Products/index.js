@@ -3,7 +3,7 @@ import { View, Text, TouchableOpacity, Image, AsyncStorage, FlatList } from 'rea
 import api from '../../../services/axios';
 import Header from '../../../components/Header';
 import styles from '../../global';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 
 
 export default function Products() {
@@ -14,6 +14,9 @@ export default function Products() {
     const [ loading, setLoading ] = useState(false);
 
     const navigation = useNavigation();
+
+    const route = useRoute();
+    if(route.params) setNewProduct(true);
 
     function navigateToEdit(product) {
         navigation.navigate('StoreProductEdit', { product });
@@ -27,21 +30,24 @@ export default function Products() {
         setLoading(true);
 
         const storeToken = await AsyncStorage.getItem('@Carpede:storeToken');
-        const response = await api.get('products',{ 
+        const { data, headers } = await api.get('products',{ 
+            params: { page },
             headers : { 'Authorization': `Bearer ${storeToken}` },
-            params:  page,
         });
 
-        setProducts([...products, ...response.data]);
-        setTotal(response.headers['x-total-count']);
-        setPage(page + 1);
+        if(data.length) {
+            setProducts([...products, ...data]);
+            setTotal(headers['x-total-count']);
+            setPage(page + 1);    
+        }
+        
         setLoading(false);
+
 
     }
 
     useEffect(() => {
       loadProducts();
-      console.log(products)
     }, [])
 
     function navigateToNew() {
@@ -50,26 +56,27 @@ export default function Products() {
 
     return(
         <View style={styles.container}>
-            <Header title={'Meus Produtos ->'+ page}/>
+            <Header title={'Meus Produtos'}/>
             <FlatList
-                    style={styles.productList}
-                    data={products}
-                    keyExtractor={product => String(product._id)}
-                    showsVerticalScrollIndicator={true}
-                    onEndReached={loadProducts} //chama a função quando descer a lista de itens
-                    onEndReachedThreshold={0.2} //chama a função de acordo com a porcentagem do fim da lista
-                    renderItem={({ item: product }) => (
-                    <TouchableOpacity style={styles.card} onPress={navigateToEdit}>
-                        <View style={styles.cardBody}> 
+                style={styles.listProducts}
+                data={products}
+                keyExtractor={product => String(product._id)}
+                showsVerticalScrollIndicator={false}
+                onEndReached={loadProducts} //chama a função quando descer a lista de itens
+                onEndReachedThreshold={0.1} //chama a função de acordo com a porcentagem do fim da lista
+                numColumns={2}
+                renderItem={({ item: product }) => (
+                    <TouchableOpacity style={styles.row} onPress={() => navigateToEdit(product)}>
+                        <View style={styles.card}> 
                             <Image
                                 style={styles.cardImage}
                                 source={product}
                                 resizeMode='cover'
                             />
-                            <Text style={[styles.text, { paddingTop: 10 }]}>{product._id}</Text>
+                            <Text style={[styles.text, { paddingTop: 10 }]}>{product.name}</Text>
                             <Text style={[styles.subtitle, { paddingBottom: 10}]}>{product.price}</Text>
-                        </View>
-                    </TouchableOpacity>  
+                        </View>    
+                    </TouchableOpacity>
                 )}
             />
                 

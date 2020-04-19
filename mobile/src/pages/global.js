@@ -150,17 +150,20 @@ export default StyleSheet.create({
         marginBottom: 10,
     },
     listProducts: {
-        flexDirection: 'row',
-        flexWrap: 'wrap'
+        marginBottom: 20,
     },
     listStores: {
         flexDirection: 'column',
     },
+    row: {
+        width: '50%',
+        marginBottom: 30,
+    },
     card: {
-        width: 200,
+        marginHorizontal: 10,
+        flex: 1,
         backgroundColor: '#FFFCDB',
         borderRadius: 8,
-        marginBottom: 30,
     },
     fullCard: {
         backgroundColor: '#FFFCDB',
