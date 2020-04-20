@@ -1,7 +1,7 @@
 <h1 align="center">Carpede</h1>
 <h2 align="center">Aplicativo de venda de produtos para comércio local, baseado na localização do usuário</h2>
+<h4 align="center">React Native + Node</h4>
 <hr>
-
 > NOTA: O aplicativo ainda está em desenvolvimento
 
 ## O sistema possui as seguintes caracteristicas:
@@ -19,8 +19,8 @@
   <li>Busca de produtos locais próximos</li>
   <li>Listagem dinâmica para cada loja</li>
   <li>Encontrar lojas e falar diretamente com o vendedor, sem intermédio do aplicativo</li>
-</ul>
-  
+</ul>  
+
 ## Alguma dúvida?
 Mande um email para mim: devleonardorabelo@gmail.com
 Ou no discord: Leonardo Rabelo#4789
