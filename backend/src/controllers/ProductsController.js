@@ -8,9 +8,15 @@ module.exports = {
 
         const { page } = req.query;
 
-        const products = await Product.find({store_id: store.id}).limit(6).skip((page - 1) * 6)
+        try {
+            const products = await Product.find({store_id: store.id}).limit(6).skip((page - 1) * 6)
+            return res.json(products);
 
-        return res.json(products);
+        } catch (err) {
+            return res.json({error: 'Houve um erro ao listar seus produtos, verifique sua conexão com a internet'})
+        }
+
+        
 
     },
     async store(req, res) {
@@ -27,9 +33,14 @@ module.exports = {
             store_id: store.id
         }
 
-        const product = await new Product(newProduct).save();
+        try {
 
-        return res.json(product)
+            const product = await new Product(newProduct).save();
+            return res.json(product);
+
+        } catch (err) {
+            return res.json({error: 'Houve um erro ao listar seus produtos, verifique sua conexão com a internet'})
+        }
 
     },
     async update(req, res) {
@@ -40,14 +51,34 @@ module.exports = {
 
         if(!name || !price) return res.json({error: 'Preencha o nome e o preço'});
 
-        const product = await Product.updateOne({
-            store_id: store.id
-        },{
-            name,
-            price
-        })
+        try{
+            await Product.updateOne({
+                store_id: store.id
+            },{
+                name,
+                price
+            })
 
-        return res.json({status: 'Alterado com sucesso'})
+            return res.json({status: 'Alterado com sucesso'})            
+        } catch (err) {
+            return res.json({error: 'Houve um erro ao listar seus produtos, verifique sua conexão com a internet'})
+        }
+
+    },
+    async destroy(req, res) {
+
+        const { id } = req.body;
+
+        if(!id) return res.json({error: 'Houve um problema ao deletar seu produto, tente novamente'});
+
+        try {
+            await Product.deleteOne({_id: id})
+            return res.json({status: 'Produto apagado com sucesso'});
+        } catch (err) {
+            return res.json({error: 'Houve um erro ao listar seus produtos, verifique sua conexão com a internet'})
+        }
+
+        
 
     }
 

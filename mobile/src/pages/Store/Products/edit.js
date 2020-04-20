@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Image, TextInput, Text, TouchableOpacity, AsyncStorage } from 'react-native';
+import { View, Image, TextInput, Text, TouchableOpacity, AsyncStorage, Alert } from 'react-native';
 import Header from '../../../components/Header'
 import { useRoute, useNavigation } from '@react-navigation/native';
 import api from '../../../services/axios';
@@ -42,9 +42,34 @@ export default function EditProduct() {
 
         setTimeout(() => {
             setAlertZ(-999);
-            if(data.status !== undefined) navigation.navigate('StoreProducts', {newProduct: true})
+            if(data.status !== undefined) navigation.navigate('StoreProducts')
         }, 1000)
 
+
+    }
+
+    async function handleDelete(id) {
+
+        const storeToken = await AsyncStorage.getItem('@Carpede:storeToken');
+        const { data } = await api.post('products/delete', {
+            id
+        } , { headers: { 'Authorization': `Bearer ${storeToken}` } });
+
+        if(data.status !== undefined) {
+            setStatus(data.status);
+            setAlertColor('#6FCF97');
+        }
+        if(data.error !== undefined){
+            setStatus(data.error);
+            setAlertColor('#FF3A4F');
+        }
+
+        setAlertZ(999);
+
+        setTimeout(() => {
+            setAlertZ(-999);
+            if(data.status !== undefined) navigation.navigate('StoreProducts')
+        }, 1000)
 
     }
 
@@ -70,6 +95,9 @@ export default function EditProduct() {
             </View>
             <TouchableOpacity style={styles.buttonGreen} onPress={handleUpdate}>
                 <Text style={styles.buttonWhiteText}>Salvar</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.buttonTransparent} onPress={() => handleDelete(product._id)}>
+                <Text style={styles.textAlert}>Apagar este Produto</Text>
             </TouchableOpacity>
         </View>
         <View style={[styles.alertError, { zIndex: alertZ, backgroundColor: `${alertColor}` }]}>

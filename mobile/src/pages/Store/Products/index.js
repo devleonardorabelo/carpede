@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, Image, AsyncStorage, FlatList } from 'react-native';
+import { View, Text, TouchableOpacity, Image, AsyncStorage, FlatList, ActivityIndicator } from 'react-native';
 import api from '../../../services/axios';
 import Header from '../../../components/Header';
 import styles from '../../global';
@@ -11,12 +11,10 @@ export default function Products() {
     const [ products, setProducts ] = useState([]);
     const [ total, setTotal ] = useState(0);
     const [ page, setPage ] = useState(1);
+    const [ loadedPage, setLoadedPage ] = useState(false);
     const [ loading, setLoading ] = useState(false);
 
     const navigation = useNavigation();
-
-    const route = useRoute();
-    if(route.params) setNewProduct(true);
 
     function navigateToEdit(product) {
         navigation.navigate('StoreProductEdit', { product });
@@ -34,6 +32,8 @@ export default function Products() {
             params: { page },
             headers : { 'Authorization': `Bearer ${storeToken}` },
         });
+
+        if(loadedPage === false) setLoadedPage(true);
 
         if(data.length) {
             setProducts([...products, ...data]);
@@ -54,18 +54,23 @@ export default function Products() {
         navigation.navigate('StoreProductNew');
     }
 
-    return(
+
+    return(<>{loadedPage ? (
+
         <View style={styles.container}>
+            
             <Header title={'Meus Produtos'}/>
+            
             <FlatList
                 style={styles.listProducts}
                 data={products}
                 keyExtractor={product => String(product._id)}
                 showsVerticalScrollIndicator={false}
                 onEndReached={loadProducts} //chama a função quando descer a lista de itens
-                onEndReachedThreshold={0.1} //chama a função de acordo com a porcentagem do fim da lista
+                onEndReachedThreshold={0.2} //chama a função de acordo com a porcentagem do fim da lista
                 numColumns={2}
                 renderItem={({ item: product }) => (
+                    
                     <TouchableOpacity style={styles.row} onPress={() => navigateToEdit(product)}>
                         <View style={styles.card}> 
                             <Image
@@ -77,14 +82,20 @@ export default function Products() {
                             <Text style={[styles.subtitle, { paddingBottom: 10}]}>{product.price}</Text>
                         </View>    
                     </TouchableOpacity>
+                    
+                    
                 )}
-            />
-                
-                               
-
+            />        
             <TouchableOpacity style={styles.buttonGreen} onPress={navigateToNew}>
-                <Text style={styles.buttonWhiteText}>Adicionar Produto</Text>
-            </TouchableOpacity> 
+                <Text style={styles.buttonWhiteText}></Text>
+            </TouchableOpacity>
+
         </View>
-    )
+        ) : (
+            <View style={{ flex: 1, justifyContent: 'center', alignContent: 'center', backgroundColor: '#fff'}}>
+                <ActivityIndicator size="large" color="#6FCF97" />
+            </View>
+            
+        )}
+    </>)
 }

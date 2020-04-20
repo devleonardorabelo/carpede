@@ -53,7 +53,7 @@ module.exports = {
 		}
 
 		const token = jwt.sign(payload, process.env.SECRET, {
-			expiresIn: 5000,
+			expiresIn: 31557600000,
 		});
 
 		return res.json(token);
@@ -98,7 +98,7 @@ module.exports = {
 			}
 
 			const token = jwt.sign(payload, process.env.SECRET, {
-				expiresIn: 5000,
+				expiresIn: 31557600000,
 			});
 
 			return res.json(token);

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, TextInput, SafeAreaView, ScrollView, AsyncStorage } from 'react-native';
+import { View, Text, TouchableOpacity, TextInput, SafeAreaView, ScrollView, AsyncStorage, ActivityIndicator } from 'react-native';
 import Header from '../../../components/Header'; 
 import api from '../../../services/axios';
 
@@ -15,6 +15,7 @@ export default function Profile() {
     const [ status, setStatus ] = useState('');
     const [ alertZ, setAlertZ ] = useState(-999);
     const [ alertColor, setAlertColor ] = useState('');
+    const [ loadedPage, setLoadedPage ] = useState(false);
 
     async function loadProfile() {
         const storeToken = await AsyncStorage.getItem('@Carpede:storeToken');
@@ -25,6 +26,8 @@ export default function Profile() {
         setWhatsapp(data.whatsapp);
         setPhone(data.phone);
         setTags(data.tags);
+
+        setLoadedPage(true);
     }
 
     useEffect(() => {
@@ -59,7 +62,9 @@ export default function Profile() {
         }, 3000)
 
     }
-        return(<>
+    return(<>
+        {loadedPage ? (
+        <>
             <SafeAreaView style={styles.container}>
                 <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
                     <Header title={'Meu perfil'}/>
@@ -113,10 +118,17 @@ export default function Profile() {
                         <Text style={styles.buttonWhiteText}>Salvar</Text>
                     </TouchableOpacity>
                 </ScrollView>
+                
             </SafeAreaView>
             <View style={[styles.alertError, { zIndex: alertZ, backgroundColor: `${alertColor}` }]}>
                 <Text style={styles.alertText}>{status}</Text>
             </View>
-
-        </>)        
+        </>
+            ) : (
+            <View style={{ flex: 1, justifyContent: 'center', alignContent: 'center', backgroundColor: '#fff'}}>
+                <ActivityIndicator size="large" color="#6FCF97" />
+            </View>
+            
+        )}
+    </>)        
 }

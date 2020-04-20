@@ -83,7 +83,8 @@ export default StyleSheet.create({
         backgroundColor: 'transparent',
         marginBottom: 20,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        flexDirection: 'row'
     },
     buttonWhiteText: {
         fontFamily: 'roboto-bold',
@@ -104,15 +105,22 @@ export default StyleSheet.create({
         color: '#585858',
         marginBottom: 10,
     },
-    textInput: {
-        height: 50,
+    boxInput: {
+        flexDirection: 'row',
         borderStyle: "solid",
         borderColor: '#e2e2e2',
         borderRadius: 8,
         borderWidth: 1,
-        paddingHorizontal: 20,
+    },
+    iconInput: {
+        paddingHorizontal:15,
+        paddingTop: 16
+    },
+    textInput: {
+        height: 50,
         fontSize: 14,   
-        fontFamily: 'roboto'   
+        fontFamily: 'roboto',
+        flexGrow: 1
     },
     textareaInput: {
         height: 100,
