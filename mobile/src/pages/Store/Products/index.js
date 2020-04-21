@@ -3,7 +3,9 @@ import { View, Text, TouchableOpacity, Image, AsyncStorage, FlatList, ActivityIn
 import api from '../../../services/axios';
 import Header from '../../../components/Header';
 import styles from '../../global';
-import { useNavigation, useRoute } from '@react-navigation/native';
+import { useNavigation} from '@react-navigation/native';
+
+import image from '../../../assets/uploads/1.png'
 
 
 export default function Products() {
@@ -15,6 +17,7 @@ export default function Products() {
     const [ loading, setLoading ] = useState(false);
 
     const navigation = useNavigation();
+
 
     function navigateToEdit(product) {
         navigation.navigate('StoreProductEdit', { product });
@@ -50,6 +53,7 @@ export default function Products() {
       loadProducts();
     }, [])
 
+
     function navigateToNew() {
         navigation.navigate('StoreProductNew');
     }
@@ -75,11 +79,16 @@ export default function Products() {
                         <View style={styles.card}> 
                             <Image
                                 style={styles.cardImage}
-                                source={product}
+                                source={image}
                                 resizeMode='cover'
                             />
                             <Text style={[styles.text, { paddingTop: 10 }]}>{product.name}</Text>
-                            <Text style={[styles.subtitle, { paddingBottom: 10}]}>{product.price}</Text>
+                            <Text style={[styles.subtitle, { paddingBottom: 10}]}>
+                                {Intl.NumberFormat('pt-BR', {
+                                    style: 'currency',
+                                    currency: 'BRL'
+                                }).format(product.price)}
+                            </Text>
                         </View>    
                     </TouchableOpacity>
                     
@@ -87,7 +96,7 @@ export default function Products() {
                 )}
             />        
             <TouchableOpacity style={styles.buttonGreen} onPress={navigateToNew}>
-                <Text style={styles.buttonWhiteText}></Text>
+                <Text style={styles.buttonWhiteText}>Adicionar produto</Text>
             </TouchableOpacity>
 
         </View>

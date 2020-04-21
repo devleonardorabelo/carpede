@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, Image, AsyncStorage, ActivityIndicator } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { Feather } from '@expo/vector-icons';
+import { FontAwesome5 as FA } from '@expo/vector-icons';
 import Header from '../../../components/Header'; 
 import styles from '../../global';
 import api from '../../../services/axios';
@@ -40,11 +40,11 @@ export default function Panel() {
 					<Header title={store}/> 
 					<View style={styles.groupInput}>
 						<TouchableOpacity style={styles.action} onPress={navigateToProfile}>
-							<Feather style={styles.iconAction} name="user" size={24} color="#585858" />
+							<FA style={styles.iconAction} name="user-alt" size={16} color="#585858" />
 							<Text style={styles.textAction}>Perfil</Text>
 						</TouchableOpacity>
 						<TouchableOpacity style={styles.action} onPress={navigateToProducts}>
-							<Feather style={styles.iconAction} name="package" size={24} color="#585858" />
+							<FA style={styles.iconAction} name="box" size={16} color="#585858" />
 							<Text style={styles.textAction}>Produtos</Text>
 						</TouchableOpacity>
 					</View>

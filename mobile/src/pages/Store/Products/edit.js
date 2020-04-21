@@ -3,6 +3,7 @@ import { View, Image, TextInput, Text, TouchableOpacity, AsyncStorage, Alert } f
 import Header from '../../../components/Header'
 import { useRoute, useNavigation } from '@react-navigation/native';
 import api from '../../../services/axios';
+import { FontAwesome5 as FA } from '@expo/vector-icons'
 
 import styles from '../../global';
 
@@ -20,11 +21,12 @@ export default function EditProduct() {
     const [ alertZ, setAlertZ ] = useState(-999);
     const [ alertColor, setAlertColor ] = useState('');
 
-    async function handleUpdate() {
+    async function handleUpdate(id) {
         
         const storeToken = await AsyncStorage.getItem('@Carpede:storeToken');
         
         const { data } = await api.post('products/edit', {
+            id,
             name,
             price
         } , { headers: { 'Authorization': `Bearer ${storeToken}` } });
@@ -93,11 +95,18 @@ export default function EditProduct() {
                     onChangeText={e => setPrice(e)}
                 />
             </View>
-            <TouchableOpacity style={styles.buttonGreen} onPress={handleUpdate}>
+            <TouchableOpacity style={styles.buttonGreen} onPress={() => handleUpdate(product._id)}>
                 <Text style={styles.buttonWhiteText}>Salvar</Text>
             </TouchableOpacity>
+            
             <TouchableOpacity style={styles.buttonTransparent} onPress={() => handleDelete(product._id)}>
-                <Text style={styles.textAlert}>Apagar este Produto</Text>
+                <FA
+                    style={{ paddingRight: 10 }}
+                    name='trash'
+                    size={16}
+                    color='#585858'
+                />
+                <Text style={styles.buttonBlackText}>Apagar este produto</Text>
             </TouchableOpacity>
         </View>
         <View style={[styles.alertError, { zIndex: alertZ, backgroundColor: `${alertColor}` }]}>

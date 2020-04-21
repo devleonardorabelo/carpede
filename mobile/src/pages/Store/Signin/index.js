@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, AsyncStorage, TouchableOpacity, ActivityIndicator } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { Feather } from '@expo/vector-icons'
+import { FontAwesome5 as FA, MaterialIcons as MI } from '@expo/vector-icons'
 import Header from '../../../components/Header'; 
 import styles from '../../global';
 import api from '../../../services/axios';
@@ -55,11 +55,11 @@ export default function Signin(){
             <View style={styles.groupInput}>
                 <Text style={styles.labelInput}>Seu email</Text>
                 <View style={styles.boxInput}>
-                    <Feather
+                    <MI
                         style={styles.iconInput}
                         name='mail'
                         size={16}
-                        color='#c2c2c2'
+                        color='#585858'
                     />
                     <TextInput
                         style={styles.textInput}
@@ -72,11 +72,11 @@ export default function Signin(){
             <View style={styles.groupInput}>
                 <Text style={styles.labelInput}>Sua senha</Text>
                 <View style={styles.boxInput}>
-                    <Feather
+                    <FA
                         style={styles.iconInput}
                         name='lock'
                         size={16}
-                        color='#c2c2c2'
+                        color='#585858'
                     />
                     <TextInput 
                         style={styles.textInput} 
@@ -95,7 +95,7 @@ export default function Signin(){
                 )}
             </TouchableOpacity>
             <TouchableOpacity style={styles.buttonTransparent} onPress={navigateToSignup}>
-                <Feather
+                <FA
                     style={{ paddingRight: 5 }}
                     name='arrow-right'
                     size={16}

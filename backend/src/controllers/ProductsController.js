@@ -47,13 +47,14 @@ module.exports = {
 
         const store = req.headers.user;
 
-        const { name, price } = req.body;
+        const { name, price, id } = req.body;
 
         if(!name || !price) return res.json({error: 'Preencha o nome e o preço'});
 
         try{
             await Product.updateOne({
-                store_id: store.id
+                store_id: store.id,
+                _id: id
             },{
                 name,
                 price

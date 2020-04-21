@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, TextInput, SafeAreaView, ScrollView, AsyncStorage, ActivityIndicator } from 'react-native';
 import Header from '../../../components/Header'; 
 import api from '../../../services/axios';
+import { FontAwesome5 as FA, Ionicons as IO } from '@expo/vector-icons'
 
 import styles from '../../global';
 
@@ -16,8 +17,10 @@ export default function Profile() {
     const [ alertZ, setAlertZ ] = useState(-999);
     const [ alertColor, setAlertColor ] = useState('');
     const [ loadedPage, setLoadedPage ] = useState(false);
+    const [ done, setDone ] = useState(false);
 
     async function loadProfile() {
+        
         const storeToken = await AsyncStorage.getItem('@Carpede:storeToken');
         const { data } = await api.get('profile', { headers : { 'Authorization': `Bearer ${storeToken}` } });
 
@@ -36,6 +39,8 @@ export default function Profile() {
 
     async function handleUpdate() {
         
+        setDone(true);
+
         const storeToken = await AsyncStorage.getItem('@Carpede:storeToken');
         
         const { data } = await api.post('profile', {
@@ -47,6 +52,7 @@ export default function Profile() {
         } , { headers: { 'Authorization': `Bearer ${storeToken}` } });
 
         if(data.status !== undefined) {
+            setDone(false);
             setStatus(data.status);
             setAlertColor('#6FCF97');
         }
@@ -59,7 +65,7 @@ export default function Profile() {
 
         return setTimeout(() => {
             setAlertZ(-999);
-        }, 3000)
+        }, 2000)
 
     }
     return(<>
@@ -70,11 +76,19 @@ export default function Profile() {
                     <Header title={'Meu perfil'}/>
                     <View style={styles.groupInput}>
                         <Text style={styles.labelInput}>Nome da loja</Text>
-                        <TextInput
-                            style={styles.textInput}
-                            defaultValue={name}
-                            onChangeText={e => setName(e)}
-                        />
+                        <View style={styles.boxInput}>
+                            <FA
+                            style={styles.iconInput}
+                            name='store'
+                            color='#585858'
+                            size={16}
+                            />
+                            <TextInput
+                                style={styles.textInput}
+                                defaultValue={name}
+                                onChangeText={e => setName(e)}
+                            />    
+                        </View>
                     </View>
                     <View style={styles.groupInput}>
                         <Text style={styles.labelInput}>Descrição</Text>
@@ -88,19 +102,35 @@ export default function Profile() {
                     </View>
                     <View style={styles.groupInput}>
                         <Text style={styles.labelInput}>Whatsapp</Text>
-                        <TextInput
-                            style={styles.textInput}
-                            defaultValue={whatsapp}
-                            onChangeText={e => setWhatsapp(e)}
-                        />
+                        <View style={styles.boxInput}>
+                            <IO
+                            style={styles.iconInput}
+                            name='logo-whatsapp'
+                            color='#585858'
+                            size={18}
+                            />
+                            <TextInput
+                                style={styles.textInput}
+                                defaultValue={whatsapp}
+                                onChangeText={e => setWhatsapp(e)}
+                            />
+                        </View>
                     </View>
                     <View style={styles.groupInput}>
                         <Text style={styles.labelInput}>Telefone</Text>
-                        <TextInput
-                            style={styles.textInput}
-                            value={phone}
-                            onChangeText={e => setPhone(e)}
-                        />
+                        <View style={styles.boxInput}>
+                            <FA
+                            style={styles.iconInput}
+                            name='phone'
+                            color='#585858'
+                            size={16}
+                            />
+                            <TextInput
+                                style={styles.textInput}
+                                value={phone}
+                                onChangeText={e => setPhone(e)}
+                            />
+                        </View>
                     </View>
                     <View style={styles.groupInput}>
                         <Text style={styles.labelInput}>Principais produtos</Text>
@@ -114,8 +144,12 @@ export default function Profile() {
                             onChangeText={e => setTags(e)}
                         />
                     </View>
-                    <TouchableOpacity style={styles.buttonGreen} onPress={handleUpdate}>
-                        <Text style={styles.buttonWhiteText}>Salvar</Text>
+                    <TouchableOpacity style={[styles.buttonGreen, { backgroundColor: done ? '#BACFC3' : '#6FCF97' }]} onPress={handleUpdate} disabled={done}>
+                        {done ?
+                            <ActivityIndicator size="large" color="#fff" />
+                        : (
+                            <Text style={styles.buttonWhiteText}>Entrar</Text>
+                        )}
                     </TouchableOpacity>
                 </ScrollView>
                 

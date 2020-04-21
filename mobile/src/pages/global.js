@@ -103,7 +103,7 @@ export default StyleSheet.create({
         fontSize: 14,
         fontFamily: 'roboto-bold',
         color: '#585858',
-        marginBottom: 10,
+        marginBottom: 5,
     },
     boxInput: {
         flexDirection: 'row',
@@ -179,7 +179,7 @@ export default StyleSheet.create({
         padding: 20,
     },
     cardImage: {
-        height: 140,
+        height: 100,
         maxWidth: '100%',
         borderTopLeftRadius: 8,
         borderTopRightRadius: 8,
