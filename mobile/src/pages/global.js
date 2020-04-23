@@ -96,8 +96,23 @@ export default StyleSheet.create({
         fontSize: 14,
         color: '#585858'
     },
+    buttonFloat: {
+        backgroundColor: '#456f56',
+        borderRadius: 100,
+        width: 48,
+        height: 48,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
     groupInput: {
         marginBottom: 20,
+    },
+    groupFloatButton: {
+        flexDirection: 'row',
+        position: 'absolute',
+        justifyContent: 'center',
+        width: '100%',
+        paddingBottom: 24
     },
     labelInput: {
         fontSize: 14,
@@ -189,10 +204,9 @@ export default StyleSheet.create({
         alignItems: 'center'
     },
     fullImage: {
-        maxWidth: '100%',
-        height: 200,
+        height: 300,
         borderRadius: 8,
-        marginBottom: 20,
+        width: '100%'
     },
     alertError: {
         position: 'absolute',

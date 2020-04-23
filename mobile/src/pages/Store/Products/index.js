@@ -1,9 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useCallback } from 'react';
 import { View, Text, TouchableOpacity, Image, AsyncStorage, FlatList, ActivityIndicator } from 'react-native';
 import api from '../../../services/axios';
 import Header from '../../../components/Header';
 import styles from '../../global';
-import { useNavigation} from '@react-navigation/native';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 
 import image from '../../../assets/uploads/1.png'
 
@@ -18,16 +18,12 @@ export default function Products() {
 
     const navigation = useNavigation();
 
-
-    function navigateToEdit(product) {
-        navigation.navigate('StoreProductEdit', { product });
-    }
-
     async function loadProducts() {
 
         if(loading) return
 
         if(total > 0 && products.length === total) return
+
         setLoading(true);
 
         const storeToken = await AsyncStorage.getItem('@Carpede:storeToken');
@@ -45,19 +41,20 @@ export default function Products() {
         }
         
         setLoading(false);
-
-
     }
 
-    useEffect(() => {
-      loadProducts();
-    }, [])
+    useFocusEffect(
+        useCallback(() => {
+            loadProducts();
+        }, [])
+    )
 
-
+    function navigateToEdit(product) {
+        navigation.navigate('StoreProductEdit', { product });
+    }
     function navigateToNew() {
         navigation.navigate('StoreProductNew');
     }
-
 
     return(<>{loadedPage ? (
 

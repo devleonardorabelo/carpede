@@ -44,7 +44,7 @@ export default function EditProduct() {
 
         setTimeout(() => {
             setAlertZ(-999);
-            if(data.status !== undefined) navigation.navigate('StoreProducts')
+            if(data.status !== undefined) navigation.navigate('StoreProducts', { changed: true })
         }, 1000)
 
 

@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "820300299211",
+    "firebase_url": "https://carpede-8ee36.firebaseio.com",
+    "project_id": "carpede-8ee36",
+    "storage_bucket": "carpede-8ee36.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:820300299211:android:d4499189ee6c1a9736144e",
+        "android_client_info": {
+          "package_name": "com.zapeez.carpede"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "820300299211-oaiih05csl2c0sj8uh0l8tpkiq2p6amv.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDyU13XiFAF0sk-vHgm6JLABDqsYcFbb-Q"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "820300299211-oaiih05csl2c0sj8uh0l8tpkiq2p6amv.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
