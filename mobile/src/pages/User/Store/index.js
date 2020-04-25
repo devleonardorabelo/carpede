@@ -7,10 +7,11 @@ import styles from '../../global';
 import stars from '../../../assets/more/star4.png';
 import whatsapp from '../../../assets/more/whatsapp.png';
 import phone from '../../../assets/more/phone.png';
-import product from '../../../assets/uploads/1.png';
+
 
 export default function SearchStoreProfile() {
     return(
+        /*
         <SafeAreaView style={styles.container}>
             <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
                 <Header title={'Lanchão do Zéca'} />
@@ -65,5 +66,7 @@ export default function SearchStoreProfile() {
                 </View>
             </ScrollView>
         </SafeAreaView>
+        */
+       <View />
     )
 }

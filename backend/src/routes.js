@@ -1,27 +1,17 @@
 const express = require('express');
 const routes = express.Router();
 const jwt = require('jsonwebtoken');
-const multer = require ('multer');
+const multer = require('multer');
+const path = require ('path');
+const sharp = require('sharp');
+const fs = require('fs')
 const AuthController = require('./controllers/AuthController');
 const PanelController = require('./controllers/PanelController');
 const ProfileController = require('./controllers/ProfileController');
 const ProductsController = require('./controllers/ProductsController');
 
 const CheckAuth = require('./middlewares/auth');
-
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-
-        // error first callback
-        cb(null, 'public/uploads/');
-    },
-    filename: function (req, file, cb) {
-
-        // error first callback
-        cb(null, file.fieldname + '-' + Date.now())
-    }
-});
-
+const storage = require('./configs/storage');
 const upload = multer({ storage });
 
 //AUTH
@@ -47,9 +37,23 @@ routes.post('/products/new', CheckAuth, ProductsController.store);
 routes.post('/products/edit', CheckAuth, ProductsController.update);
 routes.post('/products/delete', CheckAuth, ProductsController.destroy);
 
-routes.post('/upload', upload.single('fileData'), (req, res, next) => {
-	console.log(req.file)
-	res.json({efff: 'ok'})
+routes.post('/upload', upload.single('fileData'), async (req, res) => {
+    
+    const { filename: image } = req.file 
+
+    await sharp(req.file.path)
+    .resize(500)
+    .jpeg({quality: 100})
+    .withMetadata()
+    .toFile(
+        path.resolve(req.file.destination, `r${image}`)
+    )
+    let imageResize = `r${image}`
+
+    fs.unlinkSync(req.file.path);
+    res.json({file: imageResize});
+    
 });
 
 module.exports = routes
+ 

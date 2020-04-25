@@ -16,6 +16,6 @@ export default function Header(props) {
         <TouchableOpacity style={styles.navigationButton} onPress={navigateToBack}>
             <Feather name="arrow-left" size={32} color="#585858" />
         </TouchableOpacity>
-        <Text style={styles.title}>{props.title}</Text>
+        <Text style={[styles.title, { marginBottom: 20 }]}>{props.title}</Text>
     </>)
 }

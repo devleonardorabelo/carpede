@@ -1,7 +1,8 @@
-import axios from 'axios'
+import axios from 'axios';
+import { API_DOMAIN } from '../constants/api';
 
 const api = axios.create({
-    baseURL: 'http://192.168.25.139:21068'
+    baseURL: API_DOMAIN
 })
 
 export default api

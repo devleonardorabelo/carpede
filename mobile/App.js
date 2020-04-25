@@ -1,18 +1,29 @@
+import React, { useState } from 'react';
+import Routes from './src/routes';
+
 import 'intl'
 import 'intl/locale-data/jsonp/pt-BR'
-
-import React from 'react';
-import Routes from './src/routes';
-import * as firebase from 'firebase';
-import ApiKeys from './src/contants/ApiKeys';
+import * as Font from 'expo-font';
+import { AppLoading } from 'expo';
 
 export default function App() {
 
-  if(!firebase.apps.length) {
-    firebase.initializeApp(ApiKeys.FirebaseConfig)
-    console.log('iniciado')
-  }
+  const [dataLoaded, setDataLoaded] = useState(false);
 
+  const fetchFonts = () => {
+    return Font.loadAsync({
+    'montserrat-bold': require('./src/assets/fonts/MontserratBold.ttf'),
+    'montserrat-semi-bold': require('./src/assets/fonts/MontserratSemiBold.ttf'),
+    'montserrat-light': require('./src/assets/fonts/MontserratLight.ttf'),
+    });
+  };
+
+  if(!dataLoaded) {
+		return (
+			<AppLoading startAsync={fetchFonts} onFinish={() => setDataLoaded(true)} />
+		)
+  }
+  
   return (
     <Routes />
   );

@@ -3,10 +3,9 @@ import { View, Text, TouchableOpacity, Image, AsyncStorage, FlatList, ActivityIn
 import api from '../../../services/axios';
 import Header from '../../../components/Header';
 import styles from '../../global';
+import Loading from '../../../components/Loading';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
-
-import image from '../../../assets/uploads/1.png'
-
+import { API_DOMAIN } from '../../../constants/api';
 
 export default function Products() {
 
@@ -52,15 +51,25 @@ export default function Products() {
     function navigateToEdit(product) {
         navigation.navigate('StoreProductEdit', { product });
     }
+
     function navigateToNew() {
         navigation.navigate('StoreProductNew');
     }
+
+    function regexName(name) {
+        if(name.length > 20) {
+            let nameCut = name.match(/^[\s\S]{0,30}/) + '...'
+            return nameCut;
+        }
+        return name;
+    }
+    
 
     return(<>{loadedPage ? (
 
         <View style={styles.container}>
             
-            <Header title={'Meus Produtos'}/>
+            <Header title={'Produtos'}/>
             
             <FlatList
                 style={styles.listProducts}
@@ -69,39 +78,42 @@ export default function Products() {
                 showsVerticalScrollIndicator={false}
                 onEndReached={loadProducts} //chama a função quando descer a lista de itens
                 onEndReachedThreshold={0.2} //chama a função de acordo com a porcentagem do fim da lista
-                numColumns={2}
+                numColumns={1}
                 renderItem={({ item: product }) => (
                     
-                    <TouchableOpacity style={styles.row} onPress={() => navigateToEdit(product)}>
-                        <View style={styles.card}> 
-                            <Image
-                                style={styles.cardImage}
-                                source={image}
-                                resizeMode='cover'
-                            />
-                            <Text style={[styles.text, { paddingTop: 10 }]}>{product.name}</Text>
-                            <Text style={[styles.subtitle, { paddingBottom: 10}]}>
+                    <TouchableOpacity style={styles.card} onPress={() => navigateToEdit(product)}>
+
+                        <Image
+                            style={styles.cardImage}
+                            source={{
+                                uri: `${API_DOMAIN}/uploads/${product.image}`,
+                            }}
+                            resizeMode='cover'
+                        />
+                        
+                        <View style={styles.cardBody}>
+                            <View style={{ flexDirection: 'row' }}>
+                                <Text style={[styles.textWrap, styles.light]}>{regexName(product.name)}</Text>
+                            </View>	
+                            <Text style={styles.price}>
                                 {Intl.NumberFormat('pt-BR', {
                                     style: 'currency',
                                     currency: 'BRL'
                                 }).format(product.price)}
                             </Text>
-                        </View>    
+                        </View>
+
                     </TouchableOpacity>
-                    
-                    
+ 
                 )}
             />        
-            <TouchableOpacity style={styles.buttonGreen} onPress={navigateToNew}>
+            <TouchableOpacity style={[styles.button , { backgroundColor: '#FF5216' }]} onPress={navigateToNew}>
                 <Text style={styles.buttonWhiteText}>Adicionar produto</Text>
             </TouchableOpacity>
 
         </View>
         ) : (
-            <View style={{ flex: 1, justifyContent: 'center', alignContent: 'center', backgroundColor: '#fff'}}>
-                <ActivityIndicator size="large" color="#6FCF97" />
-            </View>
-            
+            <Loading />            
         )}
     </>)
 }

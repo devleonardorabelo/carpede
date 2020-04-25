@@ -4,15 +4,16 @@ import Header from '../../../components/Header';
 import api from '../../../services/axios';
 import { useNavigation } from '@react-navigation/native';
 import * as ImagePicker from 'expo-image-picker';
+import { API_DOMAIN } from '../../../constants/api';
 
 import styles from '../../global';
 
-import product from '../../../assets/more/upload.png';
+import defaultImage from '../../../assets/more/upload.png';
 
 export default function NewProduct() {
 
     const navigation = useNavigation();
-    const [ productImage, setProductImage ] = useState(product);
+    const [ previousImage, setPreviousImage ] = useState(defaultImage);
     const [ name, setName ] = useState('');
     const [ price, setPrice ] = useState('');
     const [ alert, setAlert ] = useState('');
@@ -21,24 +22,34 @@ export default function NewProduct() {
     const imagePicker = async () => {
         
         let permissionResult = await ImagePicker.requestCameraRollPermissionsAsync();
-    
-        if (permissionResult.granted === false) {
-          Alert('Para selecionar uma imagem, precisamos da sua autorização');
-          return;
-        }
-    
+        if (permissionResult.granted === false) return;
         let result = await ImagePicker.launchImageLibraryAsync();
-        
-        if(result.cancelled) return
+        if(result.cancelled) return;
+        setPreviousImage({ uri: result.uri });
+        return;
 
-        const data = new FormData();
-        data.append('fileData', {
-        uri : result.uri,
+    };
+
+    const cameraPicker = async () => {
+        
+        let permissionResult = await ImagePicker.requestCameraPermissionsAsync();
+        if (permissionResult.granted === false) return;
+        let result = await ImagePicker.launchCameraAsync();
+        if(result.cancelled) return;
+        setPreviousImage({ uri: result.uri });
+        return;
+
+    };
+
+    async function uploadImage(file) {
+
+        const body = new FormData();
+        body.append('fileData', {
+            uri : file.uri,
             type: "image/jpg",
             name: "filme1231.jpg",
         });
 
-        
         const storeToken = await AsyncStorage.getItem('@Carpede:storeToken');
 
         const config = {
@@ -48,34 +59,28 @@ export default function NewProduct() {
              'Content-Type': 'multipart/form-data',
              'Authorization': `Bearer ${storeToken}`,
             },
-            body: data,
+            body: body,
         };
         
-        const response = await fetch("http://192.168.25.139:21068/upload", config);
-
-        console.log(JSON.stringify(response))
-
-
-    };
-
-    const cameraPicker = async () => {
+        let response = await fetch(`${API_DOMAIN}/upload`, config);
         
-        let permissionResult = await ImagePicker.requestCameraPermissionsAsync();
-    
-        if (permissionResult.granted === false) {
-          Alert('Para tirar uma foto, precisamos que nos permita');
-          return;
-        }
-    
-        let pickerResult = await ImagePicker.launchCameraAsync();
-        if(pickerResult.cancelled) return
-        setProductImage({ uri: pickerResult.uri })
-    };
+        let data = await response.json();
+
+        return data.file;
+
+    }
 
     async function handleNewProduct() {
-
+        
         const storeToken = await AsyncStorage.getItem('@Carpede:storeToken');
-        const { data } = await api.post('products/new',{
+        let image;
+
+        if(previousImage !== defaultImage) {
+           image = await uploadImage(previousImage);
+        } 
+
+        let { data } = await api.post('products/new',{
+            image,
             name,
             price
         }, { headers : { 'Authorization': `Bearer ${storeToken}` } })
@@ -90,16 +95,16 @@ export default function NewProduct() {
 
         };
 
-       navigation.navigate('StoreProducts', { new: true })
+        return navigation.navigate('StoreProducts');
 
     }
-
+ 
     return(<>
         <View style={styles.container}>
             <Header title={'Novo Produto'}/>
             <View style={{ backgroundColor: '#cc2233', justifyContent: 'flex-end' }}>
                 <Image
-                    source={productImage}
+                    source={previousImage}
                     style={styles.fullImage}
                     resizeMode='cover'
                 />

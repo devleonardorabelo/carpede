@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, Image, AsyncStorage, ActivityIndicator } from 'react-native';
+import { SafeAreaView, View, Text, TouchableOpacity, AsyncStorage, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { FontAwesome5 as FA } from '@expo/vector-icons';
-import Header from '../../../components/Header'; 
+import { Feather } from '@expo/vector-icons'; 
 import styles from '../../global';
 import api from '../../../services/axios';
 import image from '../../../assets/illustrations/store.png';
+import star from '../../../assets/more/star4.png';
+import Loading from '../../../components/Loading';
 
 export default function Panel() {
 
@@ -22,39 +23,73 @@ export default function Panel() {
 	useEffect(() => {		
 		loadPanel();
 	}, []);
-
 	
 	const navigation = useNavigation();
 
 	function navigateToProfile() {
 		navigation.navigate('StoreProfile');
 	}
+
 	function navigateToProducts() {
 		navigation.navigate('StoreProducts');
+	}
+
+	async function signout() {
+		await AsyncStorage.clear();
+		return navigation.navigate('Home');
 	}
 	
     return(<>
 		{loadedPage ? (
-			<View style={styles.containerYBetween}>
-				<View style={styles.box}>
-					<Header title={store}/> 
-					<View style={styles.groupInput}>
-						<TouchableOpacity style={styles.action} onPress={navigateToProfile}>
-							<FA style={styles.iconAction} name="user-alt" size={16} color="#585858" />
-							<Text style={styles.textAction}>Perfil</Text>
-						</TouchableOpacity>
-						<TouchableOpacity style={styles.action} onPress={navigateToProducts}>
-							<FA style={styles.iconAction} name="box" size={16} color="#585858" />
-							<Text style={styles.textAction}>Produtos</Text>
-						</TouchableOpacity>
+			<SafeAreaView style={styles.container}>
+
+				<TouchableOpacity style={styles.navigationButton} onPress={signout}>
+					<Feather name="log-out" size={32} color="#333" />
+				</TouchableOpacity>
+				<View style={[styles.store, { marginTop: 20 }]}>
+					<Image
+						style={styles.storeAvatar}
+						source={image}
+						resizeMode={'cover'}
+					/>
+					<View style={{ flexGrow: 1, paddingLeft: 16}}>
+						<View style={{ flexDirection: 'row'}}>
+							<Text style={[styles.title, styles.textWrap]}>{store}</Text>
+						</View>	
+						<Image source={star}/>
 					</View>
 				</View>
-				<Image source={image} style={{width: '100%'}}/>
-			</View>
+				<Text style={styles.subtitle}>Seja bem-vindo</Text>
+				<View style={styles.groupInput}>
+					<TouchableOpacity style={styles.action} onPress={navigateToProfile}>
+						<View style={styles.iconAction}>
+							<Feather name="user" size={24} color="#333" />	
+						</View>
+						<View style={{flexGrow: 1, justifyContent: 'center'}}>
+							<Text style={styles.textAction}>Perfil</Text>
+							<Text style={styles.subtitleTextAction}>Informações da loja</Text>
+						</View>
+						<View style={styles.arrowAction}>
+							<Feather name="chevron-right" size={24} color="#333" />	
+						</View>
+					</TouchableOpacity>
+					<TouchableOpacity style={styles.action} onPress={navigateToProducts}>
+					<View style={styles.iconAction}>
+							<Feather name="box" size={24} color="#333" />	
+						</View>
+						<View style={{flexGrow: 1, justifyContent: 'center'}}>
+							<Text style={styles.textAction}>Produtos</Text>
+							<Text style={styles.subtitleTextAction}>Informações da loja</Text>
+						</View>
+						<View style={styles.arrowAction}>
+							<Feather name="chevron-right" size={24} color="#333" />	
+						</View>
+					</TouchableOpacity>
+				</View>
+				
+			</SafeAreaView>
 		):(
-			<View style={{ flex: 1, justifyContent: 'center', alignContent: 'center', backgroundColor: '#fff'}}>
-                <ActivityIndicator size="large" color="#6FCF97" />
-            </View>
+			<Loading />
 		)}
 		</>)
 	

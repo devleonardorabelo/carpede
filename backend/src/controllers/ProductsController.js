@@ -23,11 +23,14 @@ module.exports = {
 
         const store = req.headers.user;
 
-        const { name, price } = req.body;
+        const { name, price, image } = req.body;
+
+        console.log(image)
 
         if(!name || !price) return res.json({error: 'Preencha o nome e o preço'});
 
         const newProduct = {
+            image,
             name,
             price,
             store_id: store.id
@@ -47,7 +50,7 @@ module.exports = {
 
         const store = req.headers.user;
 
-        const { name, price, id } = req.body;
+        const { image, name, price, id } = req.body;
 
         if(!name || !price) return res.json({error: 'Preencha o nome e o preço'});
 
@@ -56,6 +59,7 @@ module.exports = {
                 store_id: store.id,
                 _id: id
             },{
+                image,
                 name,
                 price
             })
@@ -77,10 +81,8 @@ module.exports = {
             return res.json({status: 'Produto apagado com sucesso'});
         } catch (err) {
             return res.json({error: 'Houve um erro ao listar seus produtos, verifique sua conexão com a internet'})
-        }
-
-        
-
-    }
+        }     
+    
+    },
 
 }
