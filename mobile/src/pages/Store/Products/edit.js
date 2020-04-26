@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { View, Image, TextInput, Text, TouchableOpacity, AsyncStorage, Alert } from 'react-native';
+import { View, Image, TextInput, Text, TouchableOpacity, AsyncStorage, SafeAreaView, ScrollView } from 'react-native';
 import Header from '../../../components/Header'
 import { useRoute, useNavigation } from '@react-navigation/native';
 import api from '../../../services/axios';
-import { FontAwesome5 as FA } from '@expo/vector-icons';
+import { Feather } from '@expo/vector-icons';
 import { API_DOMAIN } from '../../../constants/api';
 import * as ImagePicker from 'expo-image-picker';
 
@@ -18,6 +18,7 @@ export default function EditProduct() {
 
     const [ previousImage, setPreviousImage ] = useState(currentImage);
     const [ name, setName ] = useState(product.name);
+    const [ description, setDescription ] = useState(product.description);
     const [ price, setPrice ] = useState(product.price);
     const [ status, setStatus ] = useState('');
     const [ alertZ, setAlertZ ] = useState(-999);
@@ -39,6 +40,7 @@ export default function EditProduct() {
             id,
             image,
             name,
+            description,
             price
         } , { headers: { 'Authorization': `Bearer ${storeToken}` } });
 
@@ -81,7 +83,7 @@ export default function EditProduct() {
         setTimeout(() => {
             setAlertZ(-999);
             if(data.status !== undefined) navigation.navigate('StoreProducts')
-        }, 1000)
+        }, 2000)
 
     }
 
@@ -113,7 +115,7 @@ export default function EditProduct() {
         body.append('fileData', {
             uri : file.uri,
             type: "image/jpg",
-            name: "filme1231.jpg",
+            name: "image.jpg",
         });
 
         const storeToken = await AsyncStorage.getItem('@Carpede:storeToken');
@@ -137,49 +139,85 @@ export default function EditProduct() {
     }
 
     return(<>
-        <View style={styles.container}>
-            <Header title={'Editar Produto'}/>
-            <View style={{ backgroundColor: '#cc2233', justifyContent: 'flex-end' }}>
-                <Image
-                    source={previousImage}
-                    style={styles.fullImage}
-                    resizeMode='cover'
-                />
-                <View style={styles.groupFloatButton}>
-                    <TouchableOpacity style={[styles.buttonFloat, { marginRight: 16 }]} onPress={imagePicker}><Text>G</Text></TouchableOpacity>
-                    <TouchableOpacity style={styles.buttonFloat} onPress={cameraPicker}><Text>C</Text></TouchableOpacity>    
-                </View>  
-            </View>
-            <View style={styles.groupInput}>
-                <Text style={styles.labelInput}>Nome do Produto</Text>
-                <TextInput
-                    style={styles.textInput}
-                    defaultValue={product.name}
-                    onChangeText={e => setName(e)}
-                />
-            </View>
-            <View style={styles.groupInput}>
-                <Text style={styles.labelInput}>Preço</Text>
-                <TextInput
-                    style={[styles.textInput, { width: 100 }]}
-                    defaultValue={product.price}
-                    onChangeText={e => setPrice(e)}
-                />
-            </View>
-            <TouchableOpacity style={styles.buttonGreen} onPress={() => handleUpdate(product._id)}>
-                <Text style={styles.buttonWhiteText}>Salvar</Text>
-            </TouchableOpacity>
-            
-            <TouchableOpacity style={styles.buttonTransparent} onPress={() => handleDelete(product._id)}>
-                <FA
-                    style={{ paddingRight: 10 }}
-                    name='trash'
-                    size={16}
-                    color='#585858'
-                />
-                <Text style={styles.buttonBlackText}>Apagar este produto</Text>
-            </TouchableOpacity>
-        </View>
+        <SafeAreaView style={styles.container}>
+            <Header />
+            <ScrollView showsVerticalScrollIndicator={false}>
+                <Text style={styles.title}>{product.name}</Text>
+                <View style={{ justifyContent: 'flex-end', marginBottom: 20 }}>
+                    <Image
+                        source={previousImage}
+                        style={styles.fullImage}
+                        resizeMode='cover'
+                    />
+                    <View style={styles.groupFloatButton}>
+
+                        <TouchableOpacity
+                        style={[styles.buttonFloat, { marginRight: 16 }]}
+                        onPress={imagePicker}>
+                            <Feather
+                                name='image'
+                                color='#fff'
+                                size={32}
+                            />
+                        </TouchableOpacity>
+
+                        <TouchableOpacity
+                        style={styles.buttonFloat}
+                        onPress={cameraPicker}>
+                            <Feather
+                                name='camera'
+                                color='#fff'
+                                size={32}
+                            />
+                        </TouchableOpacity>   
+
+                    </View>  
+                </View>
+                <View style={styles.groupInput}>
+                    <View style={styles.labelInput}>
+                        <Text style={styles.labelText}>Nome</Text>
+                    </View>
+                    <TextInput
+                        style={styles.textInput}
+                        defaultValue={product.name}
+                        onChangeText={e => setName(e)}
+                    />    
+                </View>
+                <View style={styles.groupInput}>
+                    <View style={styles.labelInput}>
+                        <Text style={styles.labelText}>Descrição</Text>
+                    </View>
+                    <TextInput
+                        style={styles.textInput}
+                        defaultValue={product.description}
+                        onChangeText={e => setDescription(e)}
+                    />    
+                </View>
+                <View style={styles.groupInput}>
+                    <View style={styles.labelInput}>
+                        <Text style={styles.labelText}>Preço</Text>
+                    </View>
+                    <TextInput
+                        style={[styles.textInput, { width: 120 }]}
+                        defaultValue={product.price}
+                        onChangeText={e => setPrice(e)}
+                    />    
+                </View>
+                <TouchableOpacity style={styles.button} onPress={() => handleUpdate(product._id)}>
+                    <Text style={styles.buttonWhiteText}>Salvar</Text>
+                </TouchableOpacity>
+                
+                <TouchableOpacity style={styles.buttonTransparent} onPress={() => handleDelete(product._id)}>
+                    <Feather
+                        style={{ paddingRight: 10 }}
+                        name='trash'
+                        size={16}
+                        color='#585858'
+                    />
+                    <Text style={styles.buttonBlackText}>Apagar este produto</Text>
+                </TouchableOpacity>
+            </ScrollView>
+        </SafeAreaView>
         <View style={[styles.alertError, { zIndex: alertZ, backgroundColor: `${alertColor}` }]}>
             <Text style={styles.alertText}>{status}</Text>
         </View>

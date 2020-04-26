@@ -1,9 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, TextInput, SafeAreaView, ScrollView, AsyncStorage, ActivityIndicator } from 'react-native';
-import Header from '../../../components/Header'; 
+import { View, Text, SafeAreaView, ScrollView, AsyncStorage } from 'react-native';
 import api from '../../../services/axios';
-import Loading from '../../../components/Loading';
+
 import styles from '../../global';
+import Header from '../../../components/Header';
+import Loading from '../../../components/Loading';
+import { Input, TextArea } from '../../../components/Input';
+import { Button } from '../../../components/Button';
 
 export default function Profile() {
 
@@ -70,71 +73,43 @@ export default function Profile() {
         {loadedPage ? (
         <>
             <SafeAreaView style={styles.container}>
-                <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
-                    <Header title={'Meu perfil'}/>
-                    <View style={styles.groupInput}>
-                        <View style={styles.labelInput}>
-                            <Text style={styles.labelText}>Nome da loja</Text>
-                        </View>
-                        <TextInput
-                            style={styles.textInput}
-                            defaultValue={name}
-                            onChangeText={e => setName(e)}
-                        />    
-                    </View>
-                    <View style={styles.groupInput}>
-                        <View style={styles.labelInput}>
-                            <Text style={styles.labelText}>Descrição</Text>
-                        </View>
-                        <TextInput
-                            multiline={true}
-                            numberOfLines={10}
-                            style={styles.textareaInput}
-                            defaultValue={description}
-                            onChangeText={e => setDescription(e)}
-                        />
-                    </View>
-                    <View style={styles.groupInput}>
-                        <View style={styles.labelInput}>
-                            <Text style={styles.labelText}>Whatsapp</Text>
-                        </View>
-                        <TextInput
-                            style={styles.textInput}
-                            defaultValue={whatsapp}
-                            onChangeText={e => setWhatsapp(e)}
-                        />
-                    </View>
-                    <View style={styles.groupInput}>
-                        <View style={styles.labelInput}>
-                            <Text style={styles.labelText}>Telefone</Text>
-                        </View>
-                        <TextInput
-                            style={styles.textInput}
-                            value={phone}
-                            onChangeText={e => setPhone(e)}
-                        />
-                    </View>
-                    <View style={styles.groupInput}>
-                        <View style={styles.labelInput}>
-                            <Text style={styles.labelText}>Principais produtos</Text>
-                        </View>
-                        <TextInput
-                            multiline={true}
-                            numberOfLines={10}
-                            style={styles.textareaInput}
-                            placeholder={'ex:  sapato, camisa, meia, tênis, calça, bermuda'}
-                            value={tags}
-                            onChangeText={e => setTags(e)}
-                        />
-                    </View>
+                <Header/>
+                <ScrollView
+                    style={styles.scrollView}
+                    showsVerticalScrollIndicator={false}
+                >
+                    <Text style={styles.title}>Perfil</Text>
+                    <Input
+                        title={'Nome da Loja'}
+                        default={name}
+                        action={e => setName(e)}
+                    />
+                    <TextArea
+                        title={'Descrição'}
+                        default={description}
+                        action={e => setDescription(e)}
+                    />
+                    <Input
+                        title={'Whatsapp'}
+                        default={whatsapp}
+                        action={e => setWhatsapp(e)}
+                        keyboard={'numeric'}
+                    />
+                    <Input
+                        title={'Telefone'}
+                        default={phone}
+                        action={e => setPhone(e)}
+                        keyboard={'numeric'}
+                    />
+                    <TextArea
+                        title={'Principais Produtos'}
+                        default={tags}
+                        action={e => setTags(e)}
+                        placeholder={'ex:  sapato, camisa, meia, tênis, calça, bermuda'}
+                    />
 
-                    <TouchableOpacity style={[styles.button, { backgroundColor: done ? '#B62F00' : '#FF5216' }]} onPress={handleUpdate} disabled={done}>
-                        {done ?
-                            <ActivityIndicator size="large" color="#fff" />
-                        : (
-                            <Text style={styles.buttonWhiteText}>Salvar</Text>
-                        )}
-                    </TouchableOpacity>
+                    <Button action={handleUpdate} title={'Salvar'} done={done}/>
+
                 </ScrollView>
             </SafeAreaView>
             <View style={[styles.alertError, { zIndex: alertZ, backgroundColor: `${alertColor}` }]}>

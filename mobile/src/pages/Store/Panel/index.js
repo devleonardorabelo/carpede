@@ -46,6 +46,7 @@ export default function Panel() {
 				<TouchableOpacity style={styles.navigationButton} onPress={signout}>
 					<Feather name="log-out" size={32} color="#333" />
 				</TouchableOpacity>
+				
 				<View style={[styles.store, { marginTop: 20 }]}>
 					<Image
 						style={styles.storeAvatar}

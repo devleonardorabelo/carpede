@@ -40,21 +40,14 @@ export default StyleSheet.create({
     title: {
         fontFamily: 'montserrat-bold',
         fontSize: widthDP('7%'),
-        color: '#444'
+        color: '#444',
+        marginBottom: 20,
     },
     subtitle: {
         fontSize: widthDP('5%'),
         marginBottom: 20,
         fontFamily: 'montserrat-bold',
         color: '#171c29'
-    },
-    semiBold: {
-        fontFamily: 'montserrat-semi-bold',
-        fontSize: widthDP('4%')
-    },
-    light: {
-        fontFamily: 'montserrat-light',
-        fontSize: widthDP('4%')
     },
     groupInput: {
         marginBottom: 20,
@@ -88,7 +81,8 @@ export default StyleSheet.create({
     subtitleTextAction: {
         fontFamily: 'montserrat-light',
         fontSize: widthDP('4%'),
-        marginTop: -2
+        marginTop: -2,
+        color: '#666'
     },
     labelInput: {
         flexDirection: 'row'
@@ -96,7 +90,7 @@ export default StyleSheet.create({
     labelText: {
         fontSize: widthDP('4%'),
         fontFamily: 'montserrat-semi-bold',
-        color: '#585858',
+        color: '#333',
         marginLeft: 10,
         marginBottom: -10,
         zIndex: 9,
@@ -110,12 +104,13 @@ export default StyleSheet.create({
     textInput: {
         height: 50,
         fontSize: widthDP('4%'),   
-        fontFamily: 'montserrat-light',
+        fontFamily: 'montserrat-medium',
         flexGrow: 1,
         borderColor: '#e2e2e2',
         borderRadius: 8,
         borderWidth: 1,
-        paddingLeft: 16
+        paddingLeft: 16,
+        color: '#666'
     },
     textareaInput: {
         height: 100,
@@ -125,14 +120,16 @@ export default StyleSheet.create({
         borderWidth: 1,
         padding: 16,
         fontSize: widthDP('4%'),  
-        fontFamily: 'montserrat-light'   
+        fontFamily: 'montserrat-medium',
+        color: '#666'   
     },
     button: {
         height: 50,
         borderRadius: 8,
         marginBottom: 20,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        backgroundColor: '#FF5216',
     },
     card: {
         flex: 1,
@@ -154,11 +151,47 @@ export default StyleSheet.create({
         flexGrow: 1,
     },
     price: {
-        color: '#5C9A18',
+        color: '#333',
         fontFamily: 'montserrat-semi-bold',
         fontSize: widthDP('4%'),
         marginTop: 5,
     },
+    fullImage: {
+        width: widthDP('100%'),
+        height: widthDP('84%'),
+    },
+    uploadImage: {
+        width: widthDP('100%'),
+    },
+    buttonFloat: {
+        backgroundColor: '#FF5216',
+        width: 64,
+        height: 64,
+        borderRadius: 8,
+        opacity: 0.9,
+        justifyContent: 'center',
+        alignItems: 'center'
+    },
+    groupFloatButton: {
+        flexDirection: 'row',
+        position: 'absolute',
+        justifyContent: 'center',
+        width: '100%',
+        paddingBottom: 24
+    },
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -226,22 +259,6 @@ export default StyleSheet.create({
         fontSize: 14,
         color: '#585858'
     },
-    buttonFloat: {
-        backgroundColor: '#456f56',
-        borderRadius: 100,
-        width: 48,
-        height: 48,
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    
-    groupFloatButton: {
-        flexDirection: 'row',
-        position: 'absolute',
-        justifyContent: 'center',
-        width: '100%',
-        paddingBottom: 24
-    },
     textAlert: {
         fontSize: 14,
         fontFamily: 'montserrat-semi-bold',
@@ -254,11 +271,6 @@ export default StyleSheet.create({
     },
     listStores: {
         flexDirection: 'column',
-    },
-    fullImage: {
-        height: widthDP('84%'),
-        borderRadius: 8,
-        width: '100%'
     },
     alertError: {
         position: 'absolute',

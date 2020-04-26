@@ -4,6 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import boxImg from '../../assets/illustrations/box.png'
 import api from '../../services/axios';
 import styles from '../global';
+import { Button } from '../../components/Button';
 
 export default function Home() {
 

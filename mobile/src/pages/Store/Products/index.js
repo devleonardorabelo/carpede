@@ -57,7 +57,7 @@ export default function Products() {
     }
 
     function regexName(name) {
-        if(name.length > 20) {
+        if(name.length > 30) {
             let nameCut = name.match(/^[\s\S]{0,30}/) + '...'
             return nameCut;
         }
@@ -69,15 +69,15 @@ export default function Products() {
 
         <View style={styles.container}>
             
-            <Header title={'Produtos'}/>
-            
+            <Header/>
+            <Text style={styles.title}>Produtos</Text>
             <FlatList
                 style={styles.listProducts}
                 data={products}
                 keyExtractor={product => String(product._id)}
                 showsVerticalScrollIndicator={false}
-                onEndReached={loadProducts} //chama a função quando descer a lista de itens
-                onEndReachedThreshold={0.2} //chama a função de acordo com a porcentagem do fim da lista
+                onEndReached={loadProducts}
+                onEndReachedThreshold={0.3}
                 numColumns={1}
                 renderItem={({ item: product }) => (
                     
@@ -94,7 +94,7 @@ export default function Products() {
                         <View style={styles.cardBody}>
                             <View style={{ flexDirection: 'row' }}>
                                 <Text style={[styles.textWrap, styles.light]}>{regexName(product.name)}</Text>
-                            </View>	
+                            </View>
                             <Text style={styles.price}>
                                 {Intl.NumberFormat('pt-BR', {
                                     style: 'currency',
@@ -107,7 +107,7 @@ export default function Products() {
  
                 )}
             />        
-            <TouchableOpacity style={[styles.button , { backgroundColor: '#FF5216' }]} onPress={navigateToNew}>
+            <TouchableOpacity style={styles.button} onPress={navigateToNew}>
                 <Text style={styles.buttonWhiteText}>Adicionar produto</Text>
             </TouchableOpacity>
 

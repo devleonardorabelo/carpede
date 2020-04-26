@@ -16,14 +16,12 @@ module.exports = {
             return res.json({error: 'Houve um erro ao listar seus produtos, verifique sua conexão com a internet'})
         }
 
-        
-
     },
     async store(req, res) {
 
         const store = req.headers.user;
 
-        const { name, price, image } = req.body;
+        const { name, description, price, image } = req.body;
 
         console.log(image)
 
@@ -32,6 +30,7 @@ module.exports = {
         const newProduct = {
             image,
             name,
+            description,
             price,
             store_id: store.id
         }
@@ -50,7 +49,7 @@ module.exports = {
 
         const store = req.headers.user;
 
-        const { image, name, price, id } = req.body;
+        const { image, name, description, price, id } = req.body;
 
         if(!name || !price) return res.json({error: 'Preencha o nome e o preço'});
 

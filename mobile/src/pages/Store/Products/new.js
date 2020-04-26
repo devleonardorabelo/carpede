@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { View, Image, TextInput, Text, TouchableOpacity, AsyncStorage, Alert } from 'react-native';
+import { View, Image, TextInput, Text, TouchableOpacity, AsyncStorage, SafeAreaView, ScrollView } from 'react-native';
 import Header from '../../../components/Header';
 import api from '../../../services/axios';
+import { Feather } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import * as ImagePicker from 'expo-image-picker';
 import { API_DOMAIN } from '../../../constants/api';
@@ -15,6 +16,7 @@ export default function NewProduct() {
     const navigation = useNavigation();
     const [ previousImage, setPreviousImage ] = useState(defaultImage);
     const [ name, setName ] = useState('');
+    const [ description, setDescription ] = useState('');
     const [ price, setPrice ] = useState('');
     const [ alert, setAlert ] = useState('');
     const [ alertZ, setAlertZ ] = useState(-999);
@@ -47,7 +49,7 @@ export default function NewProduct() {
         body.append('fileData', {
             uri : file.uri,
             type: "image/jpg",
-            name: "filme1231.jpg",
+            name: "image.jpg",
         });
 
         const storeToken = await AsyncStorage.getItem('@Carpede:storeToken');
@@ -82,6 +84,7 @@ export default function NewProduct() {
         let { data } = await api.post('products/new',{
             image,
             name,
+            description,
             price
         }, { headers : { 'Authorization': `Bearer ${storeToken}` } })
 
@@ -100,40 +103,69 @@ export default function NewProduct() {
     }
  
     return(<>
-        <View style={styles.container}>
-            <Header title={'Novo Produto'}/>
-            <View style={{ backgroundColor: '#cc2233', justifyContent: 'flex-end' }}>
-                <Image
-                    source={previousImage}
-                    style={styles.fullImage}
-                    resizeMode='cover'
-                />
-                <View style={styles.groupFloatButton}>
-                    <TouchableOpacity style={[styles.buttonFloat, { marginRight: 16 }]} onPress={imagePicker}><Text>G</Text></TouchableOpacity>
-                    <TouchableOpacity style={styles.buttonFloat} onPress={cameraPicker}><Text>C</Text></TouchableOpacity>    
-                </View>  
-            </View>
-            
-            
-            <View style={styles.groupInput}>
-                <Text style={styles.labelInput}>Nome do Produto</Text>
-                <TextInput
-                    style={styles.textInput}
-                    onChangeText={e => setName(e)}
-                />
-            </View>
-            <View style={styles.groupInput}>
-                <Text style={styles.labelInput}>Preço</Text>
-                <TextInput
-                    style={[styles.textInput, { width: 100 }]}
-                    onChangeText={e => setPrice(e)}
-                    keyboardType={'decimal-pad'}
-                />
-            </View>
-            <TouchableOpacity style={styles.buttonGreen} onPress={handleNewProduct}>
-                <Text style={styles.buttonWhiteText}>Salvar</Text>
-            </TouchableOpacity>
-        </View>
+        <SafeAreaView style={styles.container}>
+            <Header/>
+            <ScrollView showsVerticalScrollIndicator={false}>
+                <Text style={styles.title}>Novo Produto</Text>
+                <View style={{ justifyContent: 'flex-end', marginBottom: 20 }}>
+                    <Image
+                        source={previousImage}
+                        style={styles.fullImage}
+                        resizeMode='cover'
+                    />
+                    <View style={styles.groupFloatButton}>
+
+                        <TouchableOpacity
+                        style={[styles.buttonFloat, { marginRight: 16 }]}
+                        onPress={imagePicker}>
+                            <Feather
+                                name='image'
+                                color='#fff'
+                                size={32}
+                            />
+                        </TouchableOpacity>
+
+                        <TouchableOpacity
+                        style={styles.buttonFloat}
+                        onPress={cameraPicker}>
+                            <Feather
+                                name='camera'
+                                color='#fff'
+                                size={32}
+                            />
+                        </TouchableOpacity>   
+
+                    </View>  
+                </View>
+                
+                
+                <View style={styles.groupInput}>
+                    <Text style={styles.labelInput}>Nome do Produto</Text>
+                    <TextInput
+                        style={styles.textInput}
+                        onChangeText={e => setName(e)}
+                    />
+                </View>
+                <View style={styles.groupInput}>
+                    <Text style={styles.labelInput}>Descrição</Text>
+                    <TextInput
+                        style={styles.textInput}
+                        onChangeText={e => setDescription(e)}
+                    />
+                </View>
+                <View style={styles.groupInput}>
+                    <Text style={styles.labelInput}>Preço</Text>
+                    <TextInput
+                        style={[styles.textInput, { width: 100 }]}
+                        onChangeText={e => setPrice(e)}
+                        keyboardType={'decimal-pad'}
+                    />
+                </View>
+                <TouchableOpacity style={styles.buttonGreen} onPress={handleNewProduct}>
+                    <Text style={styles.buttonWhiteText}>Salvar</Text>
+                </TouchableOpacity>
+            </ScrollView>
+        </SafeAreaView>
         <View style={[styles.alertError, { zIndex: alertZ }]}>
             <Text style={styles.alertText}>{alert}</Text>
         </View>
