@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Image, TextInput, Text, TouchableOpacity, AsyncStorage, SafeAreaView, ScrollView } from 'react-native';
 import Header from '../../../components/Header'
 import { useRoute, useNavigation } from '@react-navigation/native';
-import api from '../../../services/axios';
+import apiReq from '../../../services/reqToken';
 import { Feather } from '@expo/vector-icons';
 import { API_DOMAIN } from '../../../constants/api';
 import * as ImagePicker from 'expo-image-picker';
@@ -25,8 +25,6 @@ export default function EditProduct() {
     const [ alertColor, setAlertColor ] = useState('');
 
     async function handleUpdate(id) {
-        
-        const storeToken = await AsyncStorage.getItem('@Carpede:storeToken');
 
         let image;
 
@@ -36,13 +34,13 @@ export default function EditProduct() {
             image = await uploadImage(previousImage);
         }
 
-        const { data } = await api.post('products/edit', {
+        const { data } = await apiReq.post('products/edit', {
             id,
             image,
             name,
             description,
             price
-        } , { headers: { 'Authorization': `Bearer ${storeToken}` } });
+        });
 
         if(data.status !== undefined) {
             setStatus(data.status);
@@ -58,16 +56,15 @@ export default function EditProduct() {
         setTimeout(() => {
             setAlertZ(-999);
             if(data.status !== undefined) navigation.navigate('StoreProducts', { changed: true })
-        }, 1000)
+        }, 2000)
 
     }
 
     async function handleDelete(id) {
 
-        const storeToken = await AsyncStorage.getItem('@Carpede:storeToken');
-        const { data } = await api.post('products/delete', {
+        const { data } = await apiReq.post('products/delete', {
             id
-        } , { headers: { 'Authorization': `Bearer ${storeToken}` } });
+        });
 
         if(data.status !== undefined) {
             setStatus(data.status);

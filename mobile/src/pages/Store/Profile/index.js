@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, SafeAreaView, ScrollView, AsyncStorage } from 'react-native';
-import api from '../../../services/axios';
+import api from '../../../services/api';
 
 import styles from '../../global';
 import Header from '../../../components/Header';
 import Loading from '../../../components/Loading';
+import Alert from '../../../components/Alert';
 import { Input, TextArea } from '../../../components/Input';
 import { Button } from '../../../components/Button';
+import apiReq from '../../../services/reqToken';
 
 export default function Profile() {
 
@@ -15,9 +17,9 @@ export default function Profile() {
     const [ whatsapp, setWhatsapp ] = useState('');
     const [ phone, setPhone ] = useState('');
     const [ tags, setTags ] = useState('');
-    const [ status, setStatus ] = useState('');
-    const [ alertZ, setAlertZ ] = useState(-999);
-    const [ alertColor, setAlertColor ] = useState('');
+    const [ alert, setAlert ] = useState('');
+    const [ alertShow, setAlertShow ] = useState(false);
+    const [ alertError, setAlertError ] = useState(false);
     const [ loadedPage, setLoadedPage ] = useState(false);
     const [ done, setDone ] = useState(false);
 
@@ -41,31 +43,30 @@ export default function Profile() {
     async function handleUpdate() {
         
         setDone(true);
-
-        const storeToken = await AsyncStorage.getItem('@Carpede:storeToken');
         
-        const { data } = await api.post('profile', {
+        const { data } = await apiReq.post('profile', {
             name,
             description,
             whatsapp,
             phone,
             tags
-        } , { headers: { 'Authorization': `Bearer ${storeToken}` } });
+        });
 
         if(data.status !== undefined) {
-            setDone(false);
-            setStatus(data.status);
-            setAlertColor('#6FCF97');
+            setAlert(data.status);
+            setAlertError(false);
         }
         if(data.error !== undefined){
-            setStatus(data.error);
-            setAlertColor('#FF3A4F');
+            setAlert(data.error);
+            setAlertError(true);
         }
 
-        setAlertZ(999);
+        setDone(false);
+
+        setAlertShow(true);
 
         return setTimeout(() => {
-            setAlertZ(-999);
+            setAlertShow(false);
         }, 2000)
 
     }
@@ -107,14 +108,10 @@ export default function Profile() {
                         action={e => setTags(e)}
                         placeholder={'ex:  sapato, camisa, meia, tênis, calça, bermuda'}
                     />
-
                     <Button action={handleUpdate} title={'Salvar'} done={done}/>
-
                 </ScrollView>
             </SafeAreaView>
-            <View style={[styles.alertError, { zIndex: alertZ, backgroundColor: `${alertColor}` }]}>
-                <Text style={styles.alertText}>{status}</Text>
-            </View>
+            <Alert show={alertShow} alert={alert} error={alertError}/>
         </>
             ) : (
             <Loading />            

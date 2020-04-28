@@ -23,10 +23,6 @@
     ],
     "ios": {
       "supportsTablet": true
-    },
-    "android": {
-      "package": "com.zapeez.carpede",
-      "googleServicesFile": "./google-services.json"
     }
   }
 }

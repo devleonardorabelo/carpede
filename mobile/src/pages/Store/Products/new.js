@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { View, Image, TextInput, Text, TouchableOpacity, AsyncStorage, SafeAreaView, ScrollView } from 'react-native';
 import Header from '../../../components/Header';
-import api from '../../../services/axios';
+import api from '../../../services/api';
 import { Feather } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import * as ImagePicker from 'expo-image-picker';

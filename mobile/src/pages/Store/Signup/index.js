@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { View, Text, AsyncStorage } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import styles from '../../global';
-import api from '../../../services/axios';
+import api from '../../../services/api';
 
 import Header from '../../../components/Header';
 import Alert from '../../../components/Alert'; 

@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { View, Text, Image, TouchableOpacity, AsyncStorage } from 'react-native' ;
 import { useNavigation } from '@react-navigation/native';
 import boxImg from '../../assets/illustrations/box.png'
-import api from '../../services/axios';
+import api from '../../services/api';
 import styles from '../global';
 import { Button } from '../../components/Button';
 

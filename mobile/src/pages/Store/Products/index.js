@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import { View, Text, TouchableOpacity, Image, AsyncStorage, FlatList, ActivityIndicator } from 'react-native';
-import api from '../../../services/axios';
+import api from '../../../services/api';
 import Header from '../../../components/Header';
 import styles from '../../global';
 import Loading from '../../../components/Loading';

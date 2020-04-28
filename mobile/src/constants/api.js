@@ -1,3 +1,1 @@
-module.exports = {
-    API_DOMAIN: 'http://192.168.25.139:21068'
-}
+export const API_DOMAIN = 'http://192.168.25.139:21068'

@@ -179,6 +179,13 @@ export default StyleSheet.create({
         width: '100%',
         paddingBottom: 24
     },
+    alert: {
+        position: 'absolute',
+        top: 0,
+        width: '100%',
+        alignItems: 'center',
+        paddingTop: Constants.statusBarHeight + 20,
+    },
 
 
 
@@ -271,14 +278,6 @@ export default StyleSheet.create({
     },
     listStores: {
         flexDirection: 'column',
-    },
-    alertError: {
-        position: 'absolute',
-        top: 0,
-        backgroundColor: '#FF3A4F',
-        width: '100%',
-        alignItems: 'center',
-        paddingTop: Constants.statusBarHeight + 20,
     },
     alertText: {
         color: '#fff',
