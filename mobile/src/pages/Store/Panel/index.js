@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { SafeAreaView, View, Text, TouchableOpacity, AsyncStorage, Image } from 'react-native';
+import { SafeAreaView, View, Text, TouchableOpacity, AsyncStorage } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Feather } from '@expo/vector-icons'; 
 import styles from '../../global';

@@ -20,9 +20,9 @@ export default function EditProduct() {
     const [ name, setName ] = useState(product.name);
     const [ description, setDescription ] = useState(product.description);
     const [ price, setPrice ] = useState(product.price);
-    const [ status, setStatus ] = useState('');
-    const [ alertZ, setAlertZ ] = useState(-999);
-    const [ alertColor, setAlertColor ] = useState('');
+    const [ alert, setAlert ] = useState('');
+    const [ alertShow, setAlertShow ] = useState(false);
+    const [ alertError, setAlertError ] = useState(false);
 
     async function handleUpdate(id) {
 
@@ -43,20 +43,20 @@ export default function EditProduct() {
         });
 
         if(data.status !== undefined) {
-            setStatus(data.status);
-            setAlertColor('#6FCF97');
+            setAlert(data.status);
+            setAlertError(false);
         }
         if(data.error !== undefined){
-            setStatus(data.error);
-            setAlertColor('#FF3A4F');
+            setAlert(data.error);
+            setAlertError(true);
         }
 
-        setAlertZ(999);
+        setAlertShow(true);
 
         setTimeout(() => {
-            setAlertZ(-999);
-            if(data.status !== undefined) navigation.navigate('StoreProducts', { changed: true })
-        }, 2000)
+            setAlertShow(false);
+            if(data.status !== undefined) navigation.navigate('StoreProducts');
+        }, 2000);
 
     }
 
@@ -67,20 +67,20 @@ export default function EditProduct() {
         });
 
         if(data.status !== undefined) {
-            setStatus(data.status);
-            setAlertColor('#6FCF97');
+            setAlert(data.status);
+            setAlertError(false);
         }
         if(data.error !== undefined){
-            setStatus(data.error);
-            setAlertColor('#FF3A4F');
+            setAlert(data.error);
+            setAlertError(true);
         }
 
-        setAlertZ(999);
+        setAlertShow(true);
 
         setTimeout(() => {
-            setAlertZ(-999);
+            setAlertShow(false);
             if(data.status !== undefined) navigation.navigate('StoreProducts')
-        }, 2000)
+        }, 2000);
 
     }
 
@@ -137,8 +137,8 @@ export default function EditProduct() {
 
     return(<>
         <SafeAreaView style={styles.container}>
-            <Header />
-            <ScrollView showsVerticalScrollIndicator={false}>
+            
+            <ScrollView showsVerticalScrollIndicator={false} style={{ backgroundColor: '#123456' }}>
                 <Text style={styles.title}>{product.name}</Text>
                 <View style={{ justifyContent: 'flex-end', marginBottom: 20 }}>
                     <Image
@@ -213,10 +213,8 @@ export default function EditProduct() {
                     />
                     <Text style={styles.buttonBlackText}>Apagar este produto</Text>
                 </TouchableOpacity>
+                
             </ScrollView>
         </SafeAreaView>
-        <View style={[styles.alertError, { zIndex: alertZ, backgroundColor: `${alertColor}` }]}>
-            <Text style={styles.alertText}>{status}</Text>
-        </View>
     </>)
 }
