@@ -95,12 +95,14 @@ export default function Profile() {
                         default={whatsapp}
                         action={e => setWhatsapp(e)}
                         keyboard={'numeric'}
+                        maxLength={11}
                     />
                     <Input
                         title={'Telefone'}
                         default={phone}
                         action={e => setPhone(e)}
                         keyboard={'numeric'}
+                        maxLength={11}
                     />
                     <TextArea
                         title={'Principais Produtos'}

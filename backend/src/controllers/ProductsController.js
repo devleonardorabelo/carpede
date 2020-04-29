@@ -23,8 +23,6 @@ module.exports = {
 
         const { name, description, price, image } = req.body;
 
-        console.log(image)
-
         if(!name || !price) return res.json({error: 'Preencha o nome e o preço'});
 
         const newProduct = {
@@ -37,8 +35,8 @@ module.exports = {
 
         try {
 
-            const product = await new Product(newProduct).save();
-            return res.json(product);
+            await new Product(newProduct).save();
+            return res.json({status: 'Produto criado com sucesso'})
 
         } catch (err) {
             return res.json({error: 'Houve um erro ao listar seus produtos, verifique sua conexão com a internet'})
@@ -59,13 +57,14 @@ module.exports = {
                 _id: id
             },{
                 image,
+                description,
                 name,
                 price
             })
 
             return res.json({status: 'Alterado com sucesso'})            
         } catch (err) {
-            return res.json({error: 'Houve um erro ao listar seus produtos, verifique sua conexão com a internet'})
+            return res.json({error: 'Houve um erro ao alterar seu produto, verifique sua conexão com a internet'})
         }
 
     },

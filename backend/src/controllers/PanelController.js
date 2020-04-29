@@ -1,8 +1,13 @@
+const Store = require('../models/Store');
+
 module.exports = {
     async index(req, res) {
 
-        const store = req.headers.user
-        return res.json(store)
+        const current = req.headers.user
+       
+        const store = await Store.findOne({_id: current.id});
+
+        return res.json(store);
 
     }
 }

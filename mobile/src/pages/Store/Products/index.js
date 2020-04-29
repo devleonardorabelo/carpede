@@ -1,11 +1,13 @@
 import React, { useState, useCallback } from 'react';
-import { View, Text, TouchableOpacity, Image, AsyncStorage, FlatList, ActivityIndicator } from 'react-native';
-import api from '../../../services/api';
-import Header from '../../../components/Header';
+import { View, Text, FlatList } from 'react-native';
+import apiReq from '../../../services/reqToken';
 import styles from '../../global';
-import Loading from '../../../components/Loading';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
-import { API_DOMAIN } from '../../../constants/api';
+
+import Loading from '../../../components/Loading';
+import Header from '../../../components/Header';
+import { Card } from '../../../components/Item';
+import { Button } from '../../../components/Button';
 
 export default function Products() {
 
@@ -25,10 +27,8 @@ export default function Products() {
 
         setLoading(true);
 
-        const storeToken = await AsyncStorage.getItem('@Carpede:storeToken');
-        const { data, headers } = await api.get('products',{ 
+        const { data, headers } = await apiReq.get('products',{ 
             params: { page },
-            headers : { 'Authorization': `Bearer ${storeToken}` },
         });
 
         if(loadedPage === false) setLoadedPage(true);
@@ -54,21 +54,11 @@ export default function Products() {
 
     function navigateToNew() {
         navigation.navigate('StoreProductNew');
-    }
-
-    function regexName(name) {
-        if(name.length > 30) {
-            let nameCut = name.match(/^[\s\S]{0,30}/) + '...'
-            return nameCut;
-        }
-        return name;
-    }
-    
+    }    
 
     return(<>{loadedPage ? (
 
         <View style={styles.container}>
-            
             <Header/>
             <Text style={styles.title}>Produtos</Text>
             <FlatList
@@ -81,35 +71,15 @@ export default function Products() {
                 numColumns={1}
                 renderItem={({ item: product }) => (
                     
-                    <TouchableOpacity style={styles.card} onPress={() => navigateToEdit(product)}>
-
-                        <Image
-                            style={styles.cardImage}
-                            source={{
-                                uri: `${API_DOMAIN}/uploads/${product.image}`,
-                            }}
-                            resizeMode='cover'
-                        />
-                        
-                        <View style={styles.cardBody}>
-                            <View style={{ flexDirection: 'row' }}>
-                                <Text style={[styles.textWrap, styles.light]}>{regexName(product.name)}</Text>
-                            </View>
-                            <Text style={styles.price}>
-                                {Intl.NumberFormat('pt-BR', {
-                                    style: 'currency',
-                                    currency: 'BRL'
-                                }).format(product.price)}
-                            </Text>
-                        </View>
-
-                    </TouchableOpacity>
- 
+                    <Card
+                        action={() => navigateToEdit(product)}
+                        image={ product.image }
+                        title={product.name}
+                        price={product.price}
+                    />
                 )}
             />        
-            <TouchableOpacity style={styles.button} onPress={navigateToNew}>
-                <Text style={styles.buttonWhiteText}>Adicionar produto</Text>
-            </TouchableOpacity>
+            <Button action={navigateToNew} title='Adicionar Produto'/>
 
         </View>
         ) : (

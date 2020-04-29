@@ -56,6 +56,7 @@ export default function Signin(){
                 action={email => setEmail(email)}
                 capitalize={'none'}
                 focus={true}
+                maxLength={30}
             />
             <InputPassword
                 title={'Senha'}

@@ -61,7 +61,7 @@ module.exports = {
     },
     async signup(req, res) {
 
-			const { name, whatsapp, email, password } = req.body;
+			const { avatar, name, whatsapp, email, password } = req.body;
 
 			let store = await Store.findOne({
 				$or: [
@@ -75,13 +75,14 @@ module.exports = {
 				if(store.whatsapp == whatsapp) return res.json({error: 'Este whatsapp já está em uso'});
 			}
 
-			if(!name || name.length < 3) return res.json({error: 'Nome Inválido ou muito curto'});
+			if(!name || name.length < 5) return res.json({error: 'Nome Inválido ou muito curto'});
 			if(!whatsapp || whatsapp.length < 10) return res.json({error: 'Whatsapp inválido'});
 			if(!email || email.length < 13) return res.json({error: 'Email incompleto ou inválido'});
 			if(!password || password.length < 8) return res.json({error: 'Senha muito curta'});
 			
 
 			let storeSchema = {
+				avatar,
 				email,
 				whatsapp,
 				name,

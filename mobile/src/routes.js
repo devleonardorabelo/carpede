@@ -12,9 +12,7 @@ import StoreProfile from './pages/Store/Profile';
 import StoreProducts from './pages/Store/Products';
 import StoreProductEdit from './pages/Store/Products/edit';
 import StoreProductNew from './pages/Store/Products/new';
-import UserSearch from './pages/User/Search';
-import UserSearchResults from './pages/User/Search/results';
-import UserSearchProfile from './pages/User/Store';
+
 
 export default function Routes() {
     return (
@@ -28,9 +26,7 @@ export default function Routes() {
                 <AppStack.Screen name="StoreProducts" component={StoreProducts}/>
                 <AppStack.Screen name="StoreProductEdit" component={StoreProductEdit}/>
                 <AppStack.Screen name="StoreProductNew" component={StoreProductNew}/>
-                <AppStack.Screen name="UserSearch" component={UserSearch}/>
-                <AppStack.Screen name="UserSearchResults" component={UserSearchResults}/>
-                <AppStack.Screen name="UserSearchProfile" component={UserSearchProfile}/>
+
             </AppStack.Navigator>
         </NavigationContainer>
     )

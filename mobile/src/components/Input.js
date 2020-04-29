@@ -15,7 +15,7 @@ export function Input(props) {
                 defaultValue={props.default}
                 autoFocus={props.focus || false}
                 keyboardType={props.keyboard || 'default'}
-                maxLength={props.maxLength || 30}
+                maxLength={props.maxLength || 20}
                 autoCapitalize= { props.capitalize || 'sentences' }
             />
         </View>
@@ -33,7 +33,8 @@ export function InputPassword(props) {
                 onChangeText={props.action}
                 secureTextEntry={true}
                 password={true}
-                placeholder={props.placeholder}                   
+                placeholder={props.placeholder}
+                maxLength={20}                   
             />  
         </View>
     )
@@ -52,6 +53,7 @@ export function TextArea(props) {
                 defaultValue={props.default}
                 onChangeText={props.action}
                 placeholder={props.placeholder}
+                maxLength={100}
             />
         </View>
     )

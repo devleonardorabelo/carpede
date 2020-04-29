@@ -1,11 +1,15 @@
 import React, { useState } from 'react';
 import { View, Image, TextInput, Text, TouchableOpacity, AsyncStorage, SafeAreaView, ScrollView } from 'react-native';
-import Header from '../../../components/Header';
-import api from '../../../services/api';
+import apiReq from '../../../services/reqToken';
 import { Feather } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import * as ImagePicker from 'expo-image-picker';
 import { API_DOMAIN } from '../../../constants/api';
+import Header from '../../../components/Header';
+import Alert from '../../../components/Alert';
+import { PreviewImage } from '../../../components/Image';
+import { Input } from '../../../components/Input';
+import { Button } from '../../../components/Button';
 
 import styles from '../../global';
 
@@ -14,12 +18,14 @@ import defaultImage from '../../../assets/more/upload.png';
 export default function NewProduct() {
 
     const navigation = useNavigation();
-    const [ previousImage, setPreviousImage ] = useState(defaultImage);
+    const [ previewImage, setPreviewImage ] = useState(defaultImage);
     const [ name, setName ] = useState('');
     const [ description, setDescription ] = useState('');
     const [ price, setPrice ] = useState('');
     const [ alert, setAlert ] = useState('');
-    const [ alertZ, setAlertZ ] = useState(-999);
+    const [ alertShow, setAlertShow ] = useState(false);
+    const [ alertError, setAlertError ] = useState(false);
+    const [ done, setDone ] = useState(false);
 
     const imagePicker = async () => {
         
@@ -27,7 +33,7 @@ export default function NewProduct() {
         if (permissionResult.granted === false) return;
         let result = await ImagePicker.launchImageLibraryAsync();
         if(result.cancelled) return;
-        setPreviousImage({ uri: result.uri });
+        setPreviewImage({ uri: result.uri });
         return;
 
     };
@@ -38,7 +44,7 @@ export default function NewProduct() {
         if (permissionResult.granted === false) return;
         let result = await ImagePicker.launchCameraAsync();
         if(result.cancelled) return;
-        setPreviousImage({ uri: result.uri });
+        setPreviewImage({ uri: result.uri });
         return;
 
     };
@@ -77,97 +83,54 @@ export default function NewProduct() {
         const storeToken = await AsyncStorage.getItem('@Carpede:storeToken');
         let image;
 
-        if(previousImage !== defaultImage) {
-           image = await uploadImage(previousImage);
+        if(previewImage !== defaultImage) {
+           image = await uploadImage(previewImage);
         } 
 
-        let { data } = await api.post('products/new',{
+        let { data } = await apiReq.post('products/new',{
             image,
             name,
             description,
             price
         }, { headers : { 'Authorization': `Bearer ${storeToken}` } })
 
-        if(data.error !== undefined) {
+        if(data.status !== undefined) {
+            setAlert(data.status);
+            setAlertError(false);
+        }
+        if(data.error !== undefined){
             setAlert(data.error);
-            setAlertZ(999);
+            setAlertError(true);
+        }
 
-            return setTimeout(() => {
-                setAlertZ(-999);
-            }, 3000)
+        setAlertShow(true);
 
-        };
-
-        return navigation.navigate('StoreProducts');
+        setTimeout(() => {
+            setAlertShow(false);
+            if(data.status !== undefined) navigation.navigate('StoreProducts')
+        }, 2000);
 
     }
  
     return(<>
         <SafeAreaView style={styles.container}>
-            <Header/>
+            <Header />
             <ScrollView showsVerticalScrollIndicator={false}>
                 <Text style={styles.title}>Novo Produto</Text>
-                <View style={{ justifyContent: 'flex-end', marginBottom: 20 }}>
-                    <Image
-                        source={previousImage}
-                        style={styles.fullImage}
-                        resizeMode='cover'
-                    />
-                    <View style={styles.groupFloatButton}>
-
-                        <TouchableOpacity
-                        style={[styles.buttonFloat, { marginRight: 16 }]}
-                        onPress={imagePicker}>
-                            <Feather
-                                name='image'
-                                color='#fff'
-                                size={32}
-                            />
-                        </TouchableOpacity>
-
-                        <TouchableOpacity
-                        style={styles.buttonFloat}
-                        onPress={cameraPicker}>
-                            <Feather
-                                name='camera'
-                                color='#fff'
-                                size={32}
-                            />
-                        </TouchableOpacity>   
-
-                    </View>  
-                </View>
+                <PreviewImage
+                    image={previewImage}
+                    action1={imagePicker}
+                    icon1='image'
+                    action2={cameraPicker}
+                    icon2='camera'
+                />
+                <Input title={'Nome'} action={e => setName(e)} maxLength={40}/>
+                <Input title={'Descrição'} action={e => setDescription(e)} maxLength={50}/>
+                <Input title={'Preço'} keyboard={'numeric'} action={e => setPrice(e)} maxLength={8}/>
                 
-                
-                <View style={styles.groupInput}>
-                    <Text style={styles.labelInput}>Nome do Produto</Text>
-                    <TextInput
-                        style={styles.textInput}
-                        onChangeText={e => setName(e)}
-                    />
-                </View>
-                <View style={styles.groupInput}>
-                    <Text style={styles.labelInput}>Descrição</Text>
-                    <TextInput
-                        style={styles.textInput}
-                        onChangeText={e => setDescription(e)}
-                    />
-                </View>
-                <View style={styles.groupInput}>
-                    <Text style={styles.labelInput}>Preço</Text>
-                    <TextInput
-                        style={[styles.textInput, { width: 100 }]}
-                        onChangeText={e => setPrice(e)}
-                        keyboardType={'decimal-pad'}
-                    />
-                </View>
-                <TouchableOpacity style={styles.buttonGreen} onPress={handleNewProduct}>
-                    <Text style={styles.buttonWhiteText}>Salvar</Text>
-                </TouchableOpacity>
+                <Button action={handleNewProduct} title={'Salvar'} done={done}/>      
             </ScrollView>
         </SafeAreaView>
-        <View style={[styles.alertError, { zIndex: alertZ }]}>
-            <Text style={styles.alertText}>{alert}</Text>
-        </View>
+        <Alert show={alertShow} alert={alert} error={alertError}/>
     </>)
 }

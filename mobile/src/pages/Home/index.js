@@ -1,10 +1,11 @@
 import React, { useEffect } from 'react';
-import { View, Text, Image, TouchableOpacity, AsyncStorage } from 'react-native' ;
+import { View, Text, Image, AsyncStorage, SafeAreaView } from 'react-native' ;
 import { useNavigation } from '@react-navigation/native';
 import boxImg from '../../assets/illustrations/box.png'
 import api from '../../services/api';
 import styles from '../global';
 import { Button } from '../../components/Button';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 export default function Home() {
 
@@ -29,22 +30,16 @@ export default function Home() {
 	function navigateToSignin() {
 		navigation.navigate('StoreSignin');
 	}
-	function navigateToSearch() {
-		navigation.navigate('UserSearch');
-	}
 
 	return(
 
-		<View style={styles.container}>
-			
-			<Text style={[styles.title, { marginTop: 50 }]}>Encontre tudo que precisa</Text>
-			<Image style={styles.illustration} source={boxImg} />
-			<TouchableOpacity style={styles.buttonOrange} onPress={navigateToSearch}>
-				<Text style={styles.buttonWhiteText}>Eu quero encontrar</Text>
+		<SafeAreaView style={[styles.container, { paddingTop: 80 }]}>
+			<Text style={[styles.title, { marginBottom: 10 }]}>Seja bem-vindo ao Carpede!</Text>
+			<Text style={styles.grayTitle}>Proporcione aos seus clientes um atendimento personalizado</Text>
+			<Image style={[styles.illustration, { marginTop: 50 }]} source={boxImg} />
+			<TouchableOpacity style={styles.button} onPress={navigateToSignin}>
+				<Text style={[styles.textAction, { color: '#fff' }]}>Quero começar a vender</Text>
 			</TouchableOpacity>
-			<TouchableOpacity style={styles.buttonTransparent} onPress={navigateToSignin}>
-				<Text style={styles.buttonBlackText} >Eu quero vender</Text>
-			</TouchableOpacity>
-		</View>
+		</SafeAreaView>
 	)
 }

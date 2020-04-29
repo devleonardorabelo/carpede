@@ -5,11 +5,6 @@ const widthDP = widthPercent => {
     const screenWidth = Dimensions.get('window').width;
     return PixelRatio.roundToNearestPixel(screenWidth * parseFloat(widthPercent) / 100);
 };
-  
-const heightDP = heightPercent => {
-    const screenHeight = Dimensions.get('window').height;
-    return PixelRatio.roundToNearestPixel(screenHeight * parseFloat(heightPercent) / 100);
-};
 
 export default StyleSheet.create({
     
@@ -43,11 +38,34 @@ export default StyleSheet.create({
         color: '#444',
         marginBottom: 20,
     },
+    grayTitle: {
+        color: '#666',
+        fontSize: widthDP('4.5%'),
+        fontFamily: 'montserrat-medium'
+    },
     subtitle: {
         fontSize: widthDP('5%'),
         marginBottom: 20,
         fontFamily: 'montserrat-bold',
         color: '#171c29'
+    },
+    text: {
+        fontSize: widthDP('4%'),
+        fontFamily: 'montserrat-medium',
+        color: '#666'
+    },
+    textHide: {
+        height: widthDP('5%'),
+        backgroundColor: '#F6F6F6',
+        borderRadius: 8
+    },
+    titleHide: {
+        height: widthDP('8%'),
+        flexGrow: 1,
+        marginTop: widthDP('2%'),
+        marginBottom: 10,
+        backgroundColor: '#F5F5F5',
+        borderRadius: 8
     },
     groupInput: {
         marginBottom: 20,
@@ -150,6 +168,11 @@ export default StyleSheet.create({
         padding: 16,
         flexGrow: 1,
     },
+    cardTitle: {
+        color: '#666',
+        fontFamily: 'montserrat-medium',
+        fontSize: widthDP('4%'),
+    },
     price: {
         color: '#333',
         fontFamily: 'montserrat-semi-bold',
@@ -168,7 +191,6 @@ export default StyleSheet.create({
         width: 64,
         height: 64,
         borderRadius: 8,
-        opacity: 0.9,
         justifyContent: 'center',
         alignItems: 'center'
     },
@@ -178,6 +200,13 @@ export default StyleSheet.create({
         justifyContent: 'center',
         width: '100%',
         paddingBottom: 24
+    },
+    boxFloatButton: {
+        position: 'absolute',
+        justifyContent: 'center',
+        width: widthDP('20%'),
+        height: widthDP('20%'),
+        alignItems: 'center'
     },
     alert: {
         position: 'absolute',
@@ -204,11 +233,6 @@ export default StyleSheet.create({
 
 
 
-    text: {
-        fontSize: 18,
-        fontFamily: 'montserrat-light',
-        color: '#585858'
-    },    
     illustration: {
         backgroundColor: '#fff',
         marginBottom: 60,
