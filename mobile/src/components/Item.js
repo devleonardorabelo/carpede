@@ -33,7 +33,7 @@ export function Avatar(props) {
                         props.image === undefined ?
                         cardImage
                     : 
-                        {uri: `${API_DOMAIN}/uploads/${props.image}` }
+                         props.image
                     }
                     resizeMode={'cover'}
                 />
@@ -55,7 +55,7 @@ export function Avatar(props) {
             
             <View style={{ flexGrow: 1, paddingLeft: 16}}>
                 <View style={{ flexDirection: 'row'}}>
-                    {props.title === '' ?
+                    {props.title === '' || props.title === undefined ?
                         <View style={styles.titleHide} />
                     :
                         <Text style={[styles.title, styles.textWrap, {
@@ -92,10 +92,10 @@ export function Card(props) {
             <Image
                 style={styles.cardImage}
                 source={ 
-                    props.image !== undefined ?
-                        {uri: `${API_DOMAIN}/uploads/${props.image}` }
-                    : 
+                    props.image === undefined || props.image === null ?
                         cardImage
+                    : 
+                        {uri: `${API_DOMAIN}/uploads/${props.image}`}
                 }
                 resizeMode='cover'
             />

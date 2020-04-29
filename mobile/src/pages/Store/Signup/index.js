@@ -3,13 +3,13 @@ import { Text, AsyncStorage, SafeAreaView, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import styles from '../../global';
 import api from '../../../services/api';
-import * as ImagePicker from 'expo-image-picker';
 import Header from '../../../components/Header';
 import Alert from '../../../components/Alert'; 
 import { Input, InputPassword } from '../../../components/Input';
 import { Button, ButtonTransparent } from '../../../components/Button';
 import { Avatar } from '../../../components/Item';
-import { API_DOMAIN } from '../../../constants/api';
+
+import { imagePicker, uploadImage } from '../../../utils/ImagePicker';
 
 export default function Signup(){
     
@@ -26,11 +26,11 @@ export default function Signup(){
     const [ alert, setAlert ] = useState('');
     const [ done, setDone ] = useState(false);
 
-    async function saveUser(store) {
-        await AsyncStorage.clear();
-        await AsyncStorage.setItem('@Carpede:storeToken', store);
-        setDone(false);
-        return navigation.navigate('StorePanel');
+
+    const getImage = async () => {
+        let picker = await imagePicker();
+        setImage({ uri: picker });
+        setPicked(true);
     }
 
     async function handleSignup() {
@@ -42,14 +42,13 @@ export default function Signup(){
             setAvatar(fileName);
         }
 
-        console.log(avatar)
-
         const { data } = await api.post('signup', {
             avatar,
             name,
             whatsapp,
             email,
-            password});
+            password
+        });
 
         if(data.error !== undefined) {
             setDone(false);
@@ -64,51 +63,18 @@ export default function Signup(){
 
         const store = data;
         await saveUser(store);
+
+    }
+
+    async function saveUser(store) {
+        await AsyncStorage.clear();
+        await AsyncStorage.setItem('@Carpede:storeToken', store);
+        setDone(false);
+        return navigation.navigate('StorePanel');
     }
 
     function navigateToSignin() {
         navigation.navigate('StoreSignin');
-    }
-
-    const imagePicker = async () => {
-        
-        let permissionResult = await ImagePicker.requestCameraRollPermissionsAsync();
-        if (permissionResult.granted === false) return;
-        let result = await ImagePicker.launchImageLibraryAsync();
-        if(result.cancelled) return;
-        setImage({ uri: result.uri });
-        setPicked(true);
-        return;
-
-    };
-
-    async function uploadImage(file) {
-
-        const body = new FormData();
-        body.append('fileData', {
-            uri : file.uri,
-            type: "image/jpg",
-            name: "image.jpg",
-        });
-
-        const storeToken = await AsyncStorage.getItem('@Carpede:storeToken');
-
-        const config = {
-            method: 'POST',
-            headers: {
-             'Accept': 'application/json',
-             'Content-Type': 'multipart/form-data',
-             'Authorization': `Bearer ${storeToken}`,
-            },
-            body: body,
-        };
-        
-        let response = await fetch(`${API_DOMAIN}/upload`, config);
-        
-        let data = await response.json();
-
-        return data.file;
-
     }
 
     return (<>
@@ -121,7 +87,7 @@ export default function Signup(){
                     title={name}
                     subtitle={whatsapp}
                     icon={'image'}
-                    action={imagePicker}
+                    action={getImage}
                     transparent={picked}
                     isChangeable
                 />

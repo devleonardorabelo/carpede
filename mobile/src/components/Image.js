@@ -12,7 +12,7 @@ export function PreviewImage(props) {
             <Image
                 source={ 
                     props.image !== undefined ?
-                        {uri: `${API_DOMAIN}/uploads/${props.image}` }
+                        props.image
                     : 
                         defaultImage
                 }

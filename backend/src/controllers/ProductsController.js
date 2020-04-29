@@ -49,6 +49,8 @@ module.exports = {
 
         const { image, name, description, price, id } = req.body;
 
+        console.log(req.body)
+
         if(!name || !price) return res.json({error: 'Preencha o nome e o preço'});
 
         try{

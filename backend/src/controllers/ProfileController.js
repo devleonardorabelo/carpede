@@ -5,24 +5,25 @@ module.exports = {
         
         const store = req.headers.user;
 
-        const { name, description, whatsapp, phone, tags } = await Store.findOne({_id: store.id});
+        const { avatar, name, description, whatsapp, phone, tags } = await Store.findOne({_id: store.id});
 
-        return res.json({ name, description, whatsapp, phone, tags })
+        return res.json({ avatar, name, description, whatsapp, phone, tags })
 
     },
     async update(req, res) {
 
         const store = req.headers.user;
 
-        const { name, description, whatsapp, phone, tags } = req.body;
+        const { avatar, name, description, whatsapp, phone, tags } = req.body;
 
-        if(!name || !description || !whatsapp || !phone || !tags) {
+        if(!name || !whatsapp) {
             return res.json({
                 error: 'Todos os campos devem estar preenchidos'
             });
         }
 
         await Store.updateOne({ _id: store.id }, {
+            avatar,
             name,
             description,
             whatsapp,

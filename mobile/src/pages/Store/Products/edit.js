@@ -1,25 +1,26 @@
 import React, { useState } from 'react';
-import { Text, AsyncStorage, SafeAreaView, ScrollView } from 'react-native';
+import { Text, SafeAreaView, ScrollView } from 'react-native';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import apiReq from '../../../services/reqToken';
-import { API_DOMAIN } from '../../../constants/api';
-import * as ImagePicker from 'expo-image-picker';
 
 import styles from '../../global';
 import Header from '../../../components/Header'
 import { PreviewImage } from '../../../components/Image';
 import { Input } from '../../../components/Input';
 import { Button, ButtonTransparent } from '../../../components/Button';
-import Alert from '../../../components/Alert'
+import Alert from '../../../components/Alert';
+import { API_DOMAIN } from '../../../constants/api';
+
+import { imagePicker, cameraPicker ,uploadImage } from '../../../utils/ImagePicker';
 
 export default function EditProduct() {
 
     const route = useRoute();
     const product = route.params.product;
     const navigation = useNavigation();
-    const previousImage = product.image;
 
-    const [ image, setImage ] = useState(previousImage);
+    const [ image, setImage ] = useState({uri: `${API_DOMAIN}/uploads/${product.image}` });
+    const [ picked, setPicked ] = useState(false);
     const [ name, setName ] = useState(product.name);
     const [ description, setDescription ] = useState(product.description);
     const [ price, setPrice ] = useState(product.price);
@@ -32,11 +33,17 @@ export default function EditProduct() {
 
         setDone(true);
 
-        if(image !== previousImage) await uploadImage(image);
+        let newImage;
+
+        if(picked) {
+            newImage = await uploadImage(image);
+        } else {
+            newImage = product.image;
+        }
 
         const { data } = await apiReq.post('products/edit', {
             id,
-            image,
+            image: newImage,
             name,
             description,
             price
@@ -86,53 +93,18 @@ export default function EditProduct() {
 
     }
 
-    const imagePicker = async () => {
-        
-        let permissionResult = await ImagePicker.requestCameraRollPermissionsAsync();
-        if (permissionResult.granted === false) return;
-        let result = await ImagePicker.launchImageLibraryAsync();
-        if(result.cancelled) return;
-        setImage({ uri: result.uri });
-        return;
-
-    };
-
-    const cameraPicker = async () => {
-        
-        let permissionResult = await ImagePicker.requestCameraPermissionsAsync();
-        if (permissionResult.granted === false) return;
-        let result = await ImagePicker.launchCameraAsync();
-        if(result.cancelled) return;
-        setImage({ uri: result.uri });
-        return;
-
-    };
-    
-    async function uploadImage(file) {
-
-        const body = new FormData();
-        body.append('fileData', {
-            uri : file.uri,
-            type: "image/jpg",
-            name: "image.jpg",
-        });
-
-        const storeToken = await AsyncStorage.getItem('@Carpede:storeToken');
-
-        const config = {
-            method: 'POST',
-            headers: {
-             'Accept': 'application/json',
-             'Content-Type': 'multipart/form-data',
-             'Authorization': `Bearer ${storeToken}`,
-            },
-            body: body,
-        };
-        
-        let response = await fetch(`${API_DOMAIN}/upload`, config);
-        let data = await response.json();
-        return data.file;
+    const getImage = async () => {
+        let picker = await imagePicker();
+        setImage({ uri: picker })
+        setPicked(true);
     }
+
+    const takeImage = async () => {
+        let picker = await cameraPicker();
+        setImage({ uri: picker })
+        setPicked(true);
+    }
+    
 
     return(<>
         <SafeAreaView style={styles.container}>
@@ -141,9 +113,9 @@ export default function EditProduct() {
                 <Text style={styles.title}>{product.name}</Text>
                 <PreviewImage
                     image={image}
-                    action1={imagePicker}
+                    action1={getImage}
                     icon1='image'
-                    action2={cameraPicker}
+                    action2={takeImage}
                     icon2='camera'
                 />
                 <Input title={'Nome'} default={product.name} action={e => setName(e)} maxLength={40}/>

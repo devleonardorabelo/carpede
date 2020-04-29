@@ -27,15 +27,6 @@ routes.post('/check', (req, res) => {
 	});
 
 })
-routes.post('/signin', AuthController.signin);
-routes.post('/signup', AuthController.signup);
-routes.get('/panel', CheckAuth, PanelController.index);
-routes.get('/profile', CheckAuth, ProfileController.index);
-routes.post('/profile', CheckAuth, ProfileController.update);
-routes.get('/products', CheckAuth, ProductsController.index);
-routes.post('/products/new', CheckAuth, ProductsController.store);
-routes.post('/products/edit', CheckAuth, ProductsController.update);
-routes.post('/products/delete', CheckAuth, ProductsController.destroy);
 
 routes.post('/upload', upload.single('fileData'), async (req, res) => {
     
@@ -54,6 +45,17 @@ routes.post('/upload', upload.single('fileData'), async (req, res) => {
     res.json({file: imageResize});
     
 });
+
+
+routes.post('/signin', AuthController.signin);
+routes.post('/signup', AuthController.signup);
+routes.get('/panel', CheckAuth, PanelController.index);
+routes.get('/profile', CheckAuth, ProfileController.index);
+routes.post('/profile', CheckAuth, ProfileController.update);
+routes.get('/products', CheckAuth, ProductsController.index);
+routes.post('/products/new', CheckAuth, ProductsController.store);
+routes.post('/products/edit', CheckAuth, ProductsController.update);
+routes.post('/products/delete', CheckAuth, ProductsController.destroy);
 
 module.exports = routes
  

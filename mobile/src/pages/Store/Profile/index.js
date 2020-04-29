@@ -1,18 +1,23 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text, SafeAreaView, ScrollView, AsyncStorage } from 'react-native';
 import api from '../../../services/api';
-
+import { API_DOMAIN } from '../../../constants/api';
 import styles from '../../global';
 import Header from '../../../components/Header';
 import Loading from '../../../components/Loading';
 import Alert from '../../../components/Alert';
 import { Input, TextArea } from '../../../components/Input';
+import { Avatar } from '../../../components/Item';
 import { Button } from '../../../components/Button';
 import apiReq from '../../../services/reqToken';
 
-export default function Profile() {
+import { imagePicker, uploadImage } from '../../../utils/ImagePicker';
 
+export default function Profile() {
+    
+    const [ picked, setPicked ] = useState(false);
     const [ name, setName ] = useState('');
+    const [ avatar, setAvatar ] = useState();
     const [ description, setDescription ] = useState('');
     const [ whatsapp, setWhatsapp ] = useState('');
     const [ phone, setPhone ] = useState('');
@@ -29,6 +34,7 @@ export default function Profile() {
         const { data } = await api.get('profile', { headers : { 'Authorization': `Bearer ${storeToken}` } });
 
         setName(data.name);
+        if(data.avatar) setAvatar({uri: `${API_DOMAIN}/uploads/${data.avatar}`})
         setDescription(data.description);
         setWhatsapp(data.whatsapp);
         setPhone(data.phone);
@@ -40,11 +46,26 @@ export default function Profile() {
         loadProfile();
     }, [])
 
+    const getImage = async () => {
+        let picker = await imagePicker();
+        setAvatar({ uri: picker })
+        setPicked(true);
+    }
+
     async function handleUpdate() {
-        
+
         setDone(true);
-        
+
+        let image;
+
+        if(picked) {
+            image = await uploadImage(avatar)
+        } else {
+            image = avatar
+        }
+
         const { data } = await apiReq.post('profile', {
+            avatar: image,
             name,
             description,
             whatsapp,
@@ -80,6 +101,15 @@ export default function Profile() {
                     showsVerticalScrollIndicator={false}
                 >
                     <Text style={styles.title}>Perfil</Text>
+                    <Avatar
+                        image={avatar}
+                        title={name}
+                        subtitle={whatsapp}
+                        action={getImage}
+                        icon='image'
+                        transparent={picked}
+                        isChangeable
+				    />
                     <Input
                         title={'Nome da Loja'}
                         default={name}
