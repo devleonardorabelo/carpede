@@ -25,15 +25,19 @@ export default function Profile() {
     const [ alertError, setAlertError ] = useState(false);
     const [ loadedPage, setLoadedPage ] = useState(false);
     const [ done, setDone ] = useState(false);
-    const [ pickedImage, setPickedImage ] = useState(false);
 
     async function loadProfile() {
         
         const { data } = await apiReq.get('profile');
 
-        if(data.avatar) setAvatar({uri: `${API_DOMAIN}/uploads/${data.avatar}`})
+        if(data.avatar) {
+            var currentAvatar = {uri: `${API_DOMAIN}/uploads/${data.avatar}`}
+        } else {
+            var currentAvatar;
+        }
 
         setName(data.name);
+        setAvatar(currentAvatar);
         setDescription(data.description);
         setWhatsapp(data.whatsapp);
         setPhone(data.phone);
@@ -49,17 +53,16 @@ export default function Profile() {
         let picker = await imagePicker();
         if(!picker) return;
         setAvatar({ uri: picker });
-        setPickedImage(true);
     }
 
     async function handleUpdate() {
 
         setDone(true);
 
-        if(pickedImage) {
-            var image = await uploadImage(avatar)
-        } else {
+        if(avatar === currentAvatar) {
             var image = avatar
+        } else {
+            var image = await uploadImage(avatar)
         }
 
         const { data } = await apiReq.post('profile', {
