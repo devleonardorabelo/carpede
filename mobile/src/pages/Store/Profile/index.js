@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, SafeAreaView, ScrollView, AsyncStorage } from 'react-native';
-import api from '../../../services/api';
-import { API_DOMAIN } from '../../../constants/api';
+import { Text, SafeAreaView, ScrollView, AsyncStorage } from 'react-native';
 import styles from '../../global';
 import Header from '../../../components/Header';
 import Loading from '../../../components/Loading';
@@ -10,12 +8,12 @@ import { Input, TextArea } from '../../../components/Input';
 import { Avatar } from '../../../components/Item';
 import { Button } from '../../../components/Button';
 import apiReq from '../../../services/reqToken';
+import { API_DOMAIN } from '../../../constants/api';
 
 import { imagePicker, uploadImage } from '../../../utils/ImagePicker';
 
 export default function Profile() {
     
-    const [ picked, setPicked ] = useState(false);
     const [ name, setName ] = useState('');
     const [ avatar, setAvatar ] = useState();
     const [ description, setDescription ] = useState('');
@@ -30,11 +28,16 @@ export default function Profile() {
 
     async function loadProfile() {
         
-        const storeToken = await AsyncStorage.getItem('@Carpede:storeToken');
-        const { data } = await api.get('profile', { headers : { 'Authorization': `Bearer ${storeToken}` } });
+        const { data } = await apiReq.get('profile');
+
+        if(data.avatar) {
+            var currentAvatar = {uri: `${API_DOMAIN}/uploads/${data.avatar}`}
+        } else {
+            var currentAvatar;
+        }
 
         setName(data.name);
-        if(data.avatar) setAvatar({uri: `${API_DOMAIN}/uploads/${data.avatar}`})
+        setAvatar(currentAvatar);
         setDescription(data.description);
         setWhatsapp(data.whatsapp);
         setPhone(data.phone);
@@ -48,20 +51,18 @@ export default function Profile() {
 
     const getImage = async () => {
         let picker = await imagePicker();
-        setAvatar({ uri: picker })
-        setPicked(true);
+        if(!picker) return;
+        setAvatar({ uri: picker });
     }
 
     async function handleUpdate() {
 
         setDone(true);
 
-        let image;
-
-        if(picked) {
-            image = await uploadImage(avatar)
+        if(avatar === currentAvatar) {
+            var image = avatar
         } else {
-            image = avatar
+            var image = await uploadImage(avatar)
         }
 
         const { data } = await apiReq.post('profile', {
@@ -107,7 +108,7 @@ export default function Profile() {
                         subtitle={whatsapp}
                         action={getImage}
                         icon='image'
-                        transparent={picked}
+                        transparent={avatar}
                         isChangeable
 				    />
                     <Input

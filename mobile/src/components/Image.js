@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Image, TouchableOpacity } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import styles from '../pages/global';
-import { API_DOMAIN } from '../constants/api';
+
 import defaultImage from '../assets/illustrations/repeat_food.png';
 
 export function PreviewImage(props) {

@@ -29,7 +29,7 @@ export const uploadImage = async (file) => {
     body.append('fileData', {
         uri : file.uri,
         type: "image/jpg",
-        name: "image.jpg",
+        name: `${Math.random().toString(36).substring(7)}`,
     });
 
     const config = {

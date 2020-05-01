@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
-import { SafeAreaView, View, Text, TouchableOpacity, AsyncStorage } from 'react-native';
+import { SafeAreaView, Text, TouchableOpacity, AsyncStorage } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Feather } from '@expo/vector-icons'; 
 import styles from '../../global';
@@ -8,7 +8,6 @@ import apiReq from '../../../services/reqToken';
 import { API_DOMAIN } from '../../../constants/api';
 import Loading from '../../../components/Loading';
 import { NavItem, Avatar } from '../../../components/Item';
-
 
 export default function Panel() {
 
@@ -25,7 +24,6 @@ export default function Panel() {
 		if(loadedPage === false) setLoadedPage(true);
 	};
 	
-
 	useFocusEffect(
         useCallback(() => {
 			loadPanel();
@@ -41,7 +39,6 @@ export default function Panel() {
 		await AsyncStorage.clear();
 		return navigation.navigate('Home');
 	}
-	
 	
     return(<>
 		{loadedPage ? (
@@ -68,13 +65,7 @@ export default function Panel() {
 					title='Produtos'
 					subtitle='Lista de produtos'
 				/>
-				<NavItem
-					action={navigateToProducts}
-					icon='truck'
-					title='Pedidos'
-					subtitle='Pedidos dos seus clientes'
-				/>
-				
+
 			</SafeAreaView>
 		):(
 			<Loading />

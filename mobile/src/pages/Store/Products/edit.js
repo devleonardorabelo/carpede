@@ -19,8 +19,9 @@ export default function EditProduct() {
     const product = route.params.product;
     const navigation = useNavigation();
 
-    const [ image, setImage ] = useState({uri: `${API_DOMAIN}/uploads/${product.image}` });
-    const [ picked, setPicked ] = useState(false);
+    const currentImage = {uri: `${API_DOMAIN}/uploads/${product.image}`}
+
+    const [ image, setImage ] = useState(currentImage);
     const [ name, setName ] = useState(product.name);
     const [ description, setDescription ] = useState(product.description);
     const [ price, setPrice ] = useState(product.price);
@@ -29,21 +30,31 @@ export default function EditProduct() {
     const [ alertError, setAlertError ] = useState(false);
     const [ done, setDone ] = useState(false);
 
+    const getImage = async () => {
+        let picker = await imagePicker();
+        if(!picker) return;
+        setImage({ uri: picker })
+    }
+
+    const takeImage = async () => {
+        let picker = await cameraPicker();
+        if(!picker) return;
+        setImage({ uri: picker })
+    }
+
     async function handleUpdate(id) {
 
         setDone(true);
 
-        let newImage;
-
-        if(picked) {
-            newImage = await uploadImage(image);
+        if(image === currentImage) {
+            var setImage = product.image 
         } else {
-            newImage = product.image;
+            var setImage = await uploadImage(image);
         }
 
         const { data } = await apiReq.post('products/edit', {
             id,
-            image: newImage,
+            image: setImage,
             name,
             description,
             price
@@ -92,19 +103,6 @@ export default function EditProduct() {
         }, 2000);
 
     }
-
-    const getImage = async () => {
-        let picker = await imagePicker();
-        setImage({ uri: picker })
-        setPicked(true);
-    }
-
-    const takeImage = async () => {
-        let picker = await cameraPicker();
-        setImage({ uri: picker })
-        setPicked(true);
-    }
-    
 
     return(<>
         <SafeAreaView style={styles.container}>

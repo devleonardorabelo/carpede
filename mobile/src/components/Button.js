@@ -7,7 +7,7 @@ export function Button(props) {
     return(
         <TouchableOpacity
             activeOpacity={0.8}
-            style={[styles.buttonGreen, { backgroundColor: props.done ? '#B10000' : '#FF5216' }]}
+            style={[styles.button, { backgroundColor: props.done ? '#B10000' : '#FF5216' }]}
             onPress={props.action}
             disabled={props.done}
         >

@@ -1,24 +1,21 @@
 import React, { useState } from 'react';
-import { View, Image, TextInput, Text, TouchableOpacity, AsyncStorage, SafeAreaView, ScrollView } from 'react-native';
+import { Text, SafeAreaView, ScrollView } from 'react-native';
 import apiReq from '../../../services/reqToken';
-import { Feather } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
-import * as ImagePicker from 'expo-image-picker';
-import { API_DOMAIN } from '../../../constants/api';
 import Header from '../../../components/Header';
 import Alert from '../../../components/Alert';
 import { PreviewImage } from '../../../components/Image';
 import { Input } from '../../../components/Input';
 import { Button } from '../../../components/Button';
+import { imagePicker, cameraPicker, uploadImage } from '../../../utils/ImagePicker';
 
 import styles from '../../global';
-
-import defaultImage from '../../../assets/more/upload.png';
 
 export default function NewProduct() {
 
     const navigation = useNavigation();
-    const [ previewImage, setPreviewImage ] = useState(defaultImage);
+    
+    const [ image, setImage ] = useState();
     const [ name, setName ] = useState('');
     const [ description, setDescription ] = useState('');
     const [ price, setPrice ] = useState('');
@@ -27,72 +24,30 @@ export default function NewProduct() {
     const [ alertError, setAlertError ] = useState(false);
     const [ done, setDone ] = useState(false);
 
-    const imagePicker = async () => {
-        
-        let permissionResult = await ImagePicker.requestCameraRollPermissionsAsync();
-        if (permissionResult.granted === false) return;
-        let result = await ImagePicker.launchImageLibraryAsync();
-        if(result.cancelled) return;
-        setPreviewImage({ uri: result.uri });
-        return;
+    const getImage = async () => {
+        let picker = await imagePicker();
+        if(!picker) return;
+        setImage({ uri: picker })
+    }
 
-    };
-
-    const cameraPicker = async () => {
-        
-        let permissionResult = await ImagePicker.requestCameraPermissionsAsync();
-        if (permissionResult.granted === false) return;
-        let result = await ImagePicker.launchCameraAsync();
-        if(result.cancelled) return;
-        setPreviewImage({ uri: result.uri });
-        return;
-
-    };
-
-    async function uploadImage(file) {
-
-        const body = new FormData();
-        body.append('fileData', {
-            uri : file.uri,
-            type: "image/jpg",
-            name: "image.jpg",
-        });
-
-        const storeToken = await AsyncStorage.getItem('@Carpede:storeToken');
-
-        const config = {
-            method: 'POST',
-            headers: {
-             'Accept': 'application/json',
-             'Content-Type': 'multipart/form-data',
-             'Authorization': `Bearer ${storeToken}`,
-            },
-            body: body,
-        };
-        
-        let response = await fetch(`${API_DOMAIN}/upload`, config);
-        
-        let data = await response.json();
-
-        return data.file;
-
+    const takeImage = async () => {
+        let picker = await cameraPicker();
+        if(!picker) return;
+        setImage({ uri: picker })
     }
 
     async function handleNewProduct() {
+
+        setDone(true);
+
+        if(image) var previewImage = await uploadImage(image);
         
-        const storeToken = await AsyncStorage.getItem('@Carpede:storeToken');
-        let image;
-
-        if(previewImage !== defaultImage) {
-           image = await uploadImage(previewImage);
-        } 
-
         let { data } = await apiReq.post('products/new',{
-            image,
+            image: previewImage,
             name,
             description,
             price
-        }, { headers : { 'Authorization': `Bearer ${storeToken}` } })
+        })
 
         if(data.status !== undefined) {
             setAlert(data.status);
@@ -102,6 +57,8 @@ export default function NewProduct() {
             setAlert(data.error);
             setAlertError(true);
         }
+
+        setDone(false);
 
         setAlertShow(true);
 
@@ -118,10 +75,10 @@ export default function NewProduct() {
             <ScrollView showsVerticalScrollIndicator={false}>
                 <Text style={styles.title}>Novo Produto</Text>
                 <PreviewImage
-                    image={previewImage}
-                    action1={imagePicker}
+                    image={image}
+                    action1={getImage}
                     icon1='image'
-                    action2={cameraPicker}
+                    action2={takeImage}
                     icon2='camera'
                 />
                 <Input title={'Nome'} action={e => setName(e)} maxLength={40}/>

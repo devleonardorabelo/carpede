@@ -16,7 +16,6 @@ export default function Signup(){
     const navigation = useNavigation();
 
     const [ image, setImage ] = useState();
-    const [ picked, setPicked ] = useState(false);
     const [ avatar, setAvatar ] = useState('');
     const [ name, setName ] = useState('');
     const [ email, setEmail ] = useState('');
@@ -30,7 +29,6 @@ export default function Signup(){
     const getImage = async () => {
         let picker = await imagePicker();
         setImage({ uri: picker });
-        setPicked(true);
     }
 
     async function handleSignup() {
@@ -88,7 +86,7 @@ export default function Signup(){
                     subtitle={whatsapp}
                     icon={'image'}
                     action={getImage}
-                    transparent={picked}
+                    transparent={image}
                     isChangeable
                 />
                 <Input
@@ -110,6 +108,7 @@ export default function Signup(){
                     placeholder={'email@email.com'}
                     action={e => setEmail(e)}
                     maxLength={30}
+                    capitalize={'none'}
                 />
                 <InputPassword
                     title={'Senha'}

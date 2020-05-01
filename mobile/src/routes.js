@@ -26,7 +26,6 @@ export default function Routes() {
                 <AppStack.Screen name="StoreProducts" component={StoreProducts}/>
                 <AppStack.Screen name="StoreProductEdit" component={StoreProductEdit}/>
                 <AppStack.Screen name="StoreProductNew" component={StoreProductNew}/>
-
             </AppStack.Navigator>
         </NavigationContainer>
     )
