@@ -33,7 +33,7 @@ export function Avatar(props) {
                         props.image === undefined ?
                         cardImage
                     : 
-                         props.image
+                        props.image
                     }
                     resizeMode={'cover'}
                 />

@@ -16,6 +16,7 @@ export default function Profile() {
     
     const [ name, setName ] = useState('');
     const [ avatar, setAvatar ] = useState();
+    const [ fileName, setFileName ] = useState();
     const [ description, setDescription ] = useState('');
     const [ whatsapp, setWhatsapp ] = useState('');
     const [ phone, setPhone ] = useState('');
@@ -25,19 +26,17 @@ export default function Profile() {
     const [ alertError, setAlertError ] = useState(false);
     const [ loadedPage, setLoadedPage ] = useState(false);
     const [ done, setDone ] = useState(false);
+    const [ pickedImage, setPickedImage ] = useState(false);
 
     async function loadProfile() {
         
         const { data } = await apiReq.get('profile');
 
         if(data.avatar) {
-            var currentAvatar = {uri: `${API_DOMAIN}/uploads/${data.avatar}`}
-        } else {
-            var currentAvatar;
-        }
-
+            setAvatar({uri: `${API_DOMAIN}/uploads/${data.avatar}`});
+            setFileName(data.avatar)    
+        } 
         setName(data.name);
-        setAvatar(currentAvatar);
         setDescription(data.description);
         setWhatsapp(data.whatsapp);
         setPhone(data.phone);
@@ -53,20 +52,17 @@ export default function Profile() {
         let picker = await imagePicker();
         if(!picker) return;
         setAvatar({ uri: picker });
+        setPickedImage(true);
     }
 
     async function handleUpdate() {
 
         setDone(true);
 
-        if(avatar === currentAvatar) {
-            var image = avatar
-        } else {
-            var image = await uploadImage(avatar)
-        }
+        if(pickedImage) setFileName(await uploadImage(avatar))
 
         const { data } = await apiReq.post('profile', {
-            avatar: image,
+            avatar: fileName,
             name,
             description,
             whatsapp,
@@ -89,7 +85,7 @@ export default function Profile() {
 
         return setTimeout(() => {
             setAlertShow(false);
-        }, 2000)
+        }, 3000)
 
     }
     return(<>
