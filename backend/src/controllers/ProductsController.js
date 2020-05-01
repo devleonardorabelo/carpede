@@ -39,7 +39,7 @@ module.exports = {
             return res.json({status: 'Produto criado com sucesso'})
 
         } catch (err) {
-            return res.json({error: 'Houve um erro ao listar seus produtos, verifique sua conexão com a internet'})
+            return res.json({error: 'Houve um erro ao listar seus produtos, tente novamente'})
         }
 
     },
@@ -66,7 +66,7 @@ module.exports = {
 
             return res.json({status: 'Alterado com sucesso'})            
         } catch (err) {
-            return res.json({error: 'Houve um erro ao alterar seu produto, verifique sua conexão com a internet'})
+            return res.json({error: 'Houve um erro ao alterar seu produto, tente novamente'})
         }
 
     },
@@ -80,7 +80,7 @@ module.exports = {
             await Product.deleteOne({_id: id})
             return res.json({status: 'Produto apagado com sucesso'});
         } catch (err) {
-            return res.json({error: 'Houve um erro ao listar seus produtos, verifique sua conexão com a internet'})
+            return res.json({error: 'Houve um erro ao alterar seu produto, tente novamente'})
         }     
     
     },
