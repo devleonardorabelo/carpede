@@ -1,21 +1,40 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { TouchableOpacity, Text, ActivityIndicator } from 'react-native';
 import { Feather } from '@expo/vector-icons';
 import styles from "../pages/global";
 
 export function Button(props) {
+
+    const [ color, setColor ] = useState('#FF5216');
+    const [ content, setContent ] = useState(<Text style={styles.buttonWhiteText}>{props.title}</Text>);
+    const [ disabled, setDisabled ] = useState(false);
+
+    useEffect(() => {
+        if(!props.status) {
+            setColor('#FF5216');
+            setContent(<Text style={styles.buttonWhiteText}>{props.title}</Text>);
+            setDisabled(false);
+        }
+        if(props.status === 'loading') {
+            setColor('#CB390F');
+            setContent(<ActivityIndicator size="large" color="#fff" />)
+            setDisabled(true);
+        }
+        if(props.status === 'done') {
+            setColor('#34E098');
+            setContent(<Text style={styles.buttonWhiteText}>Feito!</Text>)
+            setDisabled(false);
+        }
+    }, [props])
+
     return(
         <TouchableOpacity
             activeOpacity={0.8}
-            style={[styles.button, { backgroundColor: props.done ? '#B10000' : '#FF5216' }]}
+            style={[styles.button, { backgroundColor: color }]}
             onPress={props.action}
-            disabled={props.done}
+            disabled={disabled}
         >
-            {props.done ?
-                <ActivityIndicator size="large" color="#fff" />
-            : (
-                <Text style={styles.buttonWhiteText}>{props.title}</Text>
-            )}
+            {content}
         </TouchableOpacity>
     )
 }

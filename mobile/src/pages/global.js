@@ -56,13 +56,13 @@ export default StyleSheet.create({
     textAction: {
         fontSize: widthDP('4%'),
         fontFamily: 'montserrat-semi-bold',
-        color: '#333',
+        color: '#262626',
     },
     subtitleTextAction: {
         fontFamily: 'montserrat-light',
         fontSize: widthDP('4%'),
         marginTop: -2,
-        color: '#666'
+        color: '#424B54'
     },
     //CARD
     card: {
@@ -114,7 +114,7 @@ export default StyleSheet.create({
         marginBottom: 20,
     },
     grayTitle: {
-        color: '#666',
+        color: '#424B54',
         fontSize: widthDP('4.5%'),
         fontFamily: 'montserrat-medium'
     },
@@ -127,15 +127,15 @@ export default StyleSheet.create({
     text: {
         fontSize: widthDP('4%'),
         fontFamily: 'montserrat-medium',
-        color: '#666'
+        color: '#424B54'
     },
     cardTitle: {
-        color: '#666',
+        color: '#424B54',
         fontFamily: 'montserrat-medium',
         fontSize: widthDP('4%'),
     },
     price: {
-        color: '#333',
+        color: '#262626',
         fontFamily: 'montserrat-semi-bold',
         fontSize: widthDP('4%'),
         marginTop: 5,
@@ -206,7 +206,7 @@ export default StyleSheet.create({
     labelText: {
         fontSize: widthDP('4%'),
         fontFamily: 'montserrat-semi-bold',
-        color: '#333',
+        color: '#262626',
         marginLeft: 10,
         marginBottom: -10,
         zIndex: 9,
@@ -226,12 +226,14 @@ export default StyleSheet.create({
         borderRadius: 8,
         borderWidth: 1,
         paddingLeft: 16,
-        color: '#666'
+        color: '#424B54'
     },
     inputTextAlert: {
         fontFamily: 'montserrat-light',
         fontSize: widthDP('4%'),
-        color: '#FF0000' 
+        color: '#E63B2E',
+        paddingLeft: 4,
+        paddingTop: 4
     },
     textareaInput: {
         height: 100,
@@ -242,7 +244,7 @@ export default StyleSheet.create({
         padding: 16,
         fontSize: widthDP('4%'),  
         fontFamily: 'montserrat-medium',
-        color: '#666'   
+        color: '#424B54'   
     },
     //MORE
     alert: {

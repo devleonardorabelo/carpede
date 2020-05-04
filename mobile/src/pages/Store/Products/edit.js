@@ -8,7 +8,6 @@ import Header from '../../../components/Header'
 import { PreviewImage } from '../../../components/Image';
 import { Input } from '../../../components/Input';
 import { Button, ButtonTransparent } from '../../../components/Button';
-import Alert from '../../../components/Alert';
 import { API_DOMAIN } from '../../../constants/api';
 
 import { imagePicker, cameraPicker ,uploadImage } from '../../../utils/ImagePicker';
@@ -25,10 +24,8 @@ export default function EditProduct() {
     const [ name, setName ] = useState(product.name);
     const [ description, setDescription ] = useState(product.description);
     const [ price, setPrice ] = useState(product.price);
-    const [ alert, setAlert ] = useState('');
-    const [ alertShow, setAlertShow ] = useState(false);
-    const [ alertError, setAlertError ] = useState(false);
-    const [ done, setDone ] = useState(false);
+    const [ alert, setAlert ] = useState();
+    const [ status, setStatus ] = useState(false);
 
     const getImage = async () => {
         let picker = await imagePicker();
@@ -44,7 +41,7 @@ export default function EditProduct() {
 
     async function handleUpdate(id) {
 
-        setDone(true);
+        setStatus('loading');
 
         if(image === currentImage) {
             var setImage = product.image 
@@ -60,24 +57,13 @@ export default function EditProduct() {
             price
         });
 
-        if(data.status !== undefined) {
-            setAlert(data.status);
-            setAlertError(false);
-        }
-        if(data.error !== undefined){
+        if(data.error) {
+            setStatus();
             setAlert(data.error);
-            setAlertError(true);
-        }
+            return;
+        };
 
-        setDone(false);
-
-        setAlertShow(true);
-
-        setTimeout(() => {
-            setAlertShow(false);
-            if(data.status !== undefined) navigation.navigate('StoreProducts');
-        }, 2000);
-
+        setStatus('done');
     }
 
     async function handleDelete(id) {
@@ -86,22 +72,7 @@ export default function EditProduct() {
             id
         });
 
-        if(data.status !== undefined) {
-            setAlert(data.status);
-            setAlertError(false);
-        }
-        if(data.error !== undefined){
-            setAlert(data.error);
-            setAlertError(true);
-        }
-
-        setAlertShow(true);
-
-        setTimeout(() => {
-            setAlertShow(false);
-            if(data.status !== undefined) navigation.navigate('StoreProducts')
-        }, 2000);
-
+        if(data) navigation.navigate('StoreProducts');
     }
 
     return(<>
@@ -116,14 +87,35 @@ export default function EditProduct() {
                     action2={takeImage}
                     icon2='camera'
                 />
-                <Input title={'Nome'} default={product.name} action={e => setName(e)} maxLength={40}/>
-                <Input title={'Descrição'} default={product.description} action={e => setDescription(e)} maxLength={50}/>
-                <Input title={'Preço'} default={product.price} keyboard={'numeric'} action={e => setPrice(e)} maxLength={8}/>
+                <Input
+                    title={'Nome'}
+                    name={'name'}
+                    default={product.name}
+                    action={e => setName(e)}
+                    maxLength={40}
+                    error={alert}
+                />
+                <Input
+                    title={'Descrição'}
+                    name={'description'}
+                    default={product.description}
+                    action={e => setDescription(e)}
+                    maxLength={50}
+                    error={alert}
+                />
+                <Input
+                    title={'Preço'}
+                    name={'price'}
+                    default={product.price}
+                    keyboard={'numeric'}
+                    action={e => setPrice(e)}
+                    maxLength={8}
+                    error={alert}
+                />
                 
-                <Button action={() => handleUpdate(product._id)} title={'Salvar'} done={done}/>
+                <Button action={() => handleUpdate(product._id)} title={'Salvar'} status={status}/>
                 <ButtonTransparent action={() => handleDelete(product._id)} icon='trash' title='Apagar este produto' />        
             </ScrollView>
         </SafeAreaView>
-        <Alert show={alertShow} alert={alert} error={alertError}/>
     </>)
 }

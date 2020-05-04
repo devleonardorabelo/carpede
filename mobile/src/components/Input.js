@@ -14,14 +14,14 @@ export function Input(props) {
             <View style={styles.labelInput}>
                 <Text
                     style={[styles.labelText,{
-                        color: err() ? '#FF0000' : '#333'
+                        color: err() ? '#E63B2E' : '#333'
                     }]}>
                     {props.title}
                 </Text>
             </View>
             <TextInput
                 style={[styles.textInput,{
-                    borderColor: err() ? '#FF0000' : '#E2E2E2',
+                    borderColor: err() ? '#E63B2E' : '#E2E2E2',
                     borderWidth: err() ? 2 : 1,
                 }]}
                 placeholder={props.placeholder}
@@ -53,14 +53,14 @@ export function InputPassword(props) {
             <View style={styles.labelInput}>
                 <Text
                     style={[styles.labelText,{
-                        color: err()  ? '#FF0000' : '#333'
+                        color: err()  ? '#E63B2E' : '#333'
                     }]}>
                     {props.title}
                 </Text>
             </View>
             <TextInput
                 style={[styles.textInput,{
-                    borderColor: err()  ? '#FF0000' : '#E2E2E2',
+                    borderColor: err()  ? '#E63B2E' : '#E2E2E2',
                     borderWidth: err()  ? 2 : 1,
                 }]}
                 onChangeText={props.action}

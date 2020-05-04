@@ -23,7 +23,11 @@ module.exports = {
 
         const { name, description, price, image } = req.body;
 
-        if(!name || !price) return res.json({error: 'Preencha o nome e o preço'});
+        if(!name) return res.json({ error: { text: 'Mínimo de 5 caracteres', input: 'name' } });
+
+        if(!description) return res.json({ error: { text: 'Descreva seu produto', input: 'description' } });
+
+        if(!price) return res.json({ error: { text: 'Dê um preço para seu produto', input: 'price' } });
 
         const newProduct = {
             image,
@@ -34,7 +38,6 @@ module.exports = {
         }
 
         try {
-
             await new Product(newProduct).save();
             return res.json({status: 'Produto criado com sucesso'})
 
@@ -49,9 +52,11 @@ module.exports = {
 
         const { image, name, description, price, id } = req.body;
 
-        console.log(req.body)
+        if(!name) return res.json({ error: { text: 'Mínimo de 5 caracteres', input: 'name' } });
 
-        if(!name || !price) return res.json({error: 'Preencha o nome e o preço'});
+        if(!description) return res.json({ error: { text: 'Descreva seu produto', input: 'description' } });
+
+        if(!price) return res.json({ error: { text: 'Dê um preço para seu produto', input: 'price' } });
 
         try{
             await Product.updateOne({

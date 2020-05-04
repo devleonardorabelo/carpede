@@ -4,7 +4,6 @@ import { useNavigation } from '@react-navigation/native';
 import styles from '../../global';
 import api from '../../../services/api';
 import Header from '../../../components/Header';
-import Alert from '../../../components/Alert'; 
 import { Input, InputPassword } from '../../../components/Input';
 import { Button, ButtonTransparent } from '../../../components/Button';
 import { Avatar } from '../../../components/Item';
@@ -22,7 +21,7 @@ export default function Signup(){
     const [ whatsapp, setWhatsapp ] = useState('');
     const [ password, setPassword ] = useState('');
     const [ alert, setAlert ] = useState();
-    const [ done, setDone ] = useState(false);
+    const [ status, setStatus ] = useState();
 
 
     const getImage = async () => {
@@ -32,7 +31,7 @@ export default function Signup(){
 
     async function handleSignup() {
 
-        setDone(true);
+        setStatus('loading');
 
         if(image) {
             let fileName = await uploadImage(image);
@@ -48,7 +47,7 @@ export default function Signup(){
         });
 
         if(data.error) {
-            setDone(false);
+            setStatus();
             setAlert(data.error);
             return;
         };
@@ -61,7 +60,7 @@ export default function Signup(){
     async function saveUser(store) {
         await AsyncStorage.clear();
         await AsyncStorage.setItem('@Carpede:storeToken', store);
-        setDone(false);
+        setStatus(false);
         return navigation.navigate('StorePanel');
     }
 
@@ -117,7 +116,7 @@ export default function Signup(){
                     action={e => setPassword(e)}
                     error={alert}
                 />
-                <Button action={handleSignup} title={'Começar agora!'} done={done}/>
+                <Button action={handleSignup} title={'Começar agora!'} status={status}/>
                 <ButtonTransparent action={navigateToSignin} title={'Já tenho uma conta'} icon={'log-in'} />    
             </ScrollView>           
         </SafeAreaView>

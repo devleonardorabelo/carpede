@@ -22,8 +22,9 @@ export default function Profile() {
     const [ tags, setTags ] = useState('');
     const [ alert, setAlert ] = useState();
     const [ loadedPage, setLoadedPage ] = useState(false);
-    const [ done, setDone ] = useState(false);
     const [ pickedImage, setPickedImage ] = useState(false);
+    const [ status, setStatus ] = useState();
+
 
     async function loadProfile() {
         
@@ -54,7 +55,7 @@ export default function Profile() {
 
     async function handleUpdate() {
 
-        setDone(true);
+        setStatus('loading');
 
         if(pickedImage) setFileName(await uploadImage(avatar))
 
@@ -68,12 +69,12 @@ export default function Profile() {
         });
 
         if(data.error) {
-            setDone(false);
+            setStatus();
             setAlert(data.error);
             return;
         };
 
-        setDone(false);
+        setStatus('done');
 
     }
     return(<>
@@ -129,7 +130,7 @@ export default function Profile() {
                         action={e => setTags(e)}
                         placeholder={'ex:  sapato, camisa, meia, tênis, calça, bermuda'}
                     />
-                    <Button action={handleUpdate} title={'Salvar'} done={done}/>
+                    <Button action={handleUpdate} title={'Salvar'} status={status}/>
                 </ScrollView>
             </SafeAreaView>
         </>
