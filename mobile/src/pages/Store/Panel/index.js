@@ -61,10 +61,17 @@ export default function Panel() {
 				/>
 				<NavItem
 					action={navigateToProducts}
+					icon='truck'
+					title='Pedidos'
+					subtitle='Lista de pedidos ativos'
+				/>
+				<NavItem
+					action={navigateToProducts}
 					icon='box'
 					title='Produtos'
 					subtitle='Lista de produtos'
 				/>
+
 
 			</SafeAreaView>
 		):(
