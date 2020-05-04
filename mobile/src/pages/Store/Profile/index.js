@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Text, SafeAreaView, ScrollView, AsyncStorage } from 'react-native';
+import { Text, SafeAreaView, ScrollView } from 'react-native';
 import styles from '../../global';
 import Header from '../../../components/Header';
 import Loading from '../../../components/Loading';
-import Alert from '../../../components/Alert';
 import { Input, TextArea } from '../../../components/Input';
 import { Avatar } from '../../../components/Item';
 import { Button } from '../../../components/Button';
@@ -21,9 +20,7 @@ export default function Profile() {
     const [ whatsapp, setWhatsapp ] = useState('');
     const [ phone, setPhone ] = useState('');
     const [ tags, setTags ] = useState('');
-    const [ alert, setAlert ] = useState('');
-    const [ alertShow, setAlertShow ] = useState(false);
-    const [ alertError, setAlertError ] = useState(false);
+    const [ alert, setAlert ] = useState();
     const [ loadedPage, setLoadedPage ] = useState(false);
     const [ done, setDone ] = useState(false);
     const [ pickedImage, setPickedImage ] = useState(false);
@@ -70,22 +67,13 @@ export default function Profile() {
             tags
         });
 
-        if(data.status !== undefined) {
-            setAlert(data.status);
-            setAlertError(false);
-        }
-        if(data.error !== undefined){
+        if(data.error) {
+            setDone(false);
             setAlert(data.error);
-            setAlertError(true);
-        }
+            return;
+        };
 
         setDone(false);
-
-        setAlertShow(true);
-
-        return setTimeout(() => {
-            setAlertShow(false);
-        }, 3000)
 
     }
     return(<>
@@ -109,8 +97,10 @@ export default function Profile() {
 				    />
                     <Input
                         title={'Nome da Loja'}
+                        name={'name'}
                         default={name}
                         action={e => setName(e)}
+                        error={alert}
                     />
                     <TextArea
                         title={'Descrição'}
@@ -119,10 +109,12 @@ export default function Profile() {
                     />
                     <Input
                         title={'Whatsapp'}
+                        name={'whatsapp'}
                         default={whatsapp}
                         action={e => setWhatsapp(e)}
                         keyboard={'numeric'}
                         maxLength={11}
+                        error={alert}
                     />
                     <Input
                         title={'Telefone'}
@@ -140,7 +132,6 @@ export default function Profile() {
                     <Button action={handleUpdate} title={'Salvar'} done={done}/>
                 </ScrollView>
             </SafeAreaView>
-            <Alert show={alertShow} alert={alert} error={alertError}/>
         </>
             ) : (
             <Loading />            

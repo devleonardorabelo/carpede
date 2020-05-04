@@ -21,8 +21,7 @@ export default function Signup(){
     const [ email, setEmail ] = useState('');
     const [ whatsapp, setWhatsapp ] = useState('');
     const [ password, setPassword ] = useState('');
-    const [ alertShow, setAlertShow ] = useState(false);
-    const [ alert, setAlert ] = useState('');
+    const [ alert, setAlert ] = useState();
     const [ done, setDone ] = useState(false);
 
 
@@ -48,15 +47,10 @@ export default function Signup(){
             password
         });
 
-        if(data.error !== undefined) {
+        if(data.error) {
             setDone(false);
             setAlert(data.error);
-            setAlertShow(true);
-
-            return setTimeout(() => {
-                setAlertShow(false);
-            }, 3000)
-
+            return;
         };
 
         const store = data;
@@ -91,34 +85,41 @@ export default function Signup(){
                 />
                 <Input
                     title={'Nome da Loja'}
+                    name={'name'}
                     placeholder={'Pizzaria do João'}
                     action={e => setName(e)}
                     focus={true}
                     maxLength={30}
+                    error={alert}
                 />
                 <Input
                     title={'Whatsapp'}
+                    name={'whatsapp'}
                     placeholder={'01234567890'}
                     action={e => setWhatsapp(e)}
                     keyboard={'numeric'}
                     maxLength={11}
+                    error={alert}
                 />
                 <Input
                     title={'Email'}
+                    name={'email'}
                     placeholder={'email@email.com'}
                     action={e => setEmail(e)}
                     maxLength={30}
                     capitalize={'none'}
+                    error={alert}
                 />
                 <InputPassword
                     title={'Senha'}
+                    name={'password'}
                     placeholder={'* * * * * * * *'}
                     action={e => setPassword(e)}
+                    error={alert}
                 />
                 <Button action={handleSignup} title={'Começar agora!'} done={done}/>
                 <ButtonTransparent action={navigateToSignin} title={'Já tenho uma conta'} icon={'log-in'} />    
             </ScrollView>           
         </SafeAreaView>
-        <Alert show={alertShow} alert={alert}/>
     </>)
 }

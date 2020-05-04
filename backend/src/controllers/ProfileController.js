@@ -16,11 +16,9 @@ module.exports = {
 
         const { avatar, name, description, whatsapp, phone, tags } = req.body;
 
-        if(!name || !whatsapp) {
-            return res.json({
-                error: 'Todos os campos devem estar preenchidos'
-            });
-        }
+        if(!name) return res.json({ error: { text: 'Mínimo de 5 caracteres', input: 'name' } });
+        
+        if(!whatsapp) return res.json({ error: { text: 'Ex: 01 2 3456 7890', input: 'whatsapp' } });
 
         await Store.updateOne({ _id: store.id }, {
             avatar,

@@ -228,6 +228,11 @@ export default StyleSheet.create({
         paddingLeft: 16,
         color: '#666'
     },
+    inputTextAlert: {
+        fontFamily: 'montserrat-light',
+        fontSize: widthDP('4%'),
+        color: '#FF0000' 
+    },
     textareaInput: {
         height: 100,
         textAlignVertical: 'top',
@@ -241,11 +246,22 @@ export default StyleSheet.create({
     },
     //MORE
     alert: {
-        position: 'absolute',
-        top: 0,
-        width: '100%',
-        alignItems: 'center',
-        paddingTop: Constants.statusBarHeight + 20,
+        padding: 20,
+        marginBottom: 20,
+        borderRadius: 8,
+        borderWidth: 2,
+        backgroundColor: '#FFEEEE',
+        borderColor: '#FFD1D1'
+    },
+    alertTitle: {
+        fontFamily: 'montserrat-bold',
+        fontSize: widthDP('4%'),
+        color: '#533737' 
+    },
+    alertText: {
+        fontFamily: 'montserrat-light',
+        fontSize: widthDP('4%'),
+        color: '#270000' 
     },
     illustration: {
         backgroundColor: '#fff',
