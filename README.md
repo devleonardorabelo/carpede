@@ -1,9 +1,7 @@
 
  # Carpede Empresa
 
-:information_source:  Aplicativo para gerenciamento de serviços destinado a contratantes do Carpede
-
-###
+#### Aplicativo para gerenciamento de serviços destinado a contratantes do Carpede
 
 ## Descrição
 
