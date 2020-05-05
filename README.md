@@ -1,10 +1,11 @@
 
- ## Carpede Empresa
+ # Carpede Empresa
 
-:information_source: Aplicativo para gerenciamento de serviços destinado a contratantes do Carpede
+:information_source:  Aplicativo para gerenciamento de serviços destinado a contratantes do Carpede
 
+<h1> </h1>
 
-### Descrição
+## Descrição
 
 O Carpede Empresa é um aplicativo de gerenciamento de produtos e serviços. É destinado exclusivamente aos nossos clientes que possuem um plano contratado, onde neste mesmo aplicativo será possível fazer o gerenciamento do conteúdo do aplicativo distribuído aos clientes do contratante.
 
@@ -21,6 +22,9 @@ Para os novos usuários, poderá ser feito um pré-cadastro dentro do próprio a
 ### v1.0
 - Primeira versão de produção
 
+## Dúvidas ?
+
+Entre em contato no email: devleonardorabelo@gmail.com
 
 
 
