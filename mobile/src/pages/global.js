@@ -5,6 +5,11 @@ const widthDP = widthPercent => {
     const screenWidth = Dimensions.get('window').width;
     return PixelRatio.roundToNearestPixel(screenWidth * parseFloat(widthPercent) / 100);
 };
+const heightDP = heightPercent => {
+    const screenHeight = Dimensions.get('window').height;
+    return PixelRatio.roundToNearestPixel(screenHeight * parseFloat(heightPercent) / 100);
+};
+
 
 export default StyleSheet.create({
     
@@ -14,6 +19,12 @@ export default StyleSheet.create({
         backgroundColor: '#fff',
         paddingHorizontal: widthDP('8%'),
         paddingTop: Constants.statusBarHeight + 20,
+    },
+    header: {
+        marginBottom: 24,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center'
     },
     store: {
         flexDirection: 'row',
@@ -25,11 +36,18 @@ export default StyleSheet.create({
         height: widthDP('20%'),
         borderRadius: 100,
     },
-    listProducts: {
-        marginBottom: 20,
+    row: {
+        flexDirection: 'row',
+        paddingHorizontal: widthDP('8%'),
+        marginBottom: 16,
     },
-    listStores: {
+    column: {
         flexDirection: 'column',
+        paddingHorizontal: widthDP('8%'),
+        marginBottom: 16,
+    },
+    alignCenterX: {
+        justifyContent: 'center'
     },
     //NAVITEM
     action: {
@@ -69,9 +87,18 @@ export default StyleSheet.create({
         flex: 1,
         flexDirection: 'row',
         borderRadius: 8,
-        marginBottom: 20,
-        borderWidth: 1,
-        borderColor: '#F2F2F2',
+        marginBottom: 16,
+        borderBottomWidth: 1,
+        borderBottomColor: '#E7E7E7'
+    },
+    cardRow: {
+        flexDirection: 'row',
+        marginBottom: 8,
+    },
+    cardTitle: {
+        color: '#424B54',
+        fontFamily: 'montserrat-medium',
+        fontSize: widthDP('4%'),
     },
     cardImage: {
         width: widthDP('25%'),
@@ -83,6 +110,20 @@ export default StyleSheet.create({
         flexDirection: 'column',
         padding: 16,
         flexGrow: 1,
+    },
+    block: {
+        backgroundColor: '#05668d',
+        padding: 8,
+        borderRadius: 8,
+        color: '#FFFFFF',
+        flexGrow: 1,
+        marginBottom: 16
+    },
+    box: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor:'#F5F5F5',
+        borderRadius: 8,
     },
     //IMAGE
     fullImage: {
@@ -110,8 +151,7 @@ export default StyleSheet.create({
     title: {
         fontFamily: 'montserrat-bold',
         fontSize: widthDP('7%'),
-        color: '#444',
-        marginBottom: 20,
+        color: '#171c29',
     },
     grayTitle: {
         color: '#424B54',
@@ -120,7 +160,6 @@ export default StyleSheet.create({
     },
     subtitle: {
         fontSize: widthDP('5%'),
-        marginBottom: 20,
         fontFamily: 'montserrat-bold',
         color: '#171c29'
     },
@@ -129,13 +168,13 @@ export default StyleSheet.create({
         fontFamily: 'montserrat-medium',
         color: '#424B54'
     },
-    cardTitle: {
-        color: '#424B54',
-        fontFamily: 'montserrat-medium',
+    textBold: {
         fontSize: widthDP('4%'),
+        fontFamily: 'montserrat-bold',
+        color: '#424B54'
     },
     price: {
-        color: '#262626',
+        color: '#424B54',
         fontFamily: 'montserrat-semi-bold',
         fontSize: widthDP('4%'),
         marginTop: 5,
@@ -147,7 +186,7 @@ export default StyleSheet.create({
     },
     textHide: {
         height: widthDP('5%'),
-        backgroundColor: '#F6F6F6',
+        backgroundColor: '#F5F5F5',
         borderRadius: 8
     },
     titleHide: {
@@ -157,6 +196,14 @@ export default StyleSheet.create({
         marginBottom: 10,
         backgroundColor: '#F5F5F5',
         borderRadius: 8
+    }, 
+    tag: {
+        backgroundColor: '#05668d',
+        padding: 8,
+        borderRadius: 8,
+        color: '#FFFFFF',
+        fontFamily: 'montserrat-semi-bold',
+        fontSize: widthDP('4%'),
     },
     //BUTTONS
     button: {
@@ -165,7 +212,7 @@ export default StyleSheet.create({
         marginBottom: 20,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#FF5216',
+        backgroundColor: '#123456',
     },
         buttonWhiteText: {
             fontFamily: 'montserrat-semi-bold',
@@ -185,9 +232,6 @@ export default StyleSheet.create({
             fontSize: 14,
             color: '#585858'
         },
-    navigationButton: {
-        marginBottom: 20,
-    },
     buttonFloat: {
         backgroundColor: '#FF5216',
         width: 64,
@@ -195,6 +239,14 @@ export default StyleSheet.create({
         borderRadius: 8,
         justifyContent: 'center',
         alignItems: 'center'
+    },
+    actionButton: {
+        backgroundColor: '#00a896',
+        height: 64,
+        width: 64,
+        borderRadius: 100,
+        alignItems: 'center',
+        justifyContent: 'center'
     },
     //INPUTS
     groupInput: {
@@ -211,7 +263,7 @@ export default StyleSheet.create({
         marginBottom: -10,
         zIndex: 9,
         paddingHorizontal: 6,
-        backgroundColor: '#fff',
+        backgroundColor: '#FFFFFF',
     },
     iconInput: {
         paddingHorizontal:15,
@@ -266,10 +318,49 @@ export default StyleSheet.create({
         color: '#270000' 
     },
     illustration: {
-        backgroundColor: '#fff',
+        backgroundColor: '#FFFFFF',
         marginBottom: 60,
         maxHeight: '40%',
         resizeMode: 'contain',
         alignSelf: 'center'
     },
+    boxFluid: {
+        paddingHorizontal: widthDP('8%'),
+        paddingTop: Constants.statusBarHeight + 20,
+        width: widthDP('100%'),
+    },
+    map: {
+        flex:1,
+    },
+    mapMark: {
+        width: widthDP('7%'),
+        height: widthDP('7%'),
+        backgroundColor: '#FF0022',
+        borderRadius: 100
+    },
+    orderView: {
+        height: heightDP('80%'),
+        backgroundColor: '#FFFFFF',
+        paddingHorizontal: widthDP('8%'),
+        paddingTop: 20,
+        paddingBottom: 80,
+    },
+    orderList: {
+        backgroundColor: '#F9F9F9',
+        padding: 16,
+        borderRadius: 8,
+        marginBottom: 16,
+    },  
+    orderCheckout: {
+        height: 500,
+        backgroundColor: '#F0F0F0',
+        position: 'absolute',
+        right: 0,
+        left: 0,
+        bottom: -450,
+        borderTopLeftRadius: 50,
+        borderTopRightRadius: 50,
+    },
+
+
 })

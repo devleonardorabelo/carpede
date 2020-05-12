@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Text, SafeAreaView, ScrollView } from 'react-native';
 import apiReq from '../../../services/reqToken';
 import { useNavigation } from '@react-navigation/native';
-import Header from '../../../components/Header';
+import { Header } from '../../../components/Header';
 import { PreviewImage } from '../../../components/Image';
 import { Input } from '../../../components/Input';
 import { Button } from '../../../components/Button';
