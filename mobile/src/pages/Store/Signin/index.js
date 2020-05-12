@@ -4,7 +4,7 @@ import { useNavigation } from '@react-navigation/native';
 import styles from '../../global';
 import api from '../../../services/api';
 
-import Header from '../../../components/Header'; 
+import { Header } from '../../../components/Header'; 
 import { InputPassword, Input } from '../../../components/Input';
 import { Button, ButtonTransparent } from "../../../components/Button";;
 

@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { TouchableOpacity, Text, ActivityIndicator } from 'react-native';
-import { Feather } from '@expo/vector-icons';
+import { MaterialCommunityIcons as MI } from '@expo/vector-icons';
 import styles from "../pages/global";
+
 
 export function Button(props) {
 
@@ -11,17 +12,17 @@ export function Button(props) {
 
     useEffect(() => {
         if(!props.status) {
-            setColor('#FF5216');
+            setColor('#00a896');
             setContent(<Text style={styles.buttonWhiteText}>{props.title}</Text>);
             setDisabled(false);
         }
         if(props.status === 'loading') {
-            setColor('#CB390F');
+            setColor('#028090');
             setContent(<ActivityIndicator size="large" color="#fff" />)
             setDisabled(true);
         }
         if(props.status === 'done') {
-            setColor('#34E098');
+            setColor('#02c39a');
             setContent(<Text style={styles.buttonWhiteText}>Feito!</Text>)
             setDisabled(false);
         }
@@ -42,13 +43,37 @@ export function Button(props) {
 export function ButtonTransparent(props) {
     return(
         <TouchableOpacity style={styles.buttonTransparent} onPress={props.action}>
-            <Feather
+            <MI
                 style={{ paddingRight: 5 }}
                 name={props.icon} 
                 size={16}
                 color='#585858'
             />
             <Text style={styles.buttonBlackText}>{props.title}</Text>
+        </TouchableOpacity>
+    )
+}
+
+export function ActionButton(props) {
+    return (
+        <TouchableOpacity style={[styles.actionButton, props.style]} onPress={props.action}>
+            <MI
+                name={props.icon}
+                size={32}
+                color='#fff'
+            />
+        </TouchableOpacity>
+    )
+}
+
+export function LinearButton(props) {
+    return (
+        <TouchableOpacity>
+            <MI
+                name={props.icon}
+                size={32}
+                color='#585858'
+            />
         </TouchableOpacity>
     )
 }

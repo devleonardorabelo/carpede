@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Text, SafeAreaView, ScrollView } from 'react-native';
 import styles from '../../global';
-import Header from '../../../components/Header';
+import { Header } from '../../../components/Header';
 import Loading from '../../../components/Loading';
 import { Input, TextArea } from '../../../components/Input';
 import { Avatar } from '../../../components/Item';

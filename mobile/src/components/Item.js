@@ -1,23 +1,32 @@
 import React from 'react';
-import { TouchableOpacity, View, Text, Image } from 'react-native';
+import { TouchableOpacity, View, Text, Image, Animated } from 'react-native';
 import styles from '../pages/global';
-import { FontAwesome as FA, Feather } from '@expo/vector-icons';
+import { MaterialCommunityIcons as MI } from '@expo/vector-icons';
 import { API_DOMAIN } from '../constants/api';
+import { PanGestureHandler, State } from 'react-native-gesture-handler'
 
 import cardImage from '../assets/illustrations/repeat_food.png';
+
+function regexName(name) {
+    if(name.length > 30) {
+        let nameCut = name.match(/^[\s\S]{0,30}/) + '...'
+        return nameCut;
+    }
+    return name;
+}
 
 export function NavItem(props) {
     return (
         <TouchableOpacity style={styles.action} onPress={props.action}>
             <View style={styles.iconAction}>
-                <Feather name={props.icon}  size={24} color="#333" />	
+                <MI name={props.icon}  size={24} color="#333" />	
             </View>
             <View style={{flexGrow: 1, justifyContent: 'center'}}>
                 <Text style={styles.textAction}>{props.title}</Text>
                 <Text style={styles.subtitleTextAction}>{props.subtitle}</Text>
             </View>
             <View style={styles.arrowAction}>
-                <Feather name="chevron-right" size={24} color="#333" />	
+                <MI name="chevron-right" size={24} color="#333" />	
             </View>
         </TouchableOpacity>
     )
@@ -41,7 +50,7 @@ export function Avatar(props) {
                 <View style={styles.boxFloatButton}>
                     <View
                     style={[styles.buttonFloat, { width: 48, height: 48, display: props.transparent ? 'none' : 'flex' }]}>
-                        <Feather
+                        <MI
                             name={props.icon}
                             color='#fff'
                             size={32}
@@ -68,7 +77,7 @@ export function Avatar(props) {
                         <View style={styles.textHide}/>
                     : 
                         <View style={{flexDirection: 'row'}}>
-                            <FA name='whatsapp' color='#666' size={16} style={{ marginTop: 3, marginRight: 8}}/>
+                            <MI name='whatsapp' color='#666' size={16} style={{ marginTop: 3, marginRight: 8}}/>
                             <Text style={styles.text}>{props.subtitle}</Text>
                         </View>
                     }
@@ -79,18 +88,10 @@ export function Avatar(props) {
 
 export function Card(props) {
 
-    function regexName(name) {
-        if(name.length > 30) {
-            let nameCut = name.match(/^[\s\S]{0,30}/) + '...'
-            return nameCut;
-        }
-        return name;
-    }
-
     return (
-        <TouchableOpacity style={styles.card} onPress={props.action}>
+        <TouchableOpacity style={styles.box} onPress={props.action}>
             <Image
-                style={styles.cardImage}
+                style={styles.boxImage}
                 source={ 
                     props.image === undefined || props.image === null ?
                         cardImage
@@ -100,9 +101,9 @@ export function Card(props) {
                 resizeMode='cover'
             />
             
-            <View style={styles.cardBody}>
+            <View style={styles.boxBody}>
                 <View style={{ flexDirection: 'row' }}>
-                    <Text style={[styles.textWrap, styles.cardTitle]}>{regexName(props.title)}</Text>
+                    <Text style={[styles.textWrap, styles.textBold]}>{regexName(props.title)}</Text>
                 </View>
                 <Text style={styles.price}>
                     {Intl.NumberFormat('pt-BR', {
@@ -113,5 +114,123 @@ export function Card(props) {
             </View>
 
         </TouchableOpacity>
+    )
+}
+
+export function CardOrder(props) {
+
+    return (
+        <TouchableOpacity style={styles.box} onPress={props.action}>
+            <View style={{ flexGrow: 1 }}>
+                <Text style={styles.textBold}>{regexName(props.title)}</Text>
+                <Text style={styles.text}>{props.address}</Text>    
+            </View>
+            <View>
+                <Text style={[styles.price, { marginTop: 0 }]}>
+                    {Intl.NumberFormat('pt-BR', {
+                        style: 'currency',
+                        currency: 'BRL'
+                    }).format(props.price)}
+                </Text>
+                <Text style={[styles.text, { alignSelf: 'flex-end' }]}>{props.time}</Text>    
+            </View>
+            
+        </TouchableOpacity>
+    )
+}
+
+export function CardItem(props) {
+
+    return (
+        <View style={{ flexDirection: 'row', marginBottom: 8 }}>
+            <Text style={styles.text}>{props.amount}x </Text>
+            <Text style={[styles.textWrap, styles.text]}>{regexName(props.title)}</Text>
+            <Text style={[styles.price, { marginTop: 0 }]}>
+                {Intl.NumberFormat('pt-BR', {
+                    style: 'currency',
+                    currency: 'BRL'
+                }).format(props.price)}
+            </Text>
+        </View>
+    )
+}
+
+export function Checkout(props) {
+
+    let offset = 0;
+
+    const translateY = new Animated.Value(0);
+
+    const animatedEvent = Animated.event([
+        {
+            nativeEvent: {
+                translationY: translateY
+            }
+        }
+    ], { useNativeDriver: true })
+
+    function onHandlerStateChanged(event) {
+        if(event.nativeEvent.oldState === State.ACTIVE) {
+
+            let opened = false;
+
+            const { translationY } = event.nativeEvent;
+
+            offset += translationY;
+
+            if(translationY >= -80) {
+                opened = true;
+            } else {
+                translateY.setValue(offset);
+                translateY.setOffset(-450);
+                offset = -450;
+            }
+
+            Animated.timing(translateY, {
+                toValue: opened ? 450 : 0,
+                duration: 300,
+                useNativeDriver: true,
+            }).start(() => {
+                offset = opened ?  0 : -450;
+                translateY.setOffset(offset);
+                translateY.setValue(0);
+            });
+
+        }
+    }
+
+    return (
+        <PanGestureHandler
+            onGestureEvent={animatedEvent}
+            onHandlerStateChange={onHandlerStateChanged}
+        >
+            <Animated.View
+                style={[
+                    styles.orderCheckout, {
+                        transform: [{
+                            translateY: translateY.interpolate({
+                                inputRange: [-450, 0],
+                                outputRange: [-450, 0],
+                                extrapolate: 'clamp'
+                            })
+                        }
+                        ]
+                    }
+                ]}
+            >
+                {props.children}
+            </Animated.View>
+        </PanGestureHandler>  
+    )
+}
+
+export function Price(props) {
+    return (
+        <Text style={[styles.subtitle, props.style ]}>
+            {Intl.NumberFormat('pt-BR', {
+                style: 'currency',
+                currency: 'BRL'
+            }).format(props.value)}
+        </Text> 
     )
 }

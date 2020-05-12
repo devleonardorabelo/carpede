@@ -3,7 +3,7 @@ import { Text, AsyncStorage, SafeAreaView, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import styles from '../../global';
 import api from '../../../services/api';
-import Header from '../../../components/Header';
+import { Header } from '../../../components/Header';
 import { Input, InputPassword } from '../../../components/Input';
 import { Button, ButtonTransparent } from '../../../components/Button';
 import { Avatar } from '../../../components/Item';

@@ -4,7 +4,7 @@ import { useRoute, useNavigation } from '@react-navigation/native';
 import apiReq from '../../../services/reqToken';
 
 import styles from '../../global';
-import Header from '../../../components/Header'
+import { Header } from '../../../components/Header'
 import { PreviewImage } from '../../../components/Image';
 import { Input } from '../../../components/Input';
 import { Button, ButtonTransparent } from '../../../components/Button';

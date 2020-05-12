@@ -1,11 +1,11 @@
 import React, { useState, useCallback } from 'react';
-import { View, Text, FlatList } from 'react-native';
+import { Text, FlatList, SafeAreaView } from 'react-native';
 import apiReq from '../../../services/reqToken';
 import styles from '../../global';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 
 import Loading from '../../../components/Loading';
-import Header from '../../../components/Header';
+import { Header } from '../../../components/Header';
 import { Card } from '../../../components/Item';
 import { Button } from '../../../components/Button';
 
@@ -58,11 +58,11 @@ export default function Products() {
 
     return(<>{loadedPage ? (
 
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
             <Header/>
-            <Text style={styles.title}>Produtos</Text>
+            <Text style={[styles.title, { marginBottom: 16 }]}>Produtos</Text>
             <FlatList
-                style={styles.listProducts}
+                style={{ marginBottom: 16 }}
                 data={products}
                 keyExtractor={product => String(product._id)}
                 showsVerticalScrollIndicator={false}
@@ -81,7 +81,7 @@ export default function Products() {
             />        
             <Button action={navigateToNew} title='Adicionar Produto'/>
 
-        </View>
+        </SafeAreaView>
         ) : (
             <Loading />            
         )}

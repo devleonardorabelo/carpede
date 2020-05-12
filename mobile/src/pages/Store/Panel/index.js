@@ -2,12 +2,12 @@ import React, { useState, useCallback } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
 import { SafeAreaView, Text, TouchableOpacity, AsyncStorage } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { Feather } from '@expo/vector-icons'; 
 import styles from '../../global';
 import apiReq from '../../../services/reqToken';
 import { API_DOMAIN } from '../../../constants/api';
 import Loading from '../../../components/Loading';
 import { NavItem, Avatar } from '../../../components/Item';
+import { CustomHeader } from '../../../components/Header';
 
 export default function Panel() {
 
@@ -34,6 +34,7 @@ export default function Panel() {
 
 	const navigateToProfile = () => navigation.navigate('StoreProfile');
 	const navigateToProducts = () => navigation.navigate('StoreProducts');
+	const navigateToOrders = () => navigation.navigate('StoreOrders');
 
 	async function signout() {
 		await AsyncStorage.clear();
@@ -44,9 +45,8 @@ export default function Panel() {
 		{loadedPage ? (
 			<SafeAreaView style={styles.container}>
 
-				<TouchableOpacity style={styles.navigationButton} onPress={signout}>
-					<Feather name="log-out" size={32} color="#333" />
-				</TouchableOpacity>
+				<CustomHeader icon={'logout'} action={signout} />
+				
 				<Avatar
 					image={avatar}
 					title={store}
@@ -54,17 +54,24 @@ export default function Panel() {
 				/>
 				<Text style={styles.subtitle}>Seja bem-vindo</Text>
 				<NavItem
-					action={navigateToProfile}
-					icon='user'
-					title='Perfil'
-					subtitle='Informações da Loja'
+					action={navigateToOrders}
+					icon='motorbike'
+					title='Pedidos'
+					subtitle='Lista de pedidos ativos'
 				/>
 				<NavItem
 					action={navigateToProducts}
-					icon='box'
+					icon='package-variant-closed'
 					title='Produtos'
 					subtitle='Lista de produtos'
 				/>
+				<NavItem
+					action={navigateToProfile}
+					icon='account'
+					title='Perfil'
+					subtitle='Informações da Loja'
+				/>
+
 
 			</SafeAreaView>
 		):(

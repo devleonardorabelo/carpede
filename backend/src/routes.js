@@ -9,6 +9,7 @@ const AuthController = require('./controllers/AuthController');
 const PanelController = require('./controllers/PanelController');
 const ProfileController = require('./controllers/ProfileController');
 const ProductsController = require('./controllers/ProductsController');
+const OrdersController = require('./controllers/OrdersController');
 
 const CheckAuth = require('./middlewares/auth');
 const storage = require('./configs/storage');
@@ -56,6 +57,8 @@ routes.get('/products', CheckAuth, ProductsController.index);
 routes.post('/products/new', CheckAuth, ProductsController.store);
 routes.post('/products/edit', CheckAuth, ProductsController.update);
 routes.post('/products/delete', CheckAuth, ProductsController.destroy);
+routes.get('/orders', CheckAuth, OrdersController.index);
+routes.post('/orders/new', OrdersController.store);
 
 module.exports = routes
  

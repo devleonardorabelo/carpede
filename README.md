@@ -1,26 +1,30 @@
-<h1 align="center">Carpede</h1>
-<h2 align="center">Aplicativo de venda de produtos para comércio local, baseado na localização do usuário</h2>
-<h4 align="center">React Native + Node</h4>
-<hr>
-> NOTA: O aplicativo ainda está em desenvolvimento
 
-## O sistema possui as seguintes caracteristicas:
+ # Carpede Empresa
 
-### Para vendedores
-<ul>
-  <li>Conta para usuários</li>
-  <li>Gerenciamento de produtos</li>
-  <li>Lista de produtos para mostrar aos clientes na busca</li>
-</ul>
+#### Aplicativo para gerenciamento de serviços destinado a contratantes do Carpede
+
+## Descrição
+
+O Carpede Empresa é um aplicativo de gerenciamento de produtos e serviços. É destinado exclusivamente aos nossos clientes que possuem um plano contratado, onde neste mesmo aplicativo será possível fazer o gerenciamento do conteúdo do aplicativo distribuído aos clientes do contratante.
+
+### Como funciona ?
+
+Através deste aplicativo, a empresa poderá ter acesso aos seus produtos, onde poderá adicionar, editar e remover os produtos listados no aplicativo contratado.
+
+### Como utilizar ?
+
+Para os novos usuários, poderá ser feito um pré-cadastro dentro do próprio aplicativo, então o mesmo será contatado pela equipe para mais informações. O usuário poderá criar e gerenciar os produtos durante o período de espera/desenvolvimento do aplicativo livremente.
+
+## Versões
+
+### v1.0
+- Primeira versão de produção
+
+## Dúvidas ?
+
+Entre em contato no email: devleonardorabelo@gmail.com
 
 
-### Para usuários
-<ul>
-  <li>Busca de produtos locais próximos</li>
-  <li>Listagem dinâmica para cada loja</li>
-  <li>Encontrar lojas e falar diretamente com o vendedor, sem intermédio do aplicativo</li>
-</ul>  
 
-## Alguma dúvida?
-Mande um email para mim: devleonardorabelo@gmail.com
-Ou no discord: Leonardo Rabelo#4789
+
+

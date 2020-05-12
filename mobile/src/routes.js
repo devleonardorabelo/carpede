@@ -12,7 +12,8 @@ import StoreProfile from './pages/Store/Profile';
 import StoreProducts from './pages/Store/Products';
 import StoreProductEdit from './pages/Store/Products/edit';
 import StoreProductNew from './pages/Store/Products/new';
-
+import StoreOrders from './pages/Store/Orders';
+import StoreOrder from './pages/Store/Orders/show';
 
 export default function Routes() {
     return (
@@ -26,6 +27,8 @@ export default function Routes() {
                 <AppStack.Screen name="StoreProducts" component={StoreProducts}/>
                 <AppStack.Screen name="StoreProductEdit" component={StoreProductEdit}/>
                 <AppStack.Screen name="StoreProductNew" component={StoreProductNew}/>
+                <AppStack.Screen name="StoreOrders" component={StoreOrders}/>
+                <AppStack.Screen name="StoreOrder" component={StoreOrder}/>
             </AppStack.Navigator>
         </NavigationContainer>
     )

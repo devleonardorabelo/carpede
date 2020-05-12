@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Image, TouchableOpacity } from 'react-native';
-import { Feather } from '@expo/vector-icons';
+import { MaterialCommunityIcons as MI } from '@expo/vector-icons';
 import styles from '../pages/global';
 
 import defaultImage from '../assets/illustrations/repeat_food.png';
@@ -24,7 +24,7 @@ export function PreviewImage(props) {
                 <TouchableOpacity
                 style={[styles.buttonFloat, { marginRight: 16 }]}
                 onPress={props.action1}>
-                    <Feather
+                    <MI
                         name={props.icon1}
                         color='#fff'
                         size={32}
@@ -34,7 +34,7 @@ export function PreviewImage(props) {
                 <TouchableOpacity
                 style={styles.buttonFloat}
                 onPress={props.action2}>
-                    <Feather
+                    <MI
                         name={props.icon2}
                         color='#fff'
                         size={32}
