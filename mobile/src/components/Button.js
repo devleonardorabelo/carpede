@@ -12,12 +12,12 @@ export function Button(props) {
 
     useEffect(() => {
         if(!props.status) {
-            setColor('#02c39a');
+            setColor('#00a896');
             setContent(<Text style={styles.buttonWhiteText}>{props.title}</Text>);
             setDisabled(false);
         }
         if(props.status === 'loading') {
-            setColor('#02c39a');
+            setColor('#028090');
             setContent(<ActivityIndicator size="large" color="#fff" />)
             setDisabled(true);
         }

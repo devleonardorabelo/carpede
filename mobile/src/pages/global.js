@@ -82,35 +82,7 @@ export default StyleSheet.create({
         marginTop: -2,
         color: '#424B54'
     },
-    //CARD
-    card: {
-        flex: 1,
-        flexDirection: 'row',
-        borderRadius: 8,
-        marginBottom: 16,
-        borderBottomWidth: 1,
-        borderBottomColor: '#E7E7E7'
-    },
-    cardRow: {
-        flexDirection: 'row',
-        marginBottom: 8,
-    },
-    cardTitle: {
-        color: '#424B54',
-        fontFamily: 'montserrat-medium',
-        fontSize: widthDP('4%'),
-    },
-    cardImage: {
-        width: widthDP('25%'),
-        height: '100%',
-        borderTopLeftRadius: 8,
-        borderBottomLeftRadius: 8
-    },
-    cardBody: {
-        flexDirection: 'column',
-        padding: 16,
-        flexGrow: 1,
-    },
+    //BOX
     block: {
         backgroundColor: '#05668d',
         padding: 8,
@@ -124,6 +96,18 @@ export default StyleSheet.create({
         alignItems: 'center',
         backgroundColor:'#F5F5F5',
         borderRadius: 8,
+        padding: 8,
+        marginBottom: 16
+    },
+    boxImage: {
+        width: widthDP('25%'),
+        height: '100%',
+        borderRadius: 8
+    },
+    boxBody: {
+        flexDirection: 'column',
+        padding: 16,
+        flexGrow: 1,
     },
     //IMAGE
     fullImage: {
@@ -212,7 +196,7 @@ export default StyleSheet.create({
         marginBottom: 20,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#123456',
+        backgroundColor: '#02c39a',
     },
         buttonWhiteText: {
             fontFamily: 'montserrat-semi-bold',

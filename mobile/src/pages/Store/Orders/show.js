@@ -25,7 +25,7 @@ export default function Show() {
             
             <View style={{ marginBottom: 16 }}>
                 <Text style={[styles.title, { marginBottom: 8 }]}>{order.customer.name}</Text> 
-                <View style={styles.box}>
+                <View style={[styles.box, { marginBottom: 0 }]}>
                     <Text style={[styles.tag , { marginRight: 8 }]}>{order.time}</Text>
                     <Text style={styles.text}>{order.status}</Text>  
                 </View>
@@ -56,7 +56,7 @@ export default function Show() {
 
             <Checkout>
                 <View style={[styles.row, styles.alignCenterX]}>
-                    <ActionButton icon={'motorbike'} style={{marginTop: -16, backgroundColor: '#02c39a'}}/>
+                    <ActionButton icon={'motorbike'} style={{marginTop: -16, backgroundColor: '#00a896'}}/>
                 </View>
                 <View style={styles.column}>
                     <Text style={[styles.subtitle, { marginBottom: 8 }]}>Pagamento:</Text>

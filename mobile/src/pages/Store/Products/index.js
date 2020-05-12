@@ -60,7 +60,7 @@ export default function Products() {
 
         <SafeAreaView style={styles.container}>
             <Header/>
-            <Text style={styles.title}>Produtos</Text>
+            <Text style={[styles.title, { marginBottom: 16 }]}>Produtos</Text>
             <FlatList
                 style={{ marginBottom: 16 }}
                 data={products}

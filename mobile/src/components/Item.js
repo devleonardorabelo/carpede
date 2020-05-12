@@ -89,9 +89,9 @@ export function Avatar(props) {
 export function Card(props) {
 
     return (
-        <TouchableOpacity style={styles.card} onPress={props.action}>
+        <TouchableOpacity style={styles.box} onPress={props.action}>
             <Image
-                style={styles.cardImage}
+                style={styles.boxImage}
                 source={ 
                     props.image === undefined || props.image === null ?
                         cardImage
@@ -101,9 +101,9 @@ export function Card(props) {
                 resizeMode='cover'
             />
             
-            <View style={styles.cardBody}>
+            <View style={styles.boxBody}>
                 <View style={{ flexDirection: 'row' }}>
-                    <Text style={[styles.textWrap, styles.cardTitle]}>{regexName(props.title)}</Text>
+                    <Text style={[styles.textWrap, styles.textBold]}>{regexName(props.title)}</Text>
                 </View>
                 <Text style={styles.price}>
                     {Intl.NumberFormat('pt-BR', {
@@ -120,10 +120,7 @@ export function Card(props) {
 export function CardOrder(props) {
 
     return (
-        <TouchableOpacity style={[styles.box,{
-            padding: 8,
-            marginBottom: 16
-        }]} onPress={props.action}>
+        <TouchableOpacity style={styles.box} onPress={props.action}>
             <View style={{ flexGrow: 1 }}>
                 <Text style={styles.textBold}>{regexName(props.title)}</Text>
                 <Text style={styles.text}>{props.address}</Text>    
@@ -145,7 +142,7 @@ export function CardOrder(props) {
 export function CardItem(props) {
 
     return (
-        <View style={styles.cardRow}>
+        <View style={{ flexDirection: 'row', marginBottom: 8 }}>
             <Text style={styles.text}>{props.amount}x </Text>
             <Text style={[styles.textWrap, styles.text]}>{regexName(props.title)}</Text>
             <Text style={[styles.price, { marginTop: 0 }]}>

@@ -2,12 +2,12 @@ import React, { useState, useCallback } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
 import { SafeAreaView, Text, TouchableOpacity, AsyncStorage } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import { MaterialCommunityIcons as MI } from '@expo/vector-icons'; 
 import styles from '../../global';
 import apiReq from '../../../services/reqToken';
 import { API_DOMAIN } from '../../../constants/api';
 import Loading from '../../../components/Loading';
 import { NavItem, Avatar } from '../../../components/Item';
+import { CustomHeader } from '../../../components/Header';
 
 export default function Panel() {
 
@@ -45,9 +45,7 @@ export default function Panel() {
 		{loadedPage ? (
 			<SafeAreaView style={styles.container}>
 
-				<TouchableOpacity onPress={signout}>
-					<MI name="logout" size={32} color="#333" />
-				</TouchableOpacity>
+				<CustomHeader icon={'logout'} action={signout} />
 				
 				<Avatar
 					image={avatar}

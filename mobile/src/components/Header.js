@@ -29,6 +29,23 @@ export function Header(props) {
     )
 }
 
+export function CustomHeader(props) {
+    return(
+        <View style={styles.header}>
+            <View>
+                <TouchableOpacity
+                    onPress={props.action}
+                >
+                    <MI name={props.icon} size={32} color="#585858" />
+                </TouchableOpacity>
+            </View>
+            <View>
+                {props.children}
+            </View>
+        </View>
+    )
+}
+
 export function TransparentHeader(props) {
 
     const navigation = useNavigation();
