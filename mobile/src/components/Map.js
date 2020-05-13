@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text } from 'react-native'
 import MapView, { Marker } from 'react-native-maps';
 import styles from '../pages/global';
+import { MaterialCommunityIcons as MI } from '@expo/vector-icons';
 
 export function LocationMap(props) {
 
@@ -25,9 +26,13 @@ export function LocationMap(props) {
     }, [])
 
     return(
-        <MapView style={styles.map} initialRegion={currentRegion}>
+        <MapView style={styles.map} initialRegion={currentRegion} minZoomLevel={15}>
             <Marker coordinate={{latitude, longitude}}>
-                <View style={styles.mapMark} />
+                <MI
+                    name={'map-marker'}
+                    color={'#ff6e73'}
+                    size={48}
+                />
             </Marker>
         </MapView>
     )

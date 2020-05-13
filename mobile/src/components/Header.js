@@ -18,7 +18,7 @@ export function Header(props) {
                 <TouchableOpacity
                     onPress={navigateToBack}
                 >
-                    <MI name="arrow-left" size={32} color="#585858" />
+                    <MI name="arrow-left" size={32} color="#ff6e73" />
                 </TouchableOpacity>
             </View>
             <View>
@@ -36,7 +36,7 @@ export function CustomHeader(props) {
                 <TouchableOpacity
                     onPress={props.action}
                 >
-                    <MI name={props.icon} size={32} color="#585858" />
+                    <MI name={props.icon} size={32} color="#ff6e73" />
                 </TouchableOpacity>
             </View>
             <View>
@@ -66,7 +66,7 @@ export function TransparentHeader(props) {
                 <TouchableOpacity
                     onPress={navigateToBack}
                 >
-                    <MI name="arrow-left" size={32} color="#585858" />
+                    <MI name="arrow-left" size={32} color="#ff6e73" />
                 </TouchableOpacity>      
             </View>
             <View style={{

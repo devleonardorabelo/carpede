@@ -6,6 +6,7 @@ import styles from '../../../pages/global';
 import { CardItem, Checkout, Price } from '../../../components/Item';
 import { Header } from '../../../components/Header';
 import { Button, ActionButton, LinearButton } from '../../../components/Button';
+import { LocationMap } from '../../../components/Map';
 
 export default function Show() {
 
@@ -23,17 +24,17 @@ export default function Show() {
                 <LinearButton icon={'trash-can-outline'} />
             </Header>
             
-            <View style={{ marginBottom: 16 }}>
-                <Text style={[styles.title, { marginBottom: 8 }]}>{order.customer.name}</Text> 
-                <View style={[styles.box, { marginBottom: 0 }]}>
-                    <Text style={[styles.tag , { marginRight: 8 }]}>{order.time}</Text>
-                    <Text style={styles.text}>{order.status}</Text>  
-                </View>
+            <View style={[styles.row, { alignItems: 'center', marginBottom: 0 }]}>
+                <Text style={styles.subtitle}>#</Text>
+                <Text style={styles.title}>{order.order_id}</Text>
+            </View>
+
+            <View style={styles.column}>
+                <Text style={styles.textBold}>{order.customer.name}</Text>
             </View>
 
             <View style={styles.orderList}>
-                <Text style={[styles.subtitle, { marginBottom: 16 }]}>Detalhes do pedido:</Text>
-                
+                <Text style={[styles.subtitle, { marginBottom: 8 }]}>Detalhes do pedido:</Text>
                 <FlatList
                     data={order.products}
                     keyExtractor={product => String(product._id)}
@@ -49,38 +50,47 @@ export default function Show() {
                 />    
             </View>
             
-            <View style={[styles.block, { flexGrow: 0 }]}>
-                <Text style={[styles.text, { color: '#FFFFFF' }]}>Total:</Text>
-                <Price value={order.value} style={{ fontSize: 24, color: '#FFFFFF'}}/>
+            <View style={[styles.column, { flexGrow: 0, alignItems: 'flex-end' }]}>
+                <Text style={styles.text}>Total:</Text>
+                <Price value={order.value} style={[styles.title, { marginBottom: 16 }]}/>
             </View>
+
+            <LocationMap latitude={order.location.coordinates[0]} longitude={order.location.coordinates[1]} />
 
             <Checkout>
                 <View style={[styles.row, styles.alignCenterX]}>
-                    <ActionButton icon={'motorbike'} style={{marginTop: -16, backgroundColor: '#00a896'}}/>
+                    <ActionButton
+                        icon={'motorbike'}
+                        title={'Entrega'}
+                    />
                 </View>
-                <View style={styles.column}>
-                    <Text style={[styles.subtitle, { marginBottom: 8 }]}>Pagamento:</Text>
-                    <View style={[styles.block, { backgroundColor: '#FFFFFF' }]}>
+
+                <View style={styles.row}>
+                    <Text style={styles.textBold}>Pagamento:</Text>
+                </View>
+
+                <View style={styles.row}>
+                    
+                    <View style={[styles.column,{ paddingHorizontal: 0, flexGrow: 1 }]}>
                         <Text style={styles.text}>Total</Text>
                         <Price value={order.value} /> 
                     </View>
-                    { order.paymentMethod.money ?
-                        <View style={{ flexDirection: 'row' }}>
-                            <View style={[styles.block, { marginRight: 8 }]}>
-                                <Text style={[styles.text, { color: '#fff' }]}>Dinheiro</Text>
-                                <Price value={order.paymentMethod.money.amount} style={{ color: '#FFFFFF' }}/>   
-                            </View>
-                            <View style={[styles.block, { marginLeft: 8 }]}>
-                                <Text style={[styles.text, { color: '#fff' }]}>Troco</Text>
-                                <Price value={order.paymentMethod.money.change} style={{ color: '#FFFFFF' }}/>   
-                            </View>
+
+                    { order.paymentMethod.money ? <>
+                        <View style={[styles.column,{ paddingHorizontal: 0, flexGrow: 1 }]}>
+                            <Text style={styles.text}>Dinheiro</Text>
+                            <Price value={order.paymentMethod.money.amount} style={{ color: '#271814' }}/>   
                         </View>
-                        : null
+                        <View style={[styles.column,{ paddingHorizontal: 0, flexGrow: 1 }]}>
+                            <Text style={[styles.text, { color: '#271814' }]}>Troco</Text>
+                            <Price value={order.paymentMethod.money.change} style={{ color: '#271814' }}/>   
+                        </View>
+                        </>: null
                     }
                     { order.paymentMethod.card ?
-                        <View style={styles.block}>
-                            <Text style={[styles.text, { color: '#fff' }]}>Cartão</Text>
-                            <Text style={[styles.subtitle, { color: '#fff' }]}>
+                        <View style={[styles.column,{ paddingHorizontal: 0, flexGrow: 1 }]}>
+                            <Text style={styles.text}>Cartão</Text>
+                            <Text style={styles.subtitle}>
                                 {order.paymentMethod.card.method}
                             </Text>    
                         </View>
@@ -88,14 +98,18 @@ export default function Show() {
                     }   
                 </View>
 
-                <View style={styles.column}>
-                    <Text style={styles.subtitle}>Entrega:</Text>
-                    <Text style={styles.text}>{order.customer.address}</Text>
+                <View style={styles.row}>
+                    <Text style={styles.textBold}>Contato:</Text>
                 </View>
 
                 <View style={styles.row}>
-                    <ActionButton icon={'whatsapp'} style={{marginRight: 8}} action={sendWhatsapp}/>
-                    <ActionButton icon={'map-marker'} />
+                    <ActionButton icon={'whatsapp'} style={{ marginRight: 8 }} action={sendWhatsapp}/> 
+                    <ActionButton icon={'map-marker'} /> 
+                </View>
+
+                <View style={[styles.column,{ marginBottom: 32 }]}>
+                    <Text style={styles.textBold}>Entrega:</Text>
+                    <Text style={styles.text}>{order.customer.address}</Text>
                 </View>
 
                 <View style={styles.column}>

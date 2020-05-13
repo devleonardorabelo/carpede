@@ -26,7 +26,7 @@ export function NavItem(props) {
                 <Text style={styles.subtitleTextAction}>{props.subtitle}</Text>
             </View>
             <View style={styles.arrowAction}>
-                <MI name="chevron-right" size={24} color="#333" />	
+                <MI name="chevron-right" size={24} color="#ff6e73" />	
             </View>
         </TouchableOpacity>
     )
@@ -120,10 +120,10 @@ export function Card(props) {
 export function CardOrder(props) {
 
     return (
-        <TouchableOpacity style={styles.box} onPress={props.action}>
+        <TouchableOpacity style={styles.action} onPress={props.action}>
             <View style={{ flexGrow: 1 }}>
-                <Text style={styles.textBold}>{regexName(props.title)}</Text>
-                <Text style={styles.text}>{props.address}</Text>    
+                <Text style={[styles.textBold, styles.textWrap]}>{regexName(props.title)}</Text>
+                <Text style={[styles.text, styles.textWrap]}>{props.address}</Text>    
             </View>
             <View>
                 <Text style={[styles.price, { marginTop: 0 }]}>
@@ -182,16 +182,16 @@ export function Checkout(props) {
                 opened = true;
             } else {
                 translateY.setValue(offset);
-                translateY.setOffset(-450);
-                offset = -450;
+                translateY.setOffset(-430);
+                offset = -430;
             }
 
             Animated.timing(translateY, {
-                toValue: opened ? 450 : 0,
+                toValue: opened ? 430 : 0,
                 duration: 300,
                 useNativeDriver: true,
             }).start(() => {
-                offset = opened ?  0 : -450;
+                offset = opened ?  0 : -430;
                 translateY.setOffset(offset);
                 translateY.setValue(0);
             });
@@ -209,8 +209,8 @@ export function Checkout(props) {
                     styles.orderCheckout, {
                         transform: [{
                             translateY: translateY.interpolate({
-                                inputRange: [-450, 0],
-                                outputRange: [-450, 0],
+                                inputRange: [-430, 0],
+                                outputRange: [-430, 0],
                                 extrapolate: 'clamp'
                             })
                         }

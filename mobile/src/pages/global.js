@@ -16,34 +16,35 @@ export default StyleSheet.create({
     //STRUCTURE
     container: {
         flex: 1,
-        backgroundColor: '#fff',
-        paddingHorizontal: widthDP('8%'),
-        paddingTop: Constants.statusBarHeight + 20,
+        backgroundColor: '#FDFDFD',
     },
     header: {
         marginBottom: 24,
         flexDirection: 'row',
         justifyContent: 'space-between',
-        alignItems: 'center'
+        alignItems: 'center',
+        paddingHorizontal: widthDP('5%'),
+        paddingTop: Constants.statusBarHeight + 20,
     },
     store: {
         flexDirection: 'row',
-        marginBottom: 40
+        marginBottom: 40,
+        paddingHorizontal: widthDP('5%'),
     },
     storeAvatar: {
         backgroundColor: '#ccc',
-        width: widthDP('20%'),
-        height: widthDP('20%'),
+        width: widthDP('15%'),
+        height: widthDP('15%'),
         borderRadius: 100,
     },
     row: {
         flexDirection: 'row',
-        paddingHorizontal: widthDP('8%'),
+        paddingHorizontal: widthDP('5%'),
         marginBottom: 16,
     },
     column: {
         flexDirection: 'column',
-        paddingHorizontal: widthDP('8%'),
+        paddingHorizontal: widthDP('5%'),
         marginBottom: 16,
     },
     alignCenterX: {
@@ -53,9 +54,8 @@ export default StyleSheet.create({
     action: {
         flexDirection: 'row',
         borderBottomWidth: 1,
-        borderBottomColor: '#F2F2F2',
-        height: 50,
-        paddingVertical: 40
+        borderBottomColor: '#DFDFDF',
+        paddingVertical: 16
     },
     iconAction: {
         alignItems: 'center',
@@ -83,21 +83,13 @@ export default StyleSheet.create({
         color: '#424B54'
     },
     //BOX
-    block: {
-        backgroundColor: '#05668d',
-        padding: 8,
-        borderRadius: 8,
-        color: '#FFFFFF',
-        flexGrow: 1,
-        marginBottom: 16
-    },
     box: {
         flexDirection: 'row',
         alignItems: 'center',
-        backgroundColor:'#F5F5F5',
         borderRadius: 8,
         padding: 8,
-        marginBottom: 16
+        borderBottomWidth: 1,
+        borderBottomColor: '#DFDFDF',
     },
     boxImage: {
         width: widthDP('25%'),
@@ -166,7 +158,6 @@ export default StyleSheet.create({
     textWrap: {
         flex: 1,
         flexWrap: 'wrap',
-        alignSelf: 'center',
     },
     textHide: {
         height: widthDP('5%'),
@@ -181,14 +172,7 @@ export default StyleSheet.create({
         backgroundColor: '#F5F5F5',
         borderRadius: 8
     }, 
-    tag: {
-        backgroundColor: '#05668d',
-        padding: 8,
-        borderRadius: 8,
-        color: '#FFFFFF',
-        fontFamily: 'montserrat-semi-bold',
-        fontSize: widthDP('4%'),
-    },
+
     //BUTTONS
     button: {
         height: 50,
@@ -225,7 +209,7 @@ export default StyleSheet.create({
         alignItems: 'center'
     },
     actionButton: {
-        backgroundColor: '#00a896',
+        backgroundColor: '#ff6e73',
         height: 64,
         width: 64,
         borderRadius: 100,
@@ -316,12 +300,6 @@ export default StyleSheet.create({
     map: {
         flex:1,
     },
-    mapMark: {
-        width: widthDP('7%'),
-        height: widthDP('7%'),
-        backgroundColor: '#FF0022',
-        borderRadius: 100
-    },
     orderView: {
         height: heightDP('80%'),
         backgroundColor: '#FFFFFF',
@@ -330,20 +308,28 @@ export default StyleSheet.create({
         paddingBottom: 80,
     },
     orderList: {
-        backgroundColor: '#F9F9F9',
-        padding: 16,
+        padding: widthDP('5%'),
         borderRadius: 8,
         marginBottom: 16,
+        borderBottomWidth: 1,
+        borderBottomColor: '#DFDFDF'
     },  
     orderCheckout: {
         height: 500,
-        backgroundColor: '#F0F0F0',
+        backgroundColor: '#FFFFFF',
         position: 'absolute',
         right: 0,
         left: 0,
-        bottom: -450,
-        borderTopLeftRadius: 50,
-        borderTopRightRadius: 50,
+        bottom: -430,
+        shadowColor: "#000",
+        shadowOffset: {
+            width: 0,
+            height: 4,
+        },
+        shadowOpacity: 0.32,
+        shadowRadius: 5.46,
+
+        elevation: 9,
     },
 
 
