@@ -54,9 +54,8 @@ export default function Order() {
 
     return (<>{loadedPage ?
         <SafeAreaView style={styles.container}>
-            <Header />
+            <Header title={'pedidos'}/>
             <View style={styles.column}>
-                <Text style={[styles.title, { marginBottom: 16 }]}>Pedidos</Text>
                 <FlatList
                     data={orders}
                     keyExtractor={order => String(order._id)}

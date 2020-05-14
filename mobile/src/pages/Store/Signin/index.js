@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, AsyncStorage } from 'react-native';
+import { View, Text, AsyncStorage, SafeAreaView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import styles from '../../global';
 import api from '../../../services/api';
@@ -12,31 +12,31 @@ export default function Signin(){
 
     const [ email, setEmail ] = useState('');
     const [ password, setPassword ] = useState('');
-    const [ done, setDone ] = useState(false);
     const [ alert, setAlert ] = useState();
-
+    const [ status, setStatus ] = useState();
     const navigation = useNavigation();
 
     async function saveUser(store) {
 
         await AsyncStorage.clear();
         await AsyncStorage.setItem('@Carpede:storeToken', store);
-        setDone(false);
+        
         return navigation.navigate('StorePanel');
 
     }
 
     async function handleSignin() {
 
-        setDone(true);
+        setStatus('loading');
 
         const { data } = await api.post('signin', { email, password });
         if(data.error) {
-            setDone(false);
+            setStatus();
             setAlert(data.error);
             return;
         };
         const store = data;
+        setStatus('done');
         await saveUser(store);
 
     }
@@ -44,26 +44,29 @@ export default function Signin(){
     const navigateToSignup = () => navigation.navigate('StoreSignup')
 
     return(<>
-        <View style={styles.container}>
-            <Header />
-            <Text style={styles.title}>Entrar</Text>
-            <Input
-                title={'Email'}
-                name={'email'}
-                action={email => setEmail(email)}
-                capitalize={'none'}
-                focus={true}
-                maxLength={30}
-                error={alert}
-            />
-            <InputPassword
-                title={'Senha'}
-                name={'password'}
-                action={password => setPassword(password)}
-                error={alert}
-            />
-            <Button action={handleSignin} title={'Entrar'} done={done}/>
-            <ButtonTransparent action={navigateToSignup} title={'Quer criar uma conta'} icon='arrow-right' />
-        </View>
+        <SafeAreaView style={styles.container}>
+            <Header title={'entrar'}/>
+            <View style={styles.column}>
+                <Text style={[styles.title,{ marginBottom: 16 }]}>Entre na sua conta</Text>
+                <Input
+                    title={'Email'}
+                    name={'email'}
+                    action={email => setEmail(email)}
+                    capitalize={'none'}
+                    focus={true}
+                    maxLength={30}
+                    error={alert}
+                />
+                <InputPassword
+                    title={'Senha'}
+                    name={'password'}
+                    action={password => setPassword(password)}
+                    error={alert}
+                />
+                <Button action={handleSignin} title={'Entrar'} status={status}/>
+                <ButtonTransparent action={navigateToSignup} title={'Quero criar uma conta'} icon='account-plus-outline' />
+            </View>
+            
+        </SafeAreaView>
     </>)
 }

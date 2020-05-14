@@ -34,7 +34,7 @@ export function NavItem(props) {
 
 export function Avatar(props) {
     return (
-        <View style={[styles.store, { marginTop: 20 }]}>
+        <View style={styles.store}>
             <TouchableOpacity onPress={props.action}>
                 <Image
                     style={[styles.storeAvatar, { backgroundColor: '#FF5216' }]}
@@ -49,7 +49,7 @@ export function Avatar(props) {
                 { props.isChangeable ? 
                 <View style={styles.boxFloatButton}>
                     <View
-                    style={[styles.buttonFloat, { width: 48, height: 48, display: props.transparent ? 'none' : 'flex' }]}>
+                    style={[styles.buttonFloat, { width: 32, height: 32, display: props.transparent ? 'none' : 'flex' }]}>
                         <MI
                             name={props.icon}
                             color='#fff'

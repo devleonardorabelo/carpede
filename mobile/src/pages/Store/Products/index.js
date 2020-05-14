@@ -59,11 +59,7 @@ export default function Products() {
     return(<>{loadedPage ? (
 
         <SafeAreaView style={styles.container}>
-            <Header/>
-
-            <View style={[styles.column,{ marginBottom: 0 }]}>
-                <Text style={[styles.title, { marginBottom: 16 }]}>Produtos</Text>  
-            </View>
+            <Header title={'produtos'}/>
             
             <FlatList
                 style={styles.column}

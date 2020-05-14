@@ -119,8 +119,8 @@ export default StyleSheet.create({
     boxFloatButton: {
         position: 'absolute',
         justifyContent: 'center',
-        width: widthDP('20%'),
-        height: widthDP('20%'),
+        width: widthDP('15%'),
+        height: widthDP('15%'),
         alignItems: 'center'
     },
     //TEXTS AND TITLES
@@ -180,7 +180,6 @@ export default StyleSheet.create({
         marginBottom: 20,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: '#02c39a',
     },
         buttonWhiteText: {
             fontFamily: 'montserrat-semi-bold',
@@ -312,11 +311,11 @@ export default StyleSheet.create({
         borderRadius: 8,
         marginBottom: 16,
         borderBottomWidth: 1,
-        borderBottomColor: '#DFDFDF'
+        borderBottomColor: '#DFDFDF',
     },  
     orderCheckout: {
         height: 500,
-        backgroundColor: '#FFFFFF',
+        backgroundColor: '#FCFCFC',
         position: 'absolute',
         right: 0,
         left: 0,
@@ -331,6 +330,9 @@ export default StyleSheet.create({
 
         elevation: 9,
     },
-
+    deliveryInfo: {
+        backgroundColor: '#ff6e73',
+        paddingVertical: 20
+    },
 
 })

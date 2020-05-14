@@ -17,12 +17,12 @@ export function Button(props) {
             setDisabled(false);
         }
         if(props.status === 'loading') {
-            setColor('#ff6e73');
-            setContent(<ActivityIndicator size="large" color="#fff" />)
+            setColor('#e2e2e2');
+            setContent(<ActivityIndicator size="large" color="#ff6e73" />)
             setDisabled(true);
         }
         if(props.status === 'done') {
-            setColor('#ff6e73');
+            setColor('#02c39a');
             setContent(<Text style={styles.buttonWhiteText}>Feito!</Text>)
             setDisabled(false);
         }
@@ -72,7 +72,7 @@ export function ActionButton(props) {
 
 export function LinearButton(props) {
     return (
-        <TouchableOpacity>
+        <TouchableOpacity onPress={props.action}>
             <MI
                 name={props.icon}
                 size={32}

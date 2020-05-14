@@ -1,5 +1,5 @@
 import React from 'react';
-import { TouchableOpacity, View } from 'react-native';
+import { TouchableOpacity, View, Text } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { MaterialCommunityIcons as MI } from '@expo/vector-icons';
 import styles from '../pages/global';
@@ -21,9 +21,15 @@ export function Header(props) {
                     <MI name="arrow-left" size={32} color="#ff6e73" />
                 </TouchableOpacity>
             </View>
-            <View>
-                {props.children}
-            </View>
+            {props.title ?
+                <Text style={[styles.textBold,{ textTransform: 'uppercase' }]}>{props.title}</Text>
+            :null
+            }
+            {props.children ?
+                <View>{props.children}</View>
+                :
+                <View style={{marginLeft: 32}}/>
+            }
         </View>
           
     )

@@ -7,7 +7,7 @@ import styles from '../../global';
 import { Header } from '../../../components/Header'
 import { PreviewImage } from '../../../components/Image';
 import { Input } from '../../../components/Input';
-import { Button, ButtonTransparent } from '../../../components/Button';
+import { Button, LinearButton } from '../../../components/Button';
 import { API_DOMAIN } from '../../../constants/api';
 
 import { imagePicker, cameraPicker ,uploadImage } from '../../../utils/ImagePicker';
@@ -77,9 +77,13 @@ export default function EditProduct() {
 
     return(<>
         <SafeAreaView style={styles.container}>
-            <Header />
-            <ScrollView showsVerticalScrollIndicator={false}>
-                <Text style={styles.title}>{product.name}</Text>
+
+            <Header title={product.name}>
+                <LinearButton icon={'trash-can-outline'} action={() => handleDelete(product._id)}/>
+            </Header>
+
+            <ScrollView showsVerticalScrollIndicator={false} style={styles.column}>
+
                 <PreviewImage
                     image={image}
                     action1={getImage}
@@ -114,7 +118,7 @@ export default function EditProduct() {
                 />
                 
                 <Button action={() => handleUpdate(product._id)} title={'Salvar'} status={status}/>
-                <ButtonTransparent action={() => handleDelete(product._id)} icon='trash' title='Apagar este produto' />        
+                
             </ScrollView>
         </SafeAreaView>
     </>)
