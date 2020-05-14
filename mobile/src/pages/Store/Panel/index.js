@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import { useFocusEffect } from '@react-navigation/native';
-import { SafeAreaView, Text, TouchableOpacity, AsyncStorage } from 'react-native';
+import { SafeAreaView, Text, View, AsyncStorage } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import styles from '../../global';
 import apiReq from '../../../services/reqToken';
@@ -45,33 +45,36 @@ export default function Panel() {
 		{loadedPage ? (
 			<SafeAreaView style={styles.container}>
 
+
 				<CustomHeader icon={'logout'} action={signout} />
 				
 				<Avatar
 					image={avatar}
 					title={store}
 					subtitle={whatsapp}
-				/>
-				<Text style={styles.subtitle}>Seja bem-vindo</Text>
-				<NavItem
-					action={navigateToOrders}
-					icon='motorbike'
-					title='Pedidos'
-					subtitle='Lista de pedidos ativos'
-				/>
-				<NavItem
-					action={navigateToProducts}
-					icon='package-variant-closed'
-					title='Produtos'
-					subtitle='Lista de produtos'
-				/>
-				<NavItem
-					action={navigateToProfile}
-					icon='account'
-					title='Perfil'
-					subtitle='Informações da Loja'
-				/>
+				/>	
 
+				<View style={styles.column}>
+
+					<NavItem
+						action={navigateToOrders}
+						icon='motorbike'
+						title='Pedidos'
+						subtitle='Lista de pedidos ativos'
+					/>
+					<NavItem
+						action={navigateToProducts}
+						icon='package-variant-closed'
+						title='Produtos'
+						subtitle='Lista de produtos'
+					/>
+					<NavItem
+						action={navigateToProfile}
+						icon='account'
+						title='Perfil'
+						subtitle='Informações da Loja'
+					/>	
+				</View>
 
 			</SafeAreaView>
 		):(

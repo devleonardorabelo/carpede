@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import { SafeAreaView, Text, FlatList } from 'react-native';
+import { SafeAreaView, Text, FlatList, View } from 'react-native';
 import apiReq from '../../../services/reqToken';
 import styles from '../../global';
 
@@ -54,26 +54,28 @@ export default function Order() {
 
     return (<>{loadedPage ?
         <SafeAreaView style={styles.container}>
-            <Header />
-            <Text style={[styles.title, { marginBottom: 16 }]}>Pedidos</Text>
-            <FlatList
-                data={orders}
-                keyExtractor={order => String(order._id)}
-                showsVerticalScrollIndicator={false}
-                onEndReached={loadOrders}
-                onEndReachedThreshold={0.3}
-                numColumns={1}
-                renderItem={({ item: order }) => (
-                    
-                    <CardOrder
-                        action={() => navigateToOrder(order)}
-                        title={order.customer.name}
-                        address={order.customer.address}
-                        time={order.time}
-                        price={order.value}
-                    />
-                )}
-            /> 
+            <Header title={'pedidos'}/>
+            <View style={styles.column}>
+                <FlatList
+                    data={orders}
+                    keyExtractor={order => String(order._id)}
+                    showsVerticalScrollIndicator={false}
+                    onEndReached={loadOrders}
+                    onEndReachedThreshold={0.3}
+                    numColumns={1}
+                    renderItem={({ item: order }) => (
+                        
+                        <CardOrder
+                            action={() => navigateToOrder(order)}
+                            title={order.customer.name}
+                            address={order.customer.address}
+                            time={order.time}
+                            price={order.value}
+                        />
+                    )}
+                />     
+            </View>
+            
         </SafeAreaView>
     :
         <Loading />

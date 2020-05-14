@@ -14,6 +14,7 @@ import StoreProductEdit from './pages/Store/Products/edit';
 import StoreProductNew from './pages/Store/Products/new';
 import StoreOrders from './pages/Store/Orders';
 import StoreOrder from './pages/Store/Orders/show';
+import StoreDelivery from './pages/Store/Orders/delivery';
 
 export default function Routes() {
     return (
@@ -29,6 +30,7 @@ export default function Routes() {
                 <AppStack.Screen name="StoreProductNew" component={StoreProductNew}/>
                 <AppStack.Screen name="StoreOrders" component={StoreOrders}/>
                 <AppStack.Screen name="StoreOrder" component={StoreOrder}/>
+                <AppStack.Screen name="StoreDelivery" component={StoreDelivery}/>
             </AppStack.Navigator>
         </NavigationContainer>
     )

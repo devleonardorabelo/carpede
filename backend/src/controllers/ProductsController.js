@@ -1,4 +1,5 @@
 const Product = require('../models/Product');
+const Order = require('../models/Order');
 
 module.exports = {
 
@@ -58,6 +59,8 @@ module.exports = {
 
         if(!price) return res.json({ error: { text: 'Dê um preço para seu produto', input: 'price' } });
 
+        let treatPrice = price.replace(",", ".")
+
         try{
             await Product.updateOne({
                 store_id: store.id,
@@ -66,7 +69,7 @@ module.exports = {
                 image,
                 description,
                 name,
-                price
+                price: treatPrice
             })
 
             return res.json({status: 'Alterado com sucesso'})            
@@ -82,7 +85,11 @@ module.exports = {
         if(!id) return res.json({error: 'Houve um problema ao deletar seu produto, tente novamente'});
 
         try {
-            await Product.deleteOne({_id: id})
+
+            //await Order.deleteMany({ "products.item": id  })
+
+            //await Product.deleteOne({_id: id})
+
             return res.json({status: 'Produto apagado com sucesso'});
         } catch (err) {
             return res.json({error: 'Houve um erro ao alterar seu produto, tente novamente'})

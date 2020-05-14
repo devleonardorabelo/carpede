@@ -81,12 +81,14 @@ export default function Profile() {
         {loadedPage ? (
         <>
             <SafeAreaView style={styles.container}>
-                <Header/>
+
+                <Header title={'perfil'}/>
+
                 <ScrollView
-                    style={styles.scrollView}
+                    style={styles.column}
                     showsVerticalScrollIndicator={false}
                 >
-                    <Text style={styles.title}>Perfil</Text>
+
                     <Avatar
                         image={avatar}
                         title={name}

@@ -70,9 +70,9 @@ export default function Signup(){
 
     return (<>
         <SafeAreaView style={styles.container}>
-            <Header />
-            <ScrollView showsVerticalScrollIndicator={false}>
-                <Text style={styles.title}>Criar uma conta</Text>
+            <Header title={'nova conta'}/>
+            <ScrollView showsVerticalScrollIndicator={false} style={styles.column}>
+                <Text style={[styles.title,{ marginBottom: 16 }]}>Criar uma conta</Text>
                 <Avatar
                     image={image}
                     title={name}
@@ -117,7 +117,7 @@ export default function Signup(){
                     error={alert}
                 />
                 <Button action={handleSignup} title={'Começar agora!'} status={status}/>
-                <ButtonTransparent action={navigateToSignin} title={'Já tenho uma conta'} icon={'log-in'} />    
+                <ButtonTransparent action={navigateToSignin} title={'Já tenho uma conta'} icon={'login'} />    
             </ScrollView>           
         </SafeAreaView>
     </>)

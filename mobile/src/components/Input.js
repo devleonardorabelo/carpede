@@ -9,6 +9,17 @@ export function Input(props) {
         if(props.error.input == props.name) return true;
     }
 
+    function treatContent(content){
+
+        if(typeof content === 'number') {
+            return content.toFixed(2);
+        }
+
+        return content;
+
+    }
+
+
     return (
         <View style={styles.groupInput}>
             <View style={styles.labelInput}>
@@ -26,7 +37,7 @@ export function Input(props) {
                 }]}
                 placeholder={props.placeholder}
                 onChangeText={props.action}
-                defaultValue={props.default}
+                defaultValue={treatContent(props.default)}
                 autoFocus={props.focus || false}
                 keyboardType={props.keyboard || 'default'}
                 maxLength={props.maxLength || 20}

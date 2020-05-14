@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import { Text, FlatList, SafeAreaView } from 'react-native';
+import { Text, FlatList, SafeAreaView, View } from 'react-native';
 import apiReq from '../../../services/reqToken';
 import styles from '../../global';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
@@ -59,10 +59,10 @@ export default function Products() {
     return(<>{loadedPage ? (
 
         <SafeAreaView style={styles.container}>
-            <Header/>
-            <Text style={[styles.title, { marginBottom: 16 }]}>Produtos</Text>
+            <Header title={'produtos'}/>
+            
             <FlatList
-                style={{ marginBottom: 16 }}
+                style={styles.column}
                 data={products}
                 keyExtractor={product => String(product._id)}
                 showsVerticalScrollIndicator={false}
@@ -78,8 +78,11 @@ export default function Products() {
                         price={product.price}
                     />
                 )}
-            />        
-            <Button action={navigateToNew} title='Adicionar Produto'/>
+            />
+            <View style={styles.column}>
+                <Button action={navigateToNew} title='Adicionar Produto'/>
+            </View>        
+            
 
         </SafeAreaView>
         ) : (

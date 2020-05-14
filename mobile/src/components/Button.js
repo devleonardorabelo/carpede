@@ -12,13 +12,13 @@ export function Button(props) {
 
     useEffect(() => {
         if(!props.status) {
-            setColor('#00a896');
+            setColor('#ff6e73');
             setContent(<Text style={styles.buttonWhiteText}>{props.title}</Text>);
             setDisabled(false);
         }
         if(props.status === 'loading') {
-            setColor('#028090');
-            setContent(<ActivityIndicator size="large" color="#fff" />)
+            setColor('#e2e2e2');
+            setContent(<ActivityIndicator size="large" color="#ff6e73" />)
             setDisabled(true);
         }
         if(props.status === 'done') {
@@ -56,23 +56,27 @@ export function ButtonTransparent(props) {
 
 export function ActionButton(props) {
     return (
-        <TouchableOpacity style={[styles.actionButton, props.style]} onPress={props.action}>
+        <TouchableOpacity style={[styles.actionButton, props.style, props.title ? { backgroundColor: null } : null]} onPress={props.action}>
             <MI
                 name={props.icon}
                 size={32}
-                color='#fff'
+                color={ props.title ? '#ff6e73' : '#FFFFFF' }
             />
+            {props.title ?
+                <Text style={[styles.text, { color: '#ff6e73' }]}>{props.title}</Text>
+                :null    
+            }
         </TouchableOpacity>
     )
 }
 
 export function LinearButton(props) {
     return (
-        <TouchableOpacity>
+        <TouchableOpacity onPress={props.action}>
             <MI
                 name={props.icon}
                 size={32}
-                color='#585858'
+                color='#ff6e73'
             />
         </TouchableOpacity>
     )
