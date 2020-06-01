@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import { View, Text, AsyncStorage, SafeAreaView } from 'react-native';
+import React, { useState, useContext } from 'react';
+import AuthContext from '../../../contexts/auth';
+import { View, Text, SafeAreaView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import styles from '../../global';
 import api from '../../../services/api';
@@ -14,16 +15,9 @@ export default function Signin(){
     const [ password, setPassword ] = useState('');
     const [ alert, setAlert ] = useState();
     const [ status, setStatus ] = useState();
+    
     const navigation = useNavigation();
-
-    async function saveUser(store) {
-
-        await AsyncStorage.clear();
-        await AsyncStorage.setItem('@Carpede:storeToken', store);
-        
-        return navigation.navigate('StorePanel');
-
-    }
+    const { sign } = useContext(AuthContext);
 
     async function handleSignin() {
 
@@ -35,13 +29,20 @@ export default function Signin(){
             setAlert(data.error);
             return;
         };
-        const store = data;
-        setStatus('done');
-        await saveUser(store);
 
+        await sign({
+            avatar: data.avatar,
+            name: data.name,
+            whatsapp: data.whatsapp,
+            email: data.email,
+            token: data.token
+        });
+
+        return setStatus('done');
+        
     }
 
-    const navigateToSignup = () => navigation.navigate('StoreSignup')
+    const navigateToSignup = () => navigation.navigate('Signup')
 
     return(<>
         <SafeAreaView style={styles.container}>

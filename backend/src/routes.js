@@ -9,6 +9,7 @@ const AuthController = require('./controllers/AuthController');
 const PanelController = require('./controllers/PanelController');
 const ProfileController = require('./controllers/ProfileController');
 const ProductsController = require('./controllers/ProductsController');
+const CategoriesController = require('./controllers/CategoriesController');
 const OrdersController = require('./controllers/OrdersController');
 
 const CheckAuth = require('./middlewares/auth');
@@ -16,16 +17,13 @@ const storage = require('./configs/storage');
 const upload = multer({ storage });
 
 //AUTH
-routes.post('/check', (req, res) => {
+routes.post('/check', async (req, res) => {
 
-    const { storeToken } = req.body;
-    
-    jwt.verify(storeToken, process.env.SECRET, (err, decoded) => {
-		
-		if(err) return res.json({ logged: false });
+    const current = req.headers.user
+       
+    const store = await Store.findOne({_id: current.id});
 
-		return res.json({logged: true});
-	});
+    return res.json(store);
 
 })
 
@@ -57,6 +55,10 @@ routes.get('/products', CheckAuth, ProductsController.index);
 routes.post('/products/new', CheckAuth, ProductsController.store);
 routes.post('/products/edit', CheckAuth, ProductsController.update);
 routes.post('/products/delete', CheckAuth, ProductsController.destroy);
+routes.get('/categories', CheckAuth, CategoriesController.index);
+routes.post('/categories/new', CheckAuth, CategoriesController.store);
+routes.post('/categories/edit', CheckAuth, CategoriesController.update);
+routes.post('/categories/delete', CheckAuth, CategoriesController.destroy);
 routes.get('/orders', CheckAuth, OrdersController.index);
 routes.post('/orders/new', OrdersController.store);
 

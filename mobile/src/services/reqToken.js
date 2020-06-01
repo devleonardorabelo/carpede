@@ -14,9 +14,9 @@ apiReq.interceptors.request.use(
     
   async function(config) {
       
-    const preToken = await AsyncStorage.getItem('@Carpede:storeToken');
-    const token = `Bearer ${preToken}`
-    config.headers.authorization = token;
+    const user = JSON.parse(await AsyncStorage.getItem('@Carpede:store'));
+    const { token } = user;
+    config.headers.authorization = `Bearer ${token}`;
     return config;
 
   },

@@ -1,9 +1,10 @@
-import React, { useState } from 'react';
-import { Text, AsyncStorage, SafeAreaView, ScrollView } from 'react-native';
+import React, { useState, useContext } from 'react';
+import { Text, SafeAreaView, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import styles from '../../global';
 import api from '../../../services/api';
 import { Header } from '../../../components/Header';
+import AuthContext from '../../../contexts/auth';
 import { Input, InputPassword } from '../../../components/Input';
 import { Button, ButtonTransparent } from '../../../components/Button';
 import { Avatar } from '../../../components/Item';
@@ -13,6 +14,7 @@ import { imagePicker, uploadImage } from '../../../utils/ImagePicker';
 export default function Signup(){
     
     const navigation = useNavigation();
+    const { sign } = useContext(AuthContext);
 
     const [ image, setImage ] = useState();
     const [ avatar, setAvatar ] = useState('');
@@ -52,20 +54,20 @@ export default function Signup(){
             return;
         };
 
-        const store = data;
-        await saveUser(store);
+        await sign({
+            avatar,
+            name,
+            whatsapp,
+            email,
+            token: data
+        });
 
-    }
+        return;
 
-    async function saveUser(store) {
-        await AsyncStorage.clear();
-        await AsyncStorage.setItem('@Carpede:storeToken', store);
-        setStatus(false);
-        return navigation.navigate('StorePanel');
     }
 
     function navigateToSignin() {
-        navigation.navigate('StoreSignin');
+        navigation.navigate('Signin');
     }
 
     return (<>

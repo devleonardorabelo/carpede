@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { FlatList, SafeAreaView, View } from 'react-native';
 import apiReq from '../../../services/reqToken';
 import styles from '../../global';
@@ -9,9 +9,9 @@ import { Header } from '../../../components/Header';
 import { Card } from '../../../components/Item';
 import { Button } from '../../../components/Button';
 
-export default function Products() {
+export default function Categories() {
 
-    const [ products, setProducts ] = useState([]);
+    const [ categories, setCategories ] = useState([]);
     const [ total, setTotal ] = useState(0);
     const [ page, setPage ] = useState(1);
     const [ loadedPage, setLoadedPage ] = useState(false);
@@ -19,22 +19,22 @@ export default function Products() {
 
     const navigation = useNavigation();
 
-    async function loadProducts() {
+    async function loadCategories() {
 
         if(loading) return
 
-        if(total > 0 && products.length === total) return
+        if(total > 0 && categories.length === total) return
 
         setLoading(true);
 
-        const { data, headers } = await apiReq.get('products',{ 
+        const { data, headers } = await apiReq.get('categories',{ 
             params: { page },
         });
 
         if(loadedPage === false) setLoadedPage(true);
 
         if(data.length) {
-            setProducts([...products, ...data]);
+            setCategories([...categories, ...data]);
             setTotal(headers['x-total-count']);
             setPage(page + 1);    
         }
@@ -42,45 +42,43 @@ export default function Products() {
         setLoading(false);
     }
 
-    useFocusEffect(
-        useCallback(() => {
-            loadProducts();
-        }, [])
-    )
+    useEffect(() => {
+        loadCategories();
+    },[])
 
-    function navigateToEdit(product) {
-        navigation.navigate('StoreProductEdit', { product });
+    function navigateToEdit(category) {
+        navigation.navigate('StoreCategoryEdit', { category });
     }
 
     function navigateToNew() {
-        navigation.navigate('StoreProductNew');
+        navigation.navigate('StoreCategoryNew');
     }    
 
     return(<>{loadedPage ? (
 
         <SafeAreaView style={styles.container}>
-            <Header title={'produtos'}/>
+            <Header title={'categorias'}/>
             
             <FlatList
                 style={styles.column}
-                data={products}
-                keyExtractor={product => String(product._id)}
+                data={categories}
+                keyExtractor={categories => String(categories._id)}
                 showsVerticalScrollIndicator={false}
-                onEndReached={loadProducts}
+                onEndReached={loadCategories}
                 onEndReachedThreshold={0.3}
                 numColumns={1}
-                renderItem={({ item: product }) => (
+                renderItem={({ item: categories }) => (
                     
                     <Card
-                        action={() => navigateToEdit(product)}
-                        image={ product.image }
-                        title={product.name}
-                        price={product.price}
+                        action={() => navigateToEdit(categories)}
+                        image={ categories.image }
+                        title={categories.name}
+                        price={categories.price}
                     />
                 )}
             />
             <View style={styles.column}>
-                <Button action={navigateToNew} title='Adicionar Produto'/>
+                <Button action={navigateToNew} title='Adicionar Categoria'/>
             </View>        
             
 

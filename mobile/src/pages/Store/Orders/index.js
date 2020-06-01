@@ -1,5 +1,5 @@
 import React, { useState, useCallback } from 'react';
-import { SafeAreaView, Text, FlatList, View } from 'react-native';
+import { SafeAreaView, FlatList, View } from 'react-native';
 import apiReq from '../../../services/reqToken';
 import styles from '../../global';
 

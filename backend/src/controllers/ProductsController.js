@@ -85,10 +85,7 @@ module.exports = {
         if(!id) return res.json({error: 'Houve um problema ao deletar seu produto, tente novamente'});
 
         try {
-
-            //await Order.deleteMany({ "products.item": id  })
-
-            //await Product.deleteOne({_id: id})
+            await Product.deleteOne({_id: id})
 
             return res.json({status: 'Produto apagado com sucesso'});
         } catch (err) {

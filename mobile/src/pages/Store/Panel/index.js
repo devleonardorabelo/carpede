@@ -1,85 +1,76 @@
-import React, { useState, useCallback } from 'react';
-import { useFocusEffect } from '@react-navigation/native';
-import { SafeAreaView, Text, View, AsyncStorage } from 'react-native';
+import React, { useState, useContext, useEffect } from 'react';
+import AuthContext from '../../../contexts/auth';
+import { SafeAreaView, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import styles from '../../global';
-import apiReq from '../../../services/reqToken';
 import { API_DOMAIN } from '../../../constants/api';
-import Loading from '../../../components/Loading';
 import { NavItem, Avatar } from '../../../components/Item';
 import { CustomHeader } from '../../../components/Header';
 
 export default function Panel() {
 
-	const [ store, setStore ] = useState('');
+	const { store, signOut } = useContext(AuthContext);
+
+	const [ name, setName ] = useState('');
 	const [ avatar, setAvatar ] = useState();
 	const [ whatsapp, setWhatsapp ] = useState('');
-	const [ loadedPage, setLoadedPage ] = useState(false);
 
 	async function loadPanel() {
-		const { data } = await apiReq.get('panel');
-		setStore(data.name);
-		setWhatsapp(data.whatsapp);
-		if(data.avatar) setAvatar({uri: `${API_DOMAIN}/uploads/${data.avatar}`})
-		if(loadedPage === false) setLoadedPage(true);
+		setName(store.name);
+		setWhatsapp(store.whatsapp);
+		if(store.avatar) setAvatar({uri: `${API_DOMAIN}/uploads/${store.avatar}`})
 	};
 	
-	useFocusEffect(
-        useCallback(() => {
-			loadPanel();
-		}, [])
-	)
+	useEffect(() => {
+		loadPanel();
+	},[])
 
 	const navigation = useNavigation();
 
-	const navigateToProfile = () => navigation.navigate('StoreProfile');
-	const navigateToProducts = () => navigation.navigate('StoreProducts');
-	const navigateToOrders = () => navigation.navigate('StoreOrders');
-
-	async function signout() {
-		await AsyncStorage.clear();
-		return navigation.navigate('Home');
-	}
+	const navigate = screen => navigation.navigate(screen);
 	
-    return(<>
-		{loadedPage ? (
-			<SafeAreaView style={styles.container}>
+    return(
 
+		<SafeAreaView style={styles.container}>
 
-				<CustomHeader icon={'logout'} action={signout} />
-				
-				<Avatar
-					image={avatar}
-					title={store}
-					subtitle={whatsapp}
+			<CustomHeader icon={'logout'} action={signOut} />
+			
+			<Avatar
+				image={avatar}
+				title={name}
+				subtitle={whatsapp}
+			/>	
+
+			<View style={styles.column}>
+
+				<NavItem
+					action={() => navigate('StoreOrders')}
+					icon='motorbike'
+					title='Pedidos'
+					subtitle='Lista de pedidos ativos'
+				/>
+				<NavItem
+					action={() => navigate('StoreProducts')}
+					icon='package-variant-closed'
+					title='Produtos'
+					subtitle='Lista de produtos'
+				/>
+				<NavItem
+					action={() => navigate('StoreCategories')}
+					icon='animation'
+					title='Categorias'
+					subtitle='Categoria dos pedidos'
 				/>	
+				<NavItem
+					action={() => navigate('StoreProfile')}
+					icon='account'
+					title='Perfil'
+					subtitle='Informações da Loja'
+				/>	
+			</View>
 
-				<View style={styles.column}>
+		</SafeAreaView>
 
-					<NavItem
-						action={navigateToOrders}
-						icon='motorbike'
-						title='Pedidos'
-						subtitle='Lista de pedidos ativos'
-					/>
-					<NavItem
-						action={navigateToProducts}
-						icon='package-variant-closed'
-						title='Produtos'
-						subtitle='Lista de produtos'
-					/>
-					<NavItem
-						action={navigateToProfile}
-						icon='account'
-						title='Perfil'
-						subtitle='Informações da Loja'
-					/>	
-				</View>
-
-			</SafeAreaView>
-		):(
-			<Loading />
-		)}
-		</>)
+	)
 	
 }

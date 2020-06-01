@@ -105,12 +105,16 @@ export function Card(props) {
                 <View style={{ flexDirection: 'row' }}>
                     <Text style={[styles.textWrap, styles.textBold]}>{regexName(props.title)}</Text>
                 </View>
-                <Text style={styles.price}>
-                    {Intl.NumberFormat('pt-BR', {
-                        style: 'currency',
-                        currency: 'BRL'
-                    }).format(props.price)}
-                </Text>
+                { props.price ?
+                    <Text style={styles.price}>
+                        {Intl.NumberFormat('pt-BR', {
+                            style: 'currency',
+                            currency: 'BRL'
+                        }).format(props.price)}
+                    </Text>
+                :null
+                }
+                
             </View>
 
         </TouchableOpacity>

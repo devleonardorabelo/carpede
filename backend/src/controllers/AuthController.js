@@ -32,7 +32,13 @@ module.exports = {
 			expiresIn: 31557600000,
 		});
 
-		return res.json(token);
+		return res.json({
+            avatar: store.avatar,
+            name: store.name,
+            whatsapp: store.whatsapp,
+            email: store.email,
+            token
+		});
 
     },
     async signup(req, res) {

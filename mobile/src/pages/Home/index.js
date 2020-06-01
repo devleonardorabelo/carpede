@@ -10,21 +10,8 @@ export default function Home() {
 
 	const navigation = useNavigation();
 
-	async function checkLogged() {
-		const storeToken = await AsyncStorage.getItem('@Carpede:storeToken');
-		const { data } = await api.post('check', {
-			storeToken
-		});
-		if(data.logged === true) return navigation.navigate('StorePanel');
-		return;
-	}
-
-	useEffect(() => {
-		checkLogged();
-	}, [])
-
 	function navigateToSignin() {
-		navigation.navigate('StoreSignin');
+		navigation.navigate('Signin');
 	}
 
 	return (
