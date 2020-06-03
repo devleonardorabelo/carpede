@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { FlatList, SafeAreaView, View, Text } from 'react-native';
 import apiReq from '../../../services/reqToken';
 import styles from '../../global';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 
 import Loading from '../../../components/Loading';
 import { Header } from '../../../components/Header';
@@ -18,6 +18,7 @@ export default function Categories() {
     const [ loading, setLoading ] = useState(false);
 
     const navigation = useNavigation();
+    const { params } = useRoute();
 
     async function loadCategories() {
 
@@ -42,23 +43,21 @@ export default function Categories() {
         setLoading(false);
     }
 
+    const navigateToEditProduct = category => navigation.navigate('StoreProductEdit', { category: category.name });
+
+    const navigateToNewProduct = category => navigation.navigate('StoreProductNew', { category: category.name })
+
+    const navigateToNew = () => navigation.navigate('StoreProductNew');
+
     useEffect(() => {
         loadCategories();
     },[])
 
-    function navigateToEdit(category) {
-        navigation.navigate('StoreCategoryEdit', { category });
-    }
-
-    function navigateToNew() {
-        navigation.navigate('StoreCategoryNew');
-    }    
-
     return(<>{loadedPage ? (
 
         <SafeAreaView style={styles.container}>
-            <Header title={'categorias'}/>
-
+            <Header title={'SELECIONE UMA CATEGORIA'}/>
+            
             {categories.length == 0 ?
                 <>
                     <View style={styles.column}>
@@ -71,7 +70,6 @@ export default function Categories() {
                     </View>
                 </>
             :
-            <>
                 <FlatList
                     style={styles.column}
                     data={categories}
@@ -83,20 +81,21 @@ export default function Categories() {
                     renderItem={({ item: categories }) => (
                         
                         <Card
-                            action={() => navigateToEdit(categories)}
-                            image={ categories.image }
+                            action={() => {
+                                params.type == 'edit' ?
+                                navigateToEditProduct(categories)
+                                :
+                                navigateToNewProduct(categories)
+                                
+                            }}
+                            image={categories.image}
                             title={categories.name}
                             price={categories.price}
                         />
                     )}
                 />
-
-
-                <View style={styles.column}>
-                    <Button action={navigateToNew} title='Adicionar Categoria'/>
-                </View>        
-            </>
             }
+            
 
         </SafeAreaView>
         ) : (

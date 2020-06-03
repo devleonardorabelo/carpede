@@ -55,6 +55,7 @@ routes.get('/products', CheckAuth, ProductsController.index);
 routes.post('/products/new', CheckAuth, ProductsController.store);
 routes.post('/products/edit', CheckAuth, ProductsController.update);
 routes.post('/products/delete', CheckAuth, ProductsController.destroy);
+routes.get('/loadcategories', CheckAuth, CategoriesController.indexAll)
 routes.get('/categories', CheckAuth, CategoriesController.index);
 routes.post('/categories/new', CheckAuth, CategoriesController.store);
 routes.post('/categories/edit', CheckAuth, CategoriesController.update);

@@ -3,6 +3,19 @@ const Order = require('../models/Order');
 
 module.exports = {
 
+    async indexAll(req, res) {
+
+        const store = req.headers.user;
+
+        try {
+            const categories = await Category.find({store_id: store.id})
+            return res.json(categories);
+
+        } catch (err) {
+            return res.json({error: 'Houve um erro ao listar seus produtos, verifique sua conexão com a internet'})
+        }
+
+    },
     async index(req, res) {
 
         const store = req.headers.user;
@@ -71,9 +84,7 @@ module.exports = {
         if(!id) return res.json({error: 'Houve um problema ao deletar sua categoria, tente novamente'});
 
         try {
-
             await Category.deleteOne({_id: id})
-
             return res.json({status: 'Categoria apagada com sucesso'});
         } catch (err) {
             return res.json({error: 'Houve um erro ao alterar sua categoria, tente novamente'})

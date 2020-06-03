@@ -57,7 +57,7 @@ export default function NewCategory() {
     return(<>
         <SafeAreaView style={styles.container}>
 
-            <Header title='novo produto'>
+            <Header title='nova categoria'>
                 <LinearButton icon={'trash-can-outline'} action={() => handleDelete(category._id)}/>
             </Header>
 

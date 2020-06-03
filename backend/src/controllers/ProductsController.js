@@ -22,7 +22,7 @@ module.exports = {
 
         const store = req.headers.user;
 
-        const { name, description, price, image } = req.body;
+        const { name, description, price, category, image } = req.body;
 
         if(!name) return res.json({ error: { text: 'Mínimo de 5 caracteres', input: 'name' } });
 
@@ -35,6 +35,7 @@ module.exports = {
             name,
             description,
             price,
+            category,
             store_id: store.id
         }
 
@@ -51,7 +52,9 @@ module.exports = {
 
         const store = req.headers.user;
 
-        const { image, name, description, price, id } = req.body;
+        const { image, name, description, price, category, id } = req.body;
+
+        console.log(req.body)
 
         if(!name) return res.json({ error: { text: 'Mínimo de 5 caracteres', input: 'name' } });
 
@@ -69,6 +72,7 @@ module.exports = {
                 image,
                 description,
                 name,
+                category,
                 price: treatPrice
             })
 

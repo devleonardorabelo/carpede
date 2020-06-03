@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, TextInput } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity } from 'react-native';
 import styles from '../pages/global';
 
 export function Input(props) {
@@ -21,7 +21,7 @@ export function Input(props) {
 
 
     return (
-        <View style={styles.groupInput}>
+        <View style={[styles.groupInput, props.style ]}>
             <View style={styles.labelInput}>
                 <Text
                     style={[styles.labelText,{
@@ -105,5 +105,23 @@ export function TextArea(props) {
                 maxLength={100}
             />
         </View>
+    )
+}
+
+export function Select(props){
+    return(
+        <TouchableOpacity
+            style={[styles.groupInput, props.style]}
+            onPress={props.action}
+        >
+            <View style={styles.labelInput}>
+                <Text style={styles.labelText}>{props.title}</Text>
+            </View>
+            <Text style={[styles.textInput,{ textAlignVertical: 'center' }]}>
+                {props.text}
+            </Text>    
+        </TouchableOpacity>
+        
+        
     )
 }

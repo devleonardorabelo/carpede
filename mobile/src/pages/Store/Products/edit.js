@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
-import { Text, SafeAreaView, ScrollView } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, SafeAreaView, ScrollView } from 'react-native';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import apiReq from '../../../services/reqToken';
 
 import styles from '../../global';
 import { Header } from '../../../components/Header'
 import { PreviewImage } from '../../../components/Image';
-import { Input } from '../../../components/Input';
+import { Input, Select } from '../../../components/Input';
 import { Button, LinearButton } from '../../../components/Button';
 import { API_DOMAIN } from '../../../constants/api';
 
@@ -14,8 +14,9 @@ import { imagePicker, cameraPicker ,uploadImage } from '../../../utils/ImagePick
 
 export default function EditProduct() {
 
-    const route = useRoute();
-    const product = route.params.product;
+    const { params } = useRoute();
+    const product = params.product;
+    const productCategory = params.category;
     const navigation = useNavigation();
 
     const currentImage = {uri: `${API_DOMAIN}/uploads/${product.image}`}
@@ -24,6 +25,7 @@ export default function EditProduct() {
     const [ name, setName ] = useState(product.name);
     const [ description, setDescription ] = useState(product.description);
     const [ price, setPrice ] = useState(product.price);
+    const [ category, setCategory ] = useState(product.category);
     const [ alert, setAlert ] = useState();
     const [ status, setStatus ] = useState(false);
 
@@ -43,18 +45,18 @@ export default function EditProduct() {
 
         setStatus('loading');
 
-        if(image === currentImage) {
-            var setImage = product.image 
-        } else {
-            var setImage = await uploadImage(image);
-        }
+        let setImage;
+
+        if(image === currentImage) setImage = product.image
+        if(image != currentImage )  setImage = await uploadImage(image);
 
         const { data } = await apiReq.post('products/edit', {
             id,
             image: setImage,
             name,
             description,
-            price
+            price: String(price),
+            category
         });
 
         if(data.error) {
@@ -74,6 +76,19 @@ export default function EditProduct() {
 
         if(data) navigation.navigate('StoreProducts');
     }
+
+    const navigateToSelectCategory = () => navigation.navigate('StoreLoadCategory', { type: 'edit' });
+
+
+    useEffect(() => {
+        function handleSelectCategory() {
+            if(productCategory) {
+                setCategory(productCategory)
+            }
+        }    
+        
+        handleSelectCategory();
+    },[productCategory])
 
     return(<>
         <SafeAreaView style={styles.container}>
@@ -107,15 +122,32 @@ export default function EditProduct() {
                     maxLength={50}
                     error={alert}
                 />
-                <Input
-                    title={'Preço'}
-                    name={'price'}
-                    default={product.price}
-                    keyboard={'numeric'}
-                    action={e => setPrice(e)}
-                    maxLength={8}
-                    error={alert}
-                />
+                <View style={{
+                    flexDirection: 'row'
+                }}>
+
+                    <Input
+                        style={{
+                            marginRight: 16,
+                            width: 120
+                        }}
+                        title={'Preço'}
+                        name={'price'}
+                        keyboard={'numeric'}
+                        default={product.price}
+                        action={e => setPrice(e)}
+                        maxLength={8}
+                        error={alert}
+                    />
+
+                    <Select
+                        style={{ flexGrow: 1 }}
+                        title='Categoria'
+                        text={category}
+                        action={navigateToSelectCategory}
+                    />
+                
+                </View>
                 
                 <Button action={() => handleUpdate(product._id)} title={'Salvar'} status={status}/>
                 

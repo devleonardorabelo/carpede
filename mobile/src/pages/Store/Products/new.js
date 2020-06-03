@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
-import { Text, SafeAreaView, ScrollView } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, SafeAreaView, ScrollView, Picker } from 'react-native';
 import apiReq from '../../../services/reqToken';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { Header } from '../../../components/Header';
 import { PreviewImage } from '../../../components/Image';
-import { Input } from '../../../components/Input';
-import { Button } from '../../../components/Button';
+import { Input, Select } from '../../../components/Input';
+import { Button, LinearButton } from '../../../components/Button';
 import { imagePicker, cameraPicker, uploadImage } from '../../../utils/ImagePicker';
 
 import styles from '../../global';
@@ -13,9 +13,12 @@ import styles from '../../global';
 export default function NewProduct() {
 
     const navigation = useNavigation();
-    
+    const route = useRoute();
+    const { params } = route;
+
     const [ image, setImage ] = useState();
     const [ name, setName ] = useState('');
+    const [ category, setCategory ] = useState('');
     const [ description, setDescription ] = useState('');
     const [ price, setPrice ] = useState('');
     const [ alert, setAlert ] = useState();
@@ -43,7 +46,8 @@ export default function NewProduct() {
             image: previewImage,
             name,
             description,
-            price
+            price,
+            category
         })
 
         if(data.error) {
@@ -57,12 +61,27 @@ export default function NewProduct() {
         setTimeout(() => { navigation.navigate('StoreProducts') }, 2000);
 
     }
+
+    const navigateToSelectCategory = () => navigation.navigate('StoreLoadCategory', { name, description, price });
+
+
+    useEffect(() => {
+        function handleSelectCategory() {
+            if(params) {
+                setCategory(params.category)
+            }
+        }    
+        
+        handleSelectCategory();
+    },[params])
  
     return(<>
         <SafeAreaView style={styles.container}>
-            <Header />
-            <ScrollView showsVerticalScrollIndicator={false}>
-                <Text style={styles.title}>Novo Produto</Text>
+            <Header title='novo produto'>
+                <LinearButton icon={'trash-can-outline'} action={() => handleDelete(product._id)}/>
+            </Header>
+            <ScrollView showsVerticalScrollIndicator={false} style={styles.column}>
+                
                 <PreviewImage
                     image={image}
                     action1={getImage}
@@ -84,14 +103,32 @@ export default function NewProduct() {
                     maxLength={50}
                     error={alert}
                 />
-                <Input
-                    title={'Preço'}
-                    name={'price'}
-                    keyboard={'numeric'}
-                    action={e => setPrice(e)}
-                    maxLength={8}
-                    error={alert}
-                />
+                <View style={{
+                    flexDirection: 'row'
+                }}>
+
+                    <Input
+                        style={{
+                            marginRight: 16,
+                            width: 120
+                        }}
+                        title={'Preço'}
+                        name={'price'}
+                        keyboard={'numeric'}
+                        action={e => setPrice(e)}
+                        maxLength={8}
+                        error={alert}
+                    />
+
+                    <Select
+                        style={{ flexGrow: 1 }}
+                        title='Categoria'
+                        text={category}
+                        action={navigateToSelectCategory}
+                    />
+                
+                </View>
+                
                 
                 <Button action={handleNewProduct} title={'Salvar'} status={status}/>      
             </ScrollView>

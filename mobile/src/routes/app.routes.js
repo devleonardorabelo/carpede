@@ -6,6 +6,7 @@ import StoreProfile from '../pages/Store/Profile';
 import StoreProducts from '../pages/Store/Products';
 import StoreProductEdit from '../pages/Store/Products/edit';
 import StoreProductNew from '../pages/Store/Products/new';
+import StoreLoadCategory from '../pages/Store/Products/loadCategory';
 import StoreCategories from '../pages/Store/Categories';
 import StoreCategoryEdit from '../pages/Store/Categories/edit';
 import StoreCategoryNew from '../pages/Store/Categories/new';
@@ -22,6 +23,7 @@ const AppRoutes = () => (
         <AuthStack.Screen name="StoreProducts" component={StoreProducts}/>
         <AuthStack.Screen name="StoreProductEdit" component={StoreProductEdit}/>
         <AuthStack.Screen name="StoreProductNew" component={StoreProductNew}/>
+        <AuthStack.Screen name="StoreLoadCategory" component={StoreLoadCategory}/>
         <AuthStack.Screen name="StoreCategories" component={StoreCategories}/>
         <AuthStack.Screen name="StoreCategoryEdit" component={StoreCategoryEdit}/>
         <AuthStack.Screen name="StoreCategoryNew" component={StoreCategoryNew}/>
