@@ -109,17 +109,40 @@ export function TextArea(props) {
 }
 
 export function Select(props){
+
+    const err = () => {
+        if(!props.error) return;
+        if(props.error.input == props.name) return true;
+    }
+
     return(
         <TouchableOpacity
             style={[styles.groupInput, props.style]}
             onPress={props.action}
         >
             <View style={styles.labelInput}>
-                <Text style={styles.labelText}>{props.title}</Text>
+                <Text
+                    style={[styles.labelText,{
+                        color: err()  ? '#E63B2E' : '#333'
+                    }]}>
+                    {props.title}
+                </Text>
             </View>
-            <Text style={[styles.textInput,{ textAlignVertical: 'center' }]}>
+            <Text
+                style={[
+                    styles.textInput,{
+                    borderColor: err()  ? '#E63B2E' : '#E2E2E2',
+                    borderWidth: err()  ? 2 : 1,
+                    textAlignVertical: 'center'
+                }
+            ]}>
                 {props.text}
-            </Text>    
+            </Text>
+            {err() ?
+                <Text style={styles.inputTextAlert}>{props.error.text}</Text>
+                :
+                null 
+            }   
         </TouchableOpacity>
         
         

@@ -62,7 +62,7 @@ export default function NewProduct() {
 
     }
 
-    const navigateToSelectCategory = () => navigation.navigate('StoreLoadCategory', { name, description, price });
+    const navigateToSelectCategory = () => navigation.navigate('StoreLoadCategory', { type: 'add' });
 
 
     useEffect(() => {
@@ -110,7 +110,8 @@ export default function NewProduct() {
                     <Input
                         style={{
                             marginRight: 16,
-                            width: 120
+                            width: 120,
+                            height: 50
                         }}
                         title={'Preço'}
                         name={'price'}
@@ -123,8 +124,10 @@ export default function NewProduct() {
                     <Select
                         style={{ flexGrow: 1 }}
                         title='Categoria'
+                        name={'category'}
                         text={category}
                         action={navigateToSelectCategory}
+                        error={alert}
                     />
                 
                 </View>

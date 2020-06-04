@@ -143,8 +143,10 @@ export default function EditProduct() {
                     <Select
                         style={{ flexGrow: 1 }}
                         title='Categoria'
+                        name={'category'}
                         text={category}
                         action={navigateToSelectCategory}
+                        error={alert}
                     />
                 
                 </View>
