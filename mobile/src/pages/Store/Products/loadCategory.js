@@ -43,9 +43,9 @@ export default function Categories() {
         setLoading(false);
     }
 
-    const navigateToEditProduct = category => navigation.navigate('StoreProductEdit', { category: category.name });
+    const navigateToEditProduct = category => navigation.navigate('StoreProductEdit', { category });
 
-    const navigateToNewProduct = category => navigation.navigate('StoreProductNew', { category: category.name })
+    const navigateToNewProduct = category => navigation.navigate('StoreProductNew', { category })
 
     const navigateToNew = () => navigation.navigate('StoreProductNew');
 

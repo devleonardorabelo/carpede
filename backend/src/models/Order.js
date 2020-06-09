@@ -15,6 +15,8 @@ const OrdersSchema = new mongoose.Schema({
         name: String,
         whatsapp: String,
         address: String,
+        complement: String,
+        number: String,
     },
     value: Number,
     paymentMethod: {
