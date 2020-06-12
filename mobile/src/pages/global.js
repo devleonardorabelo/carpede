@@ -23,28 +23,28 @@ export default StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        paddingHorizontal: widthDP('5%'),
+        paddingHorizontal: widthDP('4%'),
         paddingTop: Constants.statusBarHeight + 20,
     },
     store: {
         flexDirection: 'row',
-        marginBottom: 40,
-        paddingHorizontal: widthDP('5%'),
+        marginBottom: 32,
+        paddingHorizontal: widthDP('4%'),
     },
     storeAvatar: {
-        backgroundColor: '#ccc',
-        width: widthDP('15%'),
-        height: widthDP('15%'),
+        backgroundColor: '#E2E2E2',
+        width: widthDP('16%'),
+        height: widthDP('16%'),
         borderRadius: 100,
     },
     row: {
         flexDirection: 'row',
-        paddingHorizontal: widthDP('5%'),
+        paddingHorizontal: widthDP('4%'),
         marginBottom: 16,
     },
     column: {
         flexDirection: 'column',
-        paddingHorizontal: widthDP('5%'),
+        paddingHorizontal: widthDP('4%'),
         marginBottom: 16,
     },
     alignCenterX: {
@@ -53,34 +53,34 @@ export default StyleSheet.create({
     //NAVITEM
     action: {
         flexDirection: 'row',
-        borderBottomWidth: 1,
+        borderBottomWidth: StyleSheet.hairlineWidth,
         borderBottomColor: '#DFDFDF',
         paddingVertical: 16
     },
     iconAction: {
         alignItems: 'center',
         justifyContent: 'center',
-        width: 50,
+        width: 48,
         borderTopLeftRadius: 8,
         borderBottomLeftRadius: 8,
     },
     arrowAction: {
         alignItems: 'center',
         justifyContent: 'center',
-        width: 50,
+        width: 48,
         borderTopRightRadius: 8,
         borderBottomRightRadius: 8,
     },
     textAction: {
         fontSize: widthDP('4%'),
         fontFamily: 'montserrat-semi-bold',
-        color: '#262626',
+        color: '#333333',
     },
     subtitleTextAction: {
         fontFamily: 'montserrat-light',
         fontSize: widthDP('4%'),
         marginTop: -2,
-        color: '#424B54'
+        color: '#666666'
     },
     //BOX
     box: {
@@ -88,11 +88,11 @@ export default StyleSheet.create({
         alignItems: 'center',
         borderRadius: 8,
         padding: 8,
-        borderBottomWidth: 1,
-        borderBottomColor: '#DFDFDF',
+        marginBottom: 8,
+        backgroundColor: '#F9F9F9'
     },
     boxImage: {
-        width: widthDP('25%'),
+        width: widthDP('24%'),
         height: '100%',
         borderRadius: 8
     },
@@ -119,38 +119,38 @@ export default StyleSheet.create({
     boxFloatButton: {
         position: 'absolute',
         justifyContent: 'center',
-        width: widthDP('15%'),
-        height: widthDP('15%'),
+        width: widthDP('16%'),
+        height: widthDP('16%'),
         alignItems: 'center'
     },
     //TEXTS AND TITLES
     title: {
         fontFamily: 'montserrat-bold',
-        fontSize: widthDP('7%'),
-        color: '#171c29',
+        fontSize: widthDP('8%'),
+        color: '#333333',
     },
     grayTitle: {
-        color: '#424B54',
-        fontSize: widthDP('4.5%'),
+        color: '#666666',
+        fontSize: widthDP('6%'),
         fontFamily: 'montserrat-medium'
     },
     subtitle: {
-        fontSize: widthDP('5%'),
+        fontSize: widthDP('4%'),
         fontFamily: 'montserrat-bold',
-        color: '#171c29'
+        color: '#666666'
     },
     text: {
         fontSize: widthDP('4%'),
         fontFamily: 'montserrat-medium',
-        color: '#424B54'
+        color: '#333333'
     },
     textBold: {
         fontSize: widthDP('4%'),
         fontFamily: 'montserrat-bold',
-        color: '#424B54'
+        color: '#333333'
     },
     price: {
-        color: '#424B54',
+        color: '#666666',
         fontFamily: 'montserrat-semi-bold',
         fontSize: widthDP('4%'),
         marginTop: 5,
@@ -160,24 +160,24 @@ export default StyleSheet.create({
         flexWrap: 'wrap',
     },
     textHide: {
-        height: widthDP('5%'),
-        backgroundColor: '#F5F5F5',
+        height: widthDP('4%'),
+        backgroundColor: '#E2E2E2',
         borderRadius: 8
     },
     titleHide: {
         height: widthDP('8%'),
         flexGrow: 1,
         marginTop: widthDP('2%'),
-        marginBottom: 10,
-        backgroundColor: '#F5F5F5',
+        marginBottom: 8,
+        backgroundColor: '#E2E2E2',
         borderRadius: 8
     }, 
 
     //BUTTONS
     button: {
-        height: 50,
+        height: 48,
         borderRadius: 8,
-        marginBottom: 20,
+        marginBottom: 16,
         justifyContent: 'center',
         alignItems: 'center',
     },
@@ -187,9 +187,9 @@ export default StyleSheet.create({
             color: '#fff'
         },
     buttonTransparent: {
-        height: 50,
+        height: 48,
         backgroundColor: 'transparent',
-        marginBottom: 20,
+        marginBottom: 16,
         justifyContent: 'center',
         alignItems: 'center',
         flexDirection: 'row'
@@ -200,7 +200,7 @@ export default StyleSheet.create({
             color: '#585858'
         },
     buttonFloat: {
-        backgroundColor: '#ff6e73',
+        backgroundColor: '#639DFF',
         width: 64,
         height: 64,
         borderRadius: 8,
@@ -208,7 +208,7 @@ export default StyleSheet.create({
         alignItems: 'center'
     },
     actionButton: {
-        backgroundColor: '#ff6e73',
+        backgroundColor: '#85B71B',
         height: 64,
         width: 64,
         borderRadius: 100,
@@ -225,15 +225,15 @@ export default StyleSheet.create({
     labelText: {
         fontSize: widthDP('4%'),
         fontFamily: 'montserrat-semi-bold',
-        color: '#262626',
-        marginLeft: 10,
-        marginBottom: -10,
-        zIndex: 9,
-        paddingHorizontal: 6,
+        color: '#333333',
+        marginLeft: 8,
+        marginBottom: -8,
+        zIndex: 999,
+        paddingHorizontal: 4,
         backgroundColor: '#FFFFFF',
     },
     iconInput: {
-        paddingHorizontal:15,
+        paddingHorizontal: 16,
         paddingTop: 16
     },
     textInput: {
@@ -241,11 +241,11 @@ export default StyleSheet.create({
         fontSize: widthDP('4%'),   
         fontFamily: 'montserrat-medium',
         flexGrow: 1,
-        borderColor: '#e2e2e2',
+        borderColor: '#E2E2E2',
         borderRadius: 8,
         borderWidth: 1,
         paddingLeft: 16,
-        color: '#424B54'
+        color: '#333333'
     },
     inputTextAlert: {
         fontFamily: 'montserrat-light',
@@ -257,33 +257,15 @@ export default StyleSheet.create({
     textareaInput: {
         height: 100,
         textAlignVertical: 'top',
-        borderColor: '#e2e2e2',
+        borderColor: '#E2E2E2',
         borderRadius: 8,
         borderWidth: 1,
         padding: 16,
         fontSize: widthDP('4%'),  
         fontFamily: 'montserrat-medium',
-        color: '#424B54'   
+        color: '#333333'   
     },
     //MORE
-    alert: {
-        padding: 20,
-        marginBottom: 20,
-        borderRadius: 8,
-        borderWidth: 2,
-        backgroundColor: '#FFEEEE',
-        borderColor: '#FFD1D1'
-    },
-    alertTitle: {
-        fontFamily: 'montserrat-bold',
-        fontSize: widthDP('4%'),
-        color: '#533737' 
-    },
-    alertText: {
-        fontFamily: 'montserrat-light',
-        fontSize: widthDP('4%'),
-        color: '#270000' 
-    },
     illustration: {
         backgroundColor: '#FFFFFF',
         marginBottom: 60,
@@ -307,7 +289,7 @@ export default StyleSheet.create({
         paddingBottom: 80,
     },
     orderList: {
-        padding: widthDP('5%'),
+        padding: widthDP('4%'),
         borderRadius: 8,
         marginBottom: 16,
         borderBottomWidth: 1,
@@ -320,7 +302,7 @@ export default StyleSheet.create({
         right: 0,
         left: 0,
         bottom: -430,
-        shadowColor: "#000",
+        shadowColor: "#000000",
         shadowOffset: {
             width: 0,
             height: 4,
@@ -331,7 +313,7 @@ export default StyleSheet.create({
         elevation: 9,
     },
     deliveryInfo: {
-        backgroundColor: '#ff6e73',
+        backgroundColor: '#639DFF',
         paddingVertical: 20
     },
 

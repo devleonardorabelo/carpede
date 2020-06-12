@@ -30,7 +30,7 @@ export function LocationMap(props) {
             <Marker coordinate={{latitude, longitude}}>
                 <MI
                     name={'map-marker'}
-                    color={'#ff6e73'}
+                    color={'#639DFF'}
                     size={48}
                 />
             </Marker>

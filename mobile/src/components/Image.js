@@ -8,7 +8,7 @@ import defaultImage from '../assets/illustrations/repeat_food.png';
 export function PreviewImage(props) {
     
     return (
-        <View style={{ justifyContent: 'flex-end', marginBottom: 20 }}>
+        <View style={{ justifyContent: 'flex-end', marginBottom: 16 }}>
             <Image
                 source={ 
                     props.image !== undefined ?
@@ -22,21 +22,23 @@ export function PreviewImage(props) {
             <View style={styles.groupFloatButton}>
 
                 <TouchableOpacity
-                style={[styles.buttonFloat, { marginRight: 16 }]}
-                onPress={props.action1}>
+                    style={[styles.buttonFloat, { marginRight: 16 }]}
+                    onPress={props.action1}
+                >
                     <MI
                         name={props.icon1}
-                        color='#fff'
+                        color='#FFFFFF'
                         size={32}
                     />
                 </TouchableOpacity>
 
                 <TouchableOpacity
-                style={styles.buttonFloat}
-                onPress={props.action2}>
+                    style={styles.buttonFloat}
+                    onPress={props.action2}
+                >
                     <MI
                         name={props.icon2}
-                        color='#fff'
+                        color='#FFFFFF'
                         size={32}
                     />
                 </TouchableOpacity>   

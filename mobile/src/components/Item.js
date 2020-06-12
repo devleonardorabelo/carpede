@@ -19,14 +19,14 @@ export function NavItem(props) {
     return (
         <TouchableOpacity style={styles.action} onPress={props.action}>
             <View style={styles.iconAction}>
-                <MI name={props.icon}  size={24} color="#333" />	
+                <MI name={props.icon} size={24} color="#333333" />	
             </View>
             <View style={{flexGrow: 1, justifyContent: 'center'}}>
                 <Text style={styles.textAction}>{props.title}</Text>
                 <Text style={styles.subtitleTextAction}>{props.subtitle}</Text>
             </View>
             <View style={styles.arrowAction}>
-                <MI name="chevron-right" size={24} color="#ff6e73" />	
+                <MI name="chevron-right" size={24} color="#85B71B" />	
             </View>
         </TouchableOpacity>
     )
@@ -37,7 +37,7 @@ export function Avatar(props) {
         <View style={styles.store}>
             <TouchableOpacity onPress={props.action}>
                 <Image
-                    style={[styles.storeAvatar, { backgroundColor: '#FF5216' }]}
+                    style={[styles.storeAvatar, { backgroundColor: '#E2E2E2' }]}
                     source={
                         props.image === undefined ?
                         cardImage
@@ -77,7 +77,7 @@ export function Avatar(props) {
                         <View style={styles.textHide}/>
                     : 
                         <View style={{flexDirection: 'row'}}>
-                            <MI name='whatsapp' color='#666' size={16} style={{ marginTop: 3, marginRight: 8}}/>
+                            <MI name='whatsapp' color='#333333' size={16} style={{ marginTop: 3, marginRight: 4}}/>
                             <Text style={styles.text}>{props.subtitle}</Text>
                         </View>
                     }

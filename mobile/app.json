@@ -11,7 +11,7 @@
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#FFFFFF"
+      "backgroundColor": "#639DFF"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -23,8 +23,12 @@
       "supportsTablet": true
     },
     "android": {
-      "package": "com.carpede.carpedeempresas"
-    },
-    "description": ""
+      "package": "com.carpede.carpedeempresa",
+      "config": {
+        "googleMaps": {
+          "apiKey": "AIzaSyB8h73uNfKAcx3dAPw-nfZh3rkGaQ-EN64"
+        }
+      }
+    }
   }
 }

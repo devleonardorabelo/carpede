@@ -6,23 +6,23 @@ import styles from "../pages/global";
 
 export function Button(props) {
 
-    const [ color, setColor ] = useState('#FF5216');
+    const [ color, setColor ] = useState('#639DFF');
     const [ content, setContent ] = useState(<Text style={styles.buttonWhiteText}>{props.title}</Text>);
     const [ disabled, setDisabled ] = useState(false);
 
     useEffect(() => {
         if(!props.status) {
-            setColor('#ff6e73');
+            setColor('#639DFF');
             setContent(<Text style={styles.buttonWhiteText}>{props.title}</Text>);
             setDisabled(false);
         }
         if(props.status === 'loading') {
-            setColor('#e2e2e2');
-            setContent(<ActivityIndicator size="large" color="#ff6e73" />)
+            setColor('#E2E2E2');
+            setContent(<ActivityIndicator size="large" color="#266EE8" />)
             setDisabled(true);
         }
         if(props.status === 'done') {
-            setColor('#02c39a');
+            setColor('#266EE8');
             setContent(<Text style={styles.buttonWhiteText}>Feito!</Text>)
             setDisabled(false);
         }
@@ -42,28 +42,42 @@ export function Button(props) {
 
 export function ButtonTransparent(props) {
     return(
-        <TouchableOpacity style={styles.buttonTransparent} onPress={props.action}>
+        <TouchableOpacity
+            style={styles.buttonTransparent}
+            onPress={props.action}
+        >
+            
             <MI
-                style={{ paddingRight: 5 }}
+                style={{ paddingRight: 8 }}
                 name={props.icon} 
                 size={16}
-                color='#585858'
+                color='#333333'
             />
-            <Text style={styles.buttonBlackText}>{props.title}</Text>
+            <Text style={styles.buttonBlackText}>
+                {props.title}
+            </Text>
+
         </TouchableOpacity>
     )
 }
 
 export function ActionButton(props) {
     return (
-        <TouchableOpacity style={[styles.actionButton, props.style, props.title ? { backgroundColor: null } : null]} onPress={props.action}>
+        <TouchableOpacity
+            style={[
+                styles.actionButton,
+                props.style,
+                props.title ? { backgroundColor: null } : null
+            ]}
+            onPress={props.action}
+        >
             <MI
                 name={props.icon}
                 size={32}
-                color={ props.title ? '#ff6e73' : '#FFFFFF' }
+                color={ props.title ? '#85B71B' : '#FFFFFF' }
             />
             {props.title ?
-                <Text style={[styles.text, { color: '#ff6e73' }]}>{props.title}</Text>
+                <Text style={[styles.text, { color: '#85B71B' }]}>{props.title}</Text>
                 :null    
             }
         </TouchableOpacity>
@@ -76,7 +90,7 @@ export function LinearButton(props) {
             <MI
                 name={props.icon}
                 size={32}
-                color='#ff6e73'
+                color='#333333'
             />
         </TouchableOpacity>
     )
