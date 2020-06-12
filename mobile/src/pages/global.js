@@ -200,7 +200,7 @@ export default StyleSheet.create({
             color: '#585858'
         },
     buttonFloat: {
-        backgroundColor: '#FF5216',
+        backgroundColor: '#ff6e73',
         width: 64,
         height: 64,
         borderRadius: 8,

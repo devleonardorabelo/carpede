@@ -144,7 +144,7 @@ export default function EditProduct() {
                         style={{ flexGrow: 1 }}
                         title='Categoria'
                         name={'category'}
-                        text={category}
+                        text={category.name}
                         action={navigateToSelectCategory}
                         error={alert}
                     />

@@ -1,8 +1,9 @@
 import React from 'react';
 import { SafeAreaView, View, Text, FlatList, Linking } from 'react-native';
 import { useRoute, useNavigation } from '@react-navigation/native';
-import styles from '../../../pages/global';
+import apiReq from '../../../services/reqToken'
 
+import styles from '../../../pages/global';
 import { CardItem, Checkout, Price } from '../../../components/Item';
 import { Header } from '../../../components/Header';
 import { Button, ActionButton, LinearButton } from '../../../components/Button';
@@ -22,11 +23,21 @@ export default function Show() {
         navigation.navigate('StoreDelivery', { order }); 
     }
 
+    async function handleDeleteOrder() {
+        
+        const { data } = await apiReq.post('orders/delete', { id: order._id })
+        if(data) {
+            navigation.goBack();
+        }
+        console.log(data)
+        return;
+    }
+
     return (
         <SafeAreaView style={styles.container}>
 
             <Header title={`#${order.order_id}`}>
-                <LinearButton icon={'trash-can-outline'} />
+                <LinearButton icon={'trash-can-outline'} action={handleDeleteOrder}/>
             </Header>
 
             <View style={styles.column}>
@@ -45,9 +56,9 @@ export default function Show() {
                 numColumns={1}
                 renderItem={({ item: product }) => (
                     <CardItem
-                        amount={product.amount}
-                        title={product.item.name}
-                        price={product.item.price}
+                        amount={product.quantity}
+                        title={product.product.name}
+                        price={product.product.price}
                     />
                 )}
             />    
@@ -110,7 +121,7 @@ export default function Show() {
 
                 <View style={[styles.column,{ marginBottom: 32 }]}>
                     <Text style={styles.textBold}>Entrega:</Text>
-                    <Text style={styles.text}>{order.customer.address}</Text>
+                    <Text style={styles.text}>{order.customer.address} {order.customer.complement} {order.customer.number}</Text>
                 </View>
 
                 <View style={styles.column}>

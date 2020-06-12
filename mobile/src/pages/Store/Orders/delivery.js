@@ -9,11 +9,12 @@ export default function Delivery(){
 
     const route = useRoute();
     const order = route.params.order;
+    console.log(order)
 
     return (
         <SafeAreaView style={{ flex: 1 }}>
             <TransparentHeader/>
-            <LocationMap latitude={order.location.coordinates[0]} longitude={order.location.coordinates[1]} />    
+            <LocationMap latitude={order.location.coordinates[1]} longitude={order.location.coordinates[0]} />    
             <View style={[styles.column, styles.deliveryInfo, { marginBottom: 0 }]}>
                 <Text style={[styles.textBold,{ color: '#FFFFFF' }]}>Endereço</Text>
                 <Text style={[styles.subtitle,{ color: '#FFFFFF' }]}>{order.customer.address}</Text>
