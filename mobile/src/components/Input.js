@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, TextInput, TouchableOpacity } from 'react-native';
-import styles from '../pages/global';
+import styles from '../global';
 
 export function Input(props) {
 

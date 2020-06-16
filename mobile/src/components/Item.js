@@ -1,6 +1,6 @@
 import React from 'react';
 import { TouchableOpacity, View, Text, Image, Animated } from 'react-native';
-import styles from '../pages/global';
+import styles from '../global';
 import { MaterialCommunityIcons as MI } from '@expo/vector-icons';
 import { API_DOMAIN } from '../constants/api';
 import { PanGestureHandler, State } from 'react-native-gesture-handler'
@@ -26,7 +26,7 @@ export function NavItem(props) {
                 <Text style={styles.subtitleTextAction}>{props.subtitle}</Text>
             </View>
             <View style={styles.arrowAction}>
-                <MI name="chevron-right" size={24} color="#85B71B" />	
+                <MI name="chevron-right" size={24} color="#666666" />	
             </View>
         </TouchableOpacity>
     )
@@ -89,21 +89,21 @@ export function Avatar(props) {
 export function Card(props) {
 
     return (
-        <TouchableOpacity style={styles.box} onPress={props.action}>
-            <Image
-                style={styles.boxImage}
-                source={ 
-                    props.image === undefined || props.image === null ?
-                        cardImage
-                    : 
+        <TouchableOpacity style={[styles.box, props.style]} onPress={props.action}>
+            {props.image ?
+                <Image
+                    style={styles.boxImage}
+                    source={
                         {uri: `${API_DOMAIN}/uploads/${props.image}`}
-                }
-                resizeMode='cover'
-            />
+                    }
+                    resizeMode='cover'
+                />
+            : null
+            }
             
             <View style={styles.boxBody}>
                 <View style={{ flexDirection: 'row' }}>
-                    <Text style={[styles.textWrap, styles.textBold]}>{regexName(props.title)}</Text>
+                    <Text style={[styles.textWrap, styles.textBold]}>{props.title ? regexName(props.title) : null}</Text>
                 </View>
                 { props.price ?
                     <Text style={styles.price}>
@@ -124,7 +124,7 @@ export function Card(props) {
 export function CardOrder(props) {
 
     return (
-        <TouchableOpacity style={styles.action} onPress={props.action}>
+        <TouchableOpacity style={styles.box} onPress={props.action}>
             <View style={{ flexGrow: 1 }}>
                 <Text style={[styles.textBold, styles.textWrap]}>{regexName(props.title)}</Text>
                 <Text style={[styles.text, styles.textWrap]}>{props.address}</Text>    

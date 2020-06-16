@@ -8,7 +8,7 @@ import { Input, Select } from '../../../components/Input';
 import { Button, LinearButton } from '../../../components/Button';
 import { imagePicker, cameraPicker, uploadImage } from '../../../utils/ImagePicker';
 
-import styles from '../../global';
+import styles from '../../../global';
 
 export default function NewProduct() {
 
@@ -58,7 +58,10 @@ export default function NewProduct() {
 
         setStatus('done');
 
-        setTimeout(() => { navigation.navigate('StoreProducts') }, 2000);
+        setTimeout(() => { navigation.navigate('StoreProducts', {
+            method: 'create', 
+            product: data.product
+        }) }, 500);
 
     }
 
@@ -75,11 +78,9 @@ export default function NewProduct() {
         handleSelectCategory();
     },[params])
  
-    return(<>
+    return(
         <SafeAreaView style={styles.container}>
-            <Header title='novo produto'>
-                <LinearButton icon={'trash-can-outline'} action={() => handleDelete(product._id)}/>
-            </Header>
+            <Header title='novo produto' />
             <ScrollView showsVerticalScrollIndicator={false} style={styles.column}>
                 
                 <PreviewImage
@@ -136,5 +137,5 @@ export default function NewProduct() {
                 <Button action={handleNewProduct} title={'Salvar'} status={status}/>      
             </ScrollView>
         </SafeAreaView>
-    </>)
+    )
 }

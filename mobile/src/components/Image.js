@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Image, TouchableOpacity } from 'react-native';
 import { MaterialCommunityIcons as MI } from '@expo/vector-icons';
-import styles from '../pages/global';
+import styles from '../global';
 
 import defaultImage from '../assets/illustrations/repeat_food.png';
 
@@ -9,16 +9,16 @@ export function PreviewImage(props) {
     
     return (
         <View style={{ justifyContent: 'flex-end', marginBottom: 16 }}>
-            <Image
-                source={ 
-                    props.image !== undefined ?
-                        props.image
-                    : 
-                        defaultImage
-                }
-                style={styles.fullImage}
-                resizeMode='cover'
-            />
+            {props.image ?
+                <Image
+                    source={props.image}
+                    style={styles.fullImage}
+                    resizeMode='cover'
+                />
+            : 
+                <View style={{ height: 100 }}/>
+            }
+            
             <View style={styles.groupFloatButton}>
 
                 <TouchableOpacity

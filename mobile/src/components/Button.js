@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { TouchableOpacity, Text, ActivityIndicator } from 'react-native';
 import { MaterialCommunityIcons as MI } from '@expo/vector-icons';
-import styles from "../pages/global";
+import styles from "../global";
 
 
 export function Button(props) {
@@ -24,14 +24,14 @@ export function Button(props) {
         if(props.status === 'done') {
             setColor('#266EE8');
             setContent(<Text style={styles.buttonWhiteText}>Feito!</Text>)
-            setDisabled(false);
+            setDisabled(true);
         }
     }, [props])
 
     return(
         <TouchableOpacity
             activeOpacity={0.8}
-            style={[styles.button, { backgroundColor: color }]}
+            style={[props.style, styles.button, { backgroundColor: color }]}
             onPress={props.action}
             disabled={disabled}
         >

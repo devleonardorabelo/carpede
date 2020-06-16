@@ -3,7 +3,7 @@ import { SafeAreaView, View, Text, FlatList, Linking } from 'react-native';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import apiReq from '../../../services/reqToken'
 
-import styles from '../../../pages/global';
+import styles from '../../../global';
 import { CardItem, Checkout, Price } from '../../../components/Item';
 import { Header } from '../../../components/Header';
 import { Button, ActionButton, LinearButton } from '../../../components/Button';
@@ -29,7 +29,6 @@ export default function Show() {
         if(data) {
             navigation.goBack();
         }
-        console.log(data)
         return;
     }
 

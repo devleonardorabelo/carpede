@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { FlatList, SafeAreaView, View, Text } from 'react-native';
+import { FlatList, SafeAreaView, View, Text, Image } from 'react-native';
 import apiReq from '../../../services/reqToken';
-import styles from '../../global';
-import { useNavigation } from '@react-navigation/native';
+import styles from '../../../global';
+import { useNavigation, useRoute } from '@react-navigation/native';
 
 import Loading from '../../../components/Loading';
 import { Header } from '../../../components/Header';
 import { Card } from '../../../components/Item';
 import { Button } from '../../../components/Button';
+
+import img_category from '../../../assets/illustrations/categories.png';
 
 export default function Categories() {
 
@@ -18,6 +20,8 @@ export default function Categories() {
     const [ loading, setLoading ] = useState(false);
 
     const navigation = useNavigation();
+    const { params } = useRoute();
+    let route = params;
 
     async function loadCategories() {
 
@@ -44,7 +48,32 @@ export default function Categories() {
 
     useEffect(() => {
         loadCategories();
-    },[])
+        if(route) {
+
+            console.log(route)
+            
+            let index = categories.findIndex(( obj => obj._id === route.category._id ))
+
+            if(index != -1 && route.method == 'destroy') {
+                categories.splice(index, 1)
+                setCategories([...categories]);
+                route = {};
+                return;
+            } 
+            if (index != -1 && route.method == 'update') {
+                categories[index] = route.category
+                setCategories([...categories]);
+                route = {};
+                return;
+            } 
+            if (index == -1 && route.method == 'create') {
+                setCategories([...categories, route.category]);
+                route = {};
+                return;
+            }
+            
+        }
+    },[route])
 
     function navigateToEdit(category) {
         navigation.navigate('StoreCategoryEdit', { category });
@@ -54,7 +83,9 @@ export default function Categories() {
         navigation.navigate('StoreCategoryNew');
     }    
 
-    return(<>{loadedPage ? (
+    if(!loadedPage) return <Loading />
+
+    return(
 
         <SafeAreaView style={styles.container}>
             <Header title={'categorias'}/>
@@ -63,10 +94,10 @@ export default function Categories() {
                 <>
                     <View style={styles.column}>
                         <Text style={styles.title}>Ops...</Text>
-                        <Text style={[styles.subtitle,{ marginBottom: 16 }]}>Você ainda não tem nenhuma categoria</Text>
-                        <Text style={styles.text}>Clique no botão abaixo para adicionar.</Text>
+                        <Text style={styles.grayTitle}>Você ainda não tem nenhuma categoria!</Text>
                     </View>
                     <View style={styles.column}>
+                        <Image style={styles.illustration} source={img_category} />
                         <Button action={navigateToNew} title='Adicionar Categoria'/>
                     </View>
                 </>
@@ -89,18 +120,15 @@ export default function Categories() {
                             price={categories.price}
                         />
                     )}
+                    //ListFooterComponent={}
                 />
 
-
-                <View style={styles.column}>
+                <View style={[styles.column, { paddingTop: 8 }]}>
                     <Button action={navigateToNew} title='Adicionar Categoria'/>
                 </View>        
             </>
             }
 
         </SafeAreaView>
-        ) : (
-            <Loading />            
-        )}
-    </>)
+       )
 }

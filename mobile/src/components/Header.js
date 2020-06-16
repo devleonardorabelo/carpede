@@ -2,7 +2,7 @@ import React from 'react';
 import { TouchableOpacity, View, Text } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { MaterialCommunityIcons as MI } from '@expo/vector-icons';
-import styles from '../pages/global';
+import styles from '../global';
 
 export function Header(props) {
 

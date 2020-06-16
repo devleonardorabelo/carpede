@@ -2,14 +2,13 @@ import React from 'react';
 import { SafeAreaView, View, Text } from 'react-native';
 import { LocationMap } from '../../../components/Map';
 import { useRoute } from '@react-navigation/native';
-import styles from '../../global';
+import styles from '../../../global';
 import { TransparentHeader } from '../../../components/Header';
 
 export default function Delivery(){
 
     const route = useRoute();
     const order = route.params.order;
-    console.log(order)
 
     return (
         <SafeAreaView style={{ flex: 1 }}>

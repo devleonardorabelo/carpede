@@ -1,17 +1,27 @@
 const Product = require('../models/Product');
 const Order = require('../models/Order');
+const Category = require('../models/Category');
 
 module.exports = {
 
     async index(req, res) {
-
+''
         const store = req.headers.user;
+        const { page, category } = req.query;
 
-        const { page } = req.query;
+        console.log(category)
 
         try {
-            const products = await Product.find({store_id: store.id}).limit(6).skip((page - 1) * 6)
-            return res.json(products);
+            let products;
+
+            if(category) 
+                products = await Product.find({store_id: store.id, "category._id": category}).limit(15).skip((page - 1) * 15);
+            else
+                products = await Product.find({store_id: store.id}).limit(15).skip((page - 1) * 15);
+            
+            const categories = await Category.find({store_id: store.id});
+            
+            return res.json({products, categories});
 
         } catch (err) {
             return res.json({error: 'Houve um erro ao listar seus produtos, verifique sua conexão com a internet'})
@@ -42,8 +52,8 @@ module.exports = {
         }
 
         try {
-            await new Product(newProduct).save();
-            return res.json({status: 'Produto criado com sucesso'})
+            let product = await new Product(newProduct).save();
+            return res.json({status: 'Produto criado com sucesso', product})
 
         } catch (err) {
             return res.json({error: 'Houve um erro ao listar seus produtos, tente novamente'})
@@ -78,7 +88,18 @@ module.exports = {
                 price: treatPrice
             })
 
-            return res.json({status: 'Alterado com sucesso'})            
+            return res.json({
+                status: 'Alterado com sucesso',
+                product: {
+                    store_id: store.id,
+                    _id: id,
+                    image,
+                    description,
+                    name,
+                    category,
+                    price: treatPrice
+                }
+            })            
         } catch (err) {
             return res.json({error: 'Houve um erro ao alterar seu produto, tente novamente'})
         }
@@ -93,7 +114,12 @@ module.exports = {
         try {
             await Product.deleteOne({_id: id})
 
-            return res.json({status: 'Produto apagado com sucesso'});
+            return res.json({
+                status: 'Produto apagado com sucesso',
+                product: {
+                    _id: id
+                }
+            });
         } catch (err) {
             return res.json({error: 'Houve um erro ao alterar seu produto, tente novamente'})
         }     

@@ -2,7 +2,7 @@ import React, { useState, useContext } from 'react';
 import AuthContext from '../../../contexts/auth';
 import { View, Text, SafeAreaView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import styles from '../../global';
+import styles from '../../../global';
 import api from '../../../services/api';
 
 import { Header } from '../../../components/Header'; 
@@ -44,11 +44,12 @@ export default function Signin(){
 
     const navigateToSignup = () => navigation.navigate('Signup')
 
-    return(<>
+    return(
         <SafeAreaView style={styles.container}>
             <Header title={'entrar'}/>
             <View style={styles.column}>
-                <Text style={[styles.title,{ marginBottom: 16 }]}>Entre na sua conta</Text>
+                <Text style={[styles.title,{ marginBottom: 0 }]}>Entrar</Text>
+                <Text style={[styles.grayTitle,{ marginBottom: 16 }]}>Gerenciar o seu negócio</Text>
                 <Input
                     title={'Email'}
                     name={'email'}
@@ -69,5 +70,5 @@ export default function Signin(){
             </View>
             
         </SafeAreaView>
-    </>)
+    )
 }

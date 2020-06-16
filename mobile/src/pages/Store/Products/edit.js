@@ -3,7 +3,7 @@ import { View, SafeAreaView, ScrollView } from 'react-native';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import apiReq from '../../../services/reqToken';
 
-import styles from '../../global';
+import styles from '../../../global';
 import { Header } from '../../../components/Header'
 import { PreviewImage } from '../../../components/Image';
 import { Input, Select } from '../../../components/Input';
@@ -19,7 +19,7 @@ export default function EditProduct() {
     const productCategory = params.category;
     const navigation = useNavigation();
 
-    const currentImage = {uri: `${API_DOMAIN}/uploads/${product.image}`}
+    const currentImage = product.image == null ? null : {uri: `${API_DOMAIN}/uploads/${product.image}`}
 
     const [ image, setImage ] = useState(currentImage);
     const [ name, setName ] = useState(product.name);
@@ -48,7 +48,7 @@ export default function EditProduct() {
         let setImage;
 
         if(image === currentImage) setImage = product.image
-        if(image != currentImage )  setImage = await uploadImage(image);
+        if(image != currentImage) setImage = await uploadImage(image);
 
         const { data } = await apiReq.post('products/edit', {
             id,
@@ -66,15 +66,20 @@ export default function EditProduct() {
         };
 
         setStatus('done');
+
+        setTimeout(() => navigation.navigate('StoreProducts', {
+            method: 'update',
+            product: data.product
+        }), 500)
     }
 
     async function handleDelete(id) {
-
-        const { data } = await apiReq.post('products/delete', {
-            id
+        const { data } = await apiReq.post('products/delete', { id });
+        console.log(data)
+        if(data) navigation.navigate('StoreProducts', {
+            method: 'destroy',
+            product: data.product
         });
-
-        if(data) navigation.navigate('StoreProducts');
     }
 
     const navigateToSelectCategory = () => navigation.navigate('StoreLoadCategory', { type: 'edit' });
@@ -93,7 +98,7 @@ export default function EditProduct() {
     return(<>
         <SafeAreaView style={styles.container}>
 
-            <Header title={product.name}>
+            <Header title={name}>
                 <LinearButton icon={'trash-can-outline'} action={() => handleDelete(product._id)}/>
             </Header>
 

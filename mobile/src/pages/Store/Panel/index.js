@@ -2,7 +2,7 @@ import React, { useState, useContext, useEffect } from 'react';
 import AuthContext from '../../../contexts/auth';
 import { SafeAreaView, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import styles from '../../global';
+import styles from '../../../global';
 import { API_DOMAIN } from '../../../constants/api';
 import { NavItem, Avatar } from '../../../components/Item';
 import { CustomHeader } from '../../../components/Header';

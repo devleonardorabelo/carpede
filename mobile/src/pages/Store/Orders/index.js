@@ -1,12 +1,16 @@
 import React, { useState, useCallback } from 'react';
-import { SafeAreaView, FlatList, View } from 'react-native';
+import { SafeAreaView, FlatList, View, Image, Text } from 'react-native';
 import apiReq from '../../../services/reqToken';
-import styles from '../../global';
+import { useNavigation, useFocusEffect } from '@react-navigation/native';
 
+import styles from '../../../global';
 import Loading from '../../../components/Loading';
 import { Header } from '../../../components/Header';
-import { CardOrder } from '../../../components/Item'
-import { useNavigation, useFocusEffect } from '@react-navigation/native';
+import { CardOrder } from '../../../components/Item';
+import { Button } from '../../../components/Item';
+
+
+import img_order from '../../../assets/illustrations/orders.png'
 
 export default function Order() {
 
@@ -52,32 +56,45 @@ export default function Order() {
         navigation.navigate('StoreOrder', { order });
     }
 
-    return (<>{loadedPage ?
+    if(!loadedPage) return <Loading />
+
+    return (
         <SafeAreaView style={styles.container}>
             <Header title={'pedidos'}/>
-            <View style={styles.column}>
-                <FlatList
-                    data={orders}
-                    keyExtractor={order => String(order._id)}
-                    showsVerticalScrollIndicator={false}
-                    onEndReached={loadOrders}
-                    onEndReachedThreshold={0.3}
-                    numColumns={1}
-                    renderItem={({ item: order }) => (
-                        
-                        <CardOrder
-                            action={() => navigateToOrder(order)}
-                            title={order.customer.name}
-                            address={order.customer.address}
-                            time={order.time}
-                            price={order.value}
-                        />
-                    )}
-                />     
-            </View>
-            
+            {orders.length == 0 ?
+                <>
+                    <View style={styles.column}>
+                        <Text style={styles.title}>Ops...</Text>
+                        <Text style={styles.grayTitle}>Você ainda não tem nenhum pedido!</Text>
+                    </View>
+                    <View style={styles.column}>
+                        <Image style={styles.illustration} source={img_order} />
+                    </View>
+                </>
+            :
+                <>
+                    <View style={styles.column}>
+                        <FlatList
+                            data={orders}
+                            keyExtractor={order => String(order._id)}
+                            showsVerticalScrollIndicator={false}
+                            onEndReached={loadOrders}
+                            onEndReachedThreshold={0.3}
+                            numColumns={1}
+                            renderItem={({ item: order }) => (
+                                
+                                <CardOrder
+                                    action={() => navigateToOrder(order)}
+                                    title={`#${order.order_id} - ${order.customer.name}`}
+                                    address={`${order.customer.address} ${order.customer.complement} ${order.customer.number}`}
+                                    time={order.time}
+                                    price={order.value}
+                                />
+                            )}
+                        />     
+                    </View>
+                </>
+            }  
         </SafeAreaView>
-    :
-        <Loading />
-    }</>)
+    )
 }

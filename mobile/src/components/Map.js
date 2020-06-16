@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, Text } from 'react-native'
 import MapView, { Marker } from 'react-native-maps';
-import styles from '../pages/global';
+import styles from '../global';
 import { MaterialCommunityIcons as MI } from '@expo/vector-icons';
 
 export function LocationMap(props) {
