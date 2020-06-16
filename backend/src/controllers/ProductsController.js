@@ -8,9 +8,7 @@ module.exports = {
 ''
         const store = req.headers.user;
         const { page, category } = req.query;
-
-        console.log(category)
-
+        
         try {
             let products;
 

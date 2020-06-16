@@ -7,7 +7,7 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 import Loading from '../../../components/Loading';
 import { Header } from '../../../components/Header';
 import { Card } from '../../../components/Item';
-import { Button } from '../../../components/Button';
+import { ActionButton, Button } from '../../../components/Button';
 
 import img_category from '../../../assets/illustrations/categories.png';
 
@@ -49,8 +49,6 @@ export default function Categories() {
     useEffect(() => {
         loadCategories();
         if(route) {
-
-            console.log(route)
             
             let index = categories.findIndex(( obj => obj._id === route.category._id ))
 
@@ -123,9 +121,9 @@ export default function Categories() {
                     //ListFooterComponent={}
                 />
 
-                <View style={[styles.column, { paddingTop: 8 }]}>
-                    <Button action={navigateToNew} title='Adicionar Categoria'/>
-                </View>        
+                <View style={styles.absoluteBottomRight}>
+                    <ActionButton icon={'plus'} action={navigateToNew}/>
+                </View>     
             </>
             }
 

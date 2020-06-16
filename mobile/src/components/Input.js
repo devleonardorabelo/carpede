@@ -37,11 +37,7 @@ export function Input(props) {
                 maxLength={props.maxLength || 20}
                 autoCapitalize= { props.capitalize || 'sentences' }
             />
-            {err() ?
-                <Text style={styles.inputTextAlert}>{props.error.text}</Text>
-                :
-                null 
-            } 
+            {err() && <Text style={styles.inputTextAlert}>{props.error.text}</Text>} 
         </View>
     )
 }
@@ -74,11 +70,7 @@ export function InputPassword(props) {
                 placeholder={props.placeholder}
                 maxLength={20}                 
             />
-            {err() ?
-                <Text style={styles.inputTextAlert}>{props.error.text}</Text>
-                :
-                null 
-            } 
+            {err() && <Text style={styles.inputTextAlert}>{props.error.text}</Text>} 
         </View>
     )
 }
@@ -132,11 +124,7 @@ export function Select(props){
             ]}>
                 {props.text}
             </Text>
-            {err() ?
-                <Text style={styles.inputTextAlert}>{props.error.text}</Text>
-                :
-                null 
-            }   
+            {err() && <Text style={styles.inputTextAlert}>{props.error.text}</Text>}   
         </TouchableOpacity>
         
         

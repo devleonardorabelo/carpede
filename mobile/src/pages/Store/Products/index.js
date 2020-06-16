@@ -4,13 +4,11 @@ import apiReq from '../../../services/reqToken';
 import styles from '../../../global';
 import { useNavigation, useRoute } from '@react-navigation/native';
 
-import Loading from '../../../components/Loading';
 import Skeleton from '../../../components/Skeleton';
 import { Header } from '../../../components/Header';
 import { Card } from '../../../components/Item';
-import { Button } from '../../../components/Button';
+import { ActionButton } from '../../../components/Button';
 
-import img_product from '../../../assets/illustrations/products.png';
 
 export default function Products() {
 
@@ -53,11 +51,14 @@ export default function Products() {
         setLoading(false);
     }
 
-    function loadProductWithParams(category) {
-        setTotal(0);
-        setProducts([]);
-        setPage(1);
-        setCategory(category)
+    function loadProductWithParams(selectCategory) {
+        if(selectCategory != category && !loading) {
+            setTotal(0);
+            setProducts([]);
+            setPage(1);
+            setCategory(selectCategory)    
+        }
+        return;
     }
 
     const navigateToEdit = product => navigation.navigate('StoreProductEdit', { product });
@@ -81,23 +82,25 @@ export default function Products() {
             } 
             if (index != -1 && route.method == 'update') {
                 products[index] = route.product
+                if(category != route.product.category._id) products.splice(index, 1)
                 setProducts([...products]);
                 route = {};
                 return;
             } 
-            if (index == -1 && route.method == 'create') {
+            if (index == -1 && route.method == 'create' && category == route.product.category._id || category == null) {
                 setProducts([...products, route.product]);
                 route = {};
                 return;
             }
             
         }
+
     }, [route])
 
     return(
 
         <SafeAreaView style={styles.container}>
-            <Header title={'produtos'}/>
+            <Header title={'produtos'} />
 
             <View style={styles.scrollHorizontal}>
 
@@ -110,14 +113,14 @@ export default function Products() {
                         <TouchableOpacity
                             style={[
                                 styles.buttonTag,
-                                category == thisCategory._id ? { backgroundColor: '#639DFF' } : null
+                                category == thisCategory._id && { backgroundColor: '#639DFF' }
                             ]}
                             onPress={() => loadProductWithParams(thisCategory._id)}
                         >
                             <Text
                                 style={[
                                     styles.buttonBlackText,
-                                    category == thisCategory._id ? { color: '#FFFFFF' } : null
+                                    category == thisCategory._id && { color: '#FFFFFF' }
                                 ]}
                             >{thisCategory.name}</Text>
                         </TouchableOpacity>
@@ -126,14 +129,14 @@ export default function Products() {
                         <TouchableOpacity
                             style={[
                                 styles.buttonTag,
-                                category == null ? { backgroundColor: '#639DFF' } : null
+                                category == null && { backgroundColor: '#639DFF' }
                             ]}
                             onPress={() => loadProductWithParams(null)}
                         >
                             <Text
                                 style={[
                                     styles.buttonBlackText,
-                                    category == null ? { color: '#FFFFFF' } : null
+                                    category == null && { color: '#FFFFFF' }
                                 ]}
                             >Todos</Text>
                         </TouchableOpacity>
@@ -169,7 +172,7 @@ export default function Products() {
                 )}
                 //ListFooterComponent={} 
                 ListEmptyComponent={
-                    loading ?
+                    loading &&
                         <Skeleton>
                             <Card style={{ backgroundColor: '#F5F5F5' }} />
                             <Card style={{ backgroundColor: '#F5F5F5' }} />
@@ -177,12 +180,11 @@ export default function Products() {
                             <Card style={{ backgroundColor: '#F5F5F5' }} />
                             <Card style={{ backgroundColor: '#F5F5F5' }} />
                         </Skeleton>
-                    :null
                 }               
             />
 
-            <View style={[styles.column, { paddingTop: 8 }]}>
-                <Button action={navigateToNew} title='Adicionar Produto'/>
+            <View style={styles.absoluteBottomRight}>
+                <ActionButton icon={'plus'} action={navigateToNew}/>
             </View>        
                 
             

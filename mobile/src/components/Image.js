@@ -22,7 +22,7 @@ export function PreviewImage(props) {
             <View style={styles.groupFloatButton}>
 
                 <TouchableOpacity
-                    style={[styles.buttonFloat, { marginRight: 16 }]}
+                    style={[styles.actionButton, { marginRight: 16 }]}
                     onPress={props.action1}
                 >
                     <MI
@@ -33,7 +33,7 @@ export function PreviewImage(props) {
                 </TouchableOpacity>
 
                 <TouchableOpacity
-                    style={styles.buttonFloat}
+                    style={styles.actionButton}
                     onPress={props.action2}
                 >
                     <MI

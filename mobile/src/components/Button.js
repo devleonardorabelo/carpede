@@ -67,7 +67,7 @@ export function ActionButton(props) {
             style={[
                 styles.actionButton,
                 props.style,
-                props.title ? { backgroundColor: null } : null
+                props.title && { backgroundColor: null }
             ]}
             onPress={props.action}
         >
@@ -76,10 +76,7 @@ export function ActionButton(props) {
                 size={32}
                 color={ props.title ? '#85B71B' : '#FFFFFF' }
             />
-            {props.title ?
-                <Text style={[styles.text, { color: '#85B71B' }]}>{props.title}</Text>
-                :null    
-            }
+            {props.title && <Text style={[styles.text, { color: '#85B71B' }]}>{props.title}</Text>}
         </TouchableOpacity>
     )
 }

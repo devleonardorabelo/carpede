@@ -25,11 +25,7 @@ export function Header(props) {
                     />
                 </TouchableOpacity>
             </View>
-            {props.title ?
-                <Text style={[styles.textBold,{ textTransform: 'uppercase' }]}>{props.title}</Text>
-            :
-                null
-            }
+            {props.title && <Text style={[styles.textBold,{ textTransform: 'uppercase' }]}>{props.title}</Text>}
             {props.children ?
                 <View>{props.children}</View>
                 :

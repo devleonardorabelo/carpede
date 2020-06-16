@@ -46,7 +46,7 @@ export function Avatar(props) {
                     }
                     resizeMode={'cover'}
                 />
-                { props.isChangeable ? 
+                { props.isChangeable && 
                 <View style={styles.boxFloatButton}>
                     <View
                     style={[styles.buttonFloat, { width: 32, height: 32, display: props.transparent ? 'none' : 'flex' }]}>
@@ -57,7 +57,6 @@ export function Avatar(props) {
                         />
                     </View> 
                 </View>
-                : null
                 }
                        
             </TouchableOpacity>
@@ -90,7 +89,7 @@ export function Card(props) {
 
     return (
         <TouchableOpacity style={[styles.box, props.style]} onPress={props.action}>
-            {props.image ?
+            {props.image &&
                 <Image
                     style={styles.boxImage}
                     source={
@@ -98,21 +97,19 @@ export function Card(props) {
                     }
                     resizeMode='cover'
                 />
-            : null
             }
             
             <View style={styles.boxBody}>
                 <View style={{ flexDirection: 'row' }}>
-                    <Text style={[styles.textWrap, styles.textBold]}>{props.title ? regexName(props.title) : null}</Text>
+                    <Text style={[styles.textWrap, styles.textBold]}>{props.title && regexName(props.title)}</Text>
                 </View>
-                { props.price ?
+                { props.price &&
                     <Text style={styles.price}>
                         {Intl.NumberFormat('pt-BR', {
                             style: 'currency',
                             currency: 'BRL'
                         }).format(props.price)}
                     </Text>
-                :null
                 }
                 
             </View>

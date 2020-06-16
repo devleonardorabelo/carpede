@@ -87,7 +87,7 @@ export default function Show() {
                         <Price value={order.value} /> 
                     </View>
 
-                    { order.paymentMethod.money ? <>
+                    { order.paymentMethod.money && <>
                         <View style={[styles.column,{ paddingHorizontal: 0, flexGrow: 1 }]}>
                             <Text style={styles.text}>Dinheiro</Text>
                             <Price value={order.paymentMethod.money.amount} style={{ color: '#271814' }}/>   
@@ -96,16 +96,15 @@ export default function Show() {
                             <Text style={[styles.text, { color: '#271814' }]}>Troco</Text>
                             <Price value={order.paymentMethod.money.change} style={{ color: '#271814' }}/>   
                         </View>
-                        </>: null
+                        </>
                     }
-                    { order.paymentMethod.card ?
+                    { order.paymentMethod.card &&
                         <View style={[styles.column,{ paddingHorizontal: 0, flexGrow: 1 }]}>
                             <Text style={styles.text}>Cartão</Text>
                             <Text style={styles.subtitle}>
                                 {order.paymentMethod.card.method}
                             </Text>    
                         </View>
-                        :null
                     }   
                 </View>
 

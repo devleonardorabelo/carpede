@@ -51,6 +51,16 @@ export default StyleSheet.create({
     alignCenterX: {
         justifyContent: 'center'
     },
+    absoluteBottomRight: {
+        position: 'absolute',
+        right: widthDP('4%'),
+        bottom: widthDP('4%'),
+    },
+    absoluteBottomLeft: {
+        position: 'absolute',
+        left: widthDP('4%'),
+        bottom: widthDP('4%'),
+    },
     //NAVITEM
     action: {
         flexDirection: 'row',

@@ -75,7 +75,6 @@ export default function EditProduct() {
 
     async function handleDelete(id) {
         const { data } = await apiReq.post('products/delete', { id });
-        console.log(data)
         if(data) navigation.navigate('StoreProducts', {
             method: 'destroy',
             product: data.product
