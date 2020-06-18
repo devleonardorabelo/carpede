@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Text, SafeAreaView, ScrollView } from 'react-native';
-import styles from '../../global';
+import styles from '../../../global';
 import { Header } from '../../../components/Header';
 import Loading from '../../../components/Loading';
 import { Input, TextArea } from '../../../components/Input';
@@ -8,6 +8,9 @@ import { Avatar } from '../../../components/Item';
 import { Button } from '../../../components/Button';
 import apiReq from '../../../services/reqToken';
 import { API_DOMAIN } from '../../../constants/api';
+
+import { format } from '@buttercup/react-formatted-input';
+import { WhatsappFormat, PhoneFormat } from '../../../utils/treatString';
 
 import { imagePicker, uploadImage } from '../../../utils/ImagePicker';
 
@@ -33,11 +36,12 @@ export default function Profile() {
         if(data.avatar) {
             setAvatar({uri: `${API_DOMAIN}/uploads/${data.avatar}`});
             setFileName(data.avatar)    
-        } 
+        }
+        
         setName(data.name);
         setDescription(data.description);
-        setWhatsapp(data.whatsapp);
-        setPhone(data.phone);
+        setWhatsapp(format(data.whatsapp, WhatsappFormat));
+        setPhone(format(data.phone, PhoneFormat));
         setTags(data.tags);
         setLoadedPage(true);
     }
@@ -63,8 +67,8 @@ export default function Profile() {
             avatar: fileName,
             name,
             description,
-            whatsapp,
-            phone,
+            whatsapp: whatsapp.raw,
+            phone: phone.raw,
             tags
         });
 
@@ -76,68 +80,70 @@ export default function Profile() {
 
         setStatus('done');
 
+        setTimeout(() => { navigation.navigate('StorePanel') }, 500);
     }
-    return(<>
-        {loadedPage ? (
-        <>
-            <SafeAreaView style={styles.container}>
 
-                <Header title={'perfil'}/>
+    const maskWhatsapp = phone => setWhatsapp(format(phone, WhatsappFormat))
+    const maskPhone = phone => setPhone(format(phone, PhoneFormat))
 
-                <ScrollView
-                    style={styles.column}
-                    showsVerticalScrollIndicator={false}
-                >
+    if(!loadedPage) return <Loading />
 
-                    <Avatar
-                        image={avatar}
-                        title={name}
-                        subtitle={whatsapp}
-                        action={getImage}
-                        icon='image'
-                        transparent={avatar}
-                        isChangeable
-				    />
-                    <Input
-                        title={'Nome da Loja'}
-                        name={'name'}
-                        default={name}
-                        action={e => setName(e)}
-                        error={alert}
-                    />
-                    <TextArea
-                        title={'Descrição'}
-                        default={description}
-                        action={e => setDescription(e)}
-                    />
-                    <Input
-                        title={'Whatsapp'}
-                        name={'whatsapp'}
-                        default={whatsapp}
-                        action={e => setWhatsapp(e)}
-                        keyboard={'numeric'}
-                        maxLength={11}
-                        error={alert}
-                    />
-                    <Input
-                        title={'Telefone'}
-                        default={phone}
-                        action={e => setPhone(e)}
-                        keyboard={'numeric'}
-                        maxLength={11}
-                    />
-                    <TextArea
-                        title={'Principais Produtos'}
-                        default={tags}
-                        action={e => setTags(e)}
-                        placeholder={'ex:  sapato, camisa, meia, tênis, calça, bermuda'}
-                    />
-                    <Button action={handleUpdate} title={'Salvar'} status={status}/>
-                </ScrollView>
-            </SafeAreaView>
-        </>
-            ) : (
-            <Loading />            
-        )}
-    </>)        
+    return(
+        <SafeAreaView style={styles.container}>
+
+            <Header title={'perfil'}/>
+
+            <ScrollView
+                style={styles.column}
+                showsVerticalScrollIndicator={false}
+            >
+
+                <Avatar
+                    image={avatar}
+                    title={name}
+                    subtitle={whatsapp.formatted}
+                    action={getImage}
+                    icon='image'
+                    transparent={avatar}
+                    isChangeable
+                />
+                <Input
+                    title={'Nome da Loja'}
+                    name={'name'}
+                    default={name}
+                    action={e => setName(e)}
+                    error={alert}
+                />
+                <TextArea
+                    title={'Descrição'}
+                    default={description}
+                    action={e => setDescription(e)}
+                />
+                <Input
+                    title={'Whatsapp'}
+                    name={'whatsapp'}
+                    default={whatsapp.formatted}
+                    action={number => maskWhatsapp(number)}
+                    keyboard={'phone-pad'}
+                    maxLength={16}
+                    error={alert}
+                />
+                <Input
+                    title={'Telefone'}
+                    default={phone.formatted}
+                    action={number => maskPhone(number)}
+                    keyboard={'numeric'}
+                    maxLength={14}
+                />
+                <TextArea
+                    title={'Principais Produtos'}
+                    default={tags}
+                    action={e => setTags(e)}
+                    placeholder={'ex:  sapato, camisa, meia, tênis, calça, bermuda'}
+                />
+                <Button action={handleUpdate} title={'Salvar'} status={status}/>
+            </ScrollView>
+        
+        </SafeAreaView>
+    )        
 }

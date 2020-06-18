@@ -1,23 +1,26 @@
 import React, { useState, useEffect } from 'react';
-import { FlatList, SafeAreaView, View, Text } from 'react-native';
+import { FlatList, SafeAreaView, View } from 'react-native';
 import apiReq from '../../../services/reqToken';
-import styles from '../../global';
-import { useNavigation } from '@react-navigation/native';
+import styles from '../../../global';
+import { useNavigation, useRoute } from '@react-navigation/native';
 
-import Loading from '../../../components/Loading';
+import Skeleton from '../../../components/Skeleton';
 import { Header } from '../../../components/Header';
 import { Card } from '../../../components/Item';
-import { Button } from '../../../components/Button';
+import { ActionButton, FilterButton } from '../../../components/Button';
+
 
 export default function Categories() {
 
     const [ categories, setCategories ] = useState([]);
+    const [ sort, setSort ] = useState(1);
     const [ total, setTotal ] = useState(0);
     const [ page, setPage ] = useState(1);
-    const [ loadedPage, setLoadedPage ] = useState(false);
     const [ loading, setLoading ] = useState(false);
 
     const navigation = useNavigation();
+    const { params } = useRoute();
+    let route = params;
 
     async function loadCategories() {
 
@@ -31,8 +34,6 @@ export default function Categories() {
             params: { page },
         });
 
-        if(loadedPage === false) setLoadedPage(true);
-
         if(data.length) {
             setCategories([...categories, ...data]);
             setTotal(headers['x-total-count']);
@@ -42,65 +43,109 @@ export default function Categories() {
         setLoading(false);
     }
 
-    useEffect(() => {
-        loadCategories();
-    },[])
-
-    function navigateToEdit(category) {
-        navigation.navigate('StoreCategoryEdit', { category });
+    function sortCategories() {
+        categories.sort((a, b) => {
+            if(sort == 1) {
+                if(a.name < b.name) return 1;
+                if(a.name > b.name) return -1;    
+            }
+            if(sort == -1) {
+                if(a.name < b.name) return -1;
+                if(a.name > b.name) return 1; 
+            }
+            return 0;
+        });
+        setCategories([...categories])
     }
 
-    function navigateToNew() {
-        navigation.navigate('StoreCategoryNew');
-    }    
+    const navigateToEdit = category => navigation.navigate('StoreCategoryEdit', { category });
 
-    return(<>{loadedPage ? (
+    const navigateToNew = () => navigation.navigate('StoreCategoryNew');
+
+    useEffect(() => {
+        loadCategories();
+        if(route) {
+            
+            let index = categories.findIndex(( obj => obj._id === route.category._id ))
+
+            if(index != -1 && route.method == 'destroy') {
+                categories.splice(index, 1)
+                setCategories([...categories]);
+                route = {};
+                return;
+            } 
+            if (index != -1 && route.method == 'update') {
+                categories[index] = route.category
+                setCategories([...categories]);
+                route = {};
+                return;
+            } 
+            if (index == -1 && route.method == 'create') {
+                setCategories([...categories, route.category]);
+                route = {};
+                return;
+            }
+            
+        }
+    },[route])
+
+    return(
 
         <SafeAreaView style={styles.container}>
-            <Header title={'categorias'}/>
-
-            {categories.length == 0 ?
-                <>
-                    <View style={styles.column}>
-                        <Text style={styles.title}>Ops...</Text>
-                        <Text style={[styles.subtitle,{ marginBottom: 16 }]}>Você ainda não tem nenhuma categoria</Text>
-                        <Text style={styles.text}>Clique no botão abaixo para adicionar.</Text>
-                    </View>
-                    <View style={styles.column}>
-                        <Button action={navigateToNew} title='Adicionar Categoria'/>
-                    </View>
-                </>
-            :
-            <>
-                <FlatList
-                    style={styles.column}
-                    data={categories}
-                    keyExtractor={categories => String(categories._id)}
-                    showsVerticalScrollIndicator={false}
-                    onEndReached={loadCategories}
-                    onEndReachedThreshold={0.3}
-                    numColumns={1}
-                    renderItem={({ item: categories }) => (
-                        
-                        <Card
-                            action={() => navigateToEdit(categories)}
-                            image={ categories.image }
-                            title={categories.name}
-                            price={categories.price}
-                        />
-                    )}
+            <Header title={'categorias'}>
+                <FilterButton
+                    action={() => {
+                        if(sort != 1) {
+                            setSort(1);
+                            sortCategories();
+                        } else{
+                            setSort(-1);
+                            sortCategories();
+                        }
+                    }}
+                    icon='filter-outline'
+                    subIcon={sort == 1 ? 'alpha-z-box' : 'alpha-a-box'}
                 />
+            </Header>
 
+            <FlatList
+                style={styles.column}
+                data={categories}
+                keyExtractor={categories => String(categories._id)}
+                showsVerticalScrollIndicator={false}
+                onEndReached={loadCategories}
+                onEndReachedThreshold={0.3}
+                numColumns={1}
+                renderItem={({ item: categories }) => (
+                    
+                    <Card
+                        action={() => navigateToEdit(categories)}
+                        image={ categories.image }
+                        title={categories.name}
+                        price={categories.price}
+                    />
+                )}
+                ListEmptyComponent={
+                    loading &&
+                        <Skeleton>
+                            <Card style={{ backgroundColor: '#F5F5F5' }} />
+                            <Card style={{ backgroundColor: '#F5F5F5' }} />
+                            <Card style={{ backgroundColor: '#F5F5F5' }} />
+                            <Card style={{ backgroundColor: '#F5F5F5' }} />
+                            <Card style={{ backgroundColor: '#F5F5F5' }} />
+                            <Card style={{ backgroundColor: '#F5F5F5' }} />
+                            <Card style={{ backgroundColor: '#F5F5F5' }} />
+                            <Card style={{ backgroundColor: '#F5F5F5' }} />
+                            <Card style={{ backgroundColor: '#F5F5F5' }} />
+                            <Card style={{ backgroundColor: '#F5F5F5' }} />
+                        </Skeleton>
+                }  
+            />
 
-                <View style={styles.column}>
-                    <Button action={navigateToNew} title='Adicionar Categoria'/>
-                </View>        
-            </>
-            }
+            <View style={styles.absoluteBottomRight}>
+                <ActionButton icon={'plus'} action={navigateToNew}/>
+            </View>                 
 
         </SafeAreaView>
-        ) : (
-            <Loading />            
-        )}
-    </>)
+       )
 }

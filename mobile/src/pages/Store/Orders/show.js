@@ -1,40 +1,77 @@
-import React from 'react';
-import { SafeAreaView, View, Text, FlatList, Linking } from 'react-native';
+import React, { useState } from 'react';
+import { SafeAreaView, View, Text, FlatList, Alert } from 'react-native';
 import { useRoute, useNavigation } from '@react-navigation/native';
-import styles from '../../../pages/global';
+import apiReq from '../../../services/reqToken'
 
-import { CardItem, Checkout, Price } from '../../../components/Item';
+import { treatPrice } from '../../../utils/treatString';
+
+import styles from '../../../global';
+import { CardItem, Checkout } from '../../../components/Item';
 import { Header } from '../../../components/Header';
-import { Button, ActionButton, LinearButton } from '../../../components/Button';
+import { LinearButton } from '../../../components/Button';
 
 
 export default function Show() {
+
+    const [ loading, setLoading ] = useState(false);
 
     const navigation = useNavigation();
     const route = useRoute();
     const order = route.params.order;
 
-    function sendWhatsapp() {
-        Linking.openURL(`whatsapp://send?phone=${order.customer.whatsapp}`)
+    async function handleUpdate() {
+
+        setLoading('loading');
+
+        Alert.alert(
+            'Confirmar Entrega',
+            'Confirmar que o pedido saiu para entrega?',
+            [
+                { text: 'Cancelar', onPress: () => { return }, style: 'cancel' },
+                //{ text: 'Entregar e notificar', onPress: () => { return }, style: 'cancel' },
+                { text: 'Entregar', onPress: async () => {
+                    const { data } = await apiReq.post('orders/edit', { id: order._id, status: 'done' });
+                    if(data) navigation.navigate('StoreOrders', {
+                        method: 'update',
+                        order: data.order
+                    });   
+                }}
+            ]
+        )
     }
 
-    function navigateToDelivery() {
-        navigation.navigate('StoreDelivery', { order }); 
+    async function handleDelete() {  
+    
+        Alert.alert(
+            'Apagar Pedido',
+            'Deseja mesmo apagar este pedido? Pedidos apagados não poderão ser mais recuperados.',
+            [
+                { text: 'Cancelar', onPress: () => { return }, style: 'cancel' },
+                { text: 'Apagar', onPress: async () => {
+                    const { data } = await apiReq.post('orders/delete', { id: order._id })
+                    if(data) navigation.navigate('StoreOrders', {
+                        method: 'destroy',
+                        order: data.order
+                    });  
+                }}
+            ]
+        )
     }
 
     return (
         <SafeAreaView style={styles.container}>
 
             <Header title={`#${order.order_id}`}>
-                <LinearButton icon={'trash-can-outline'} />
+                <LinearButton icon={'trash-can-outline'} action={handleDelete}/>
             </Header>
 
-            <View style={styles.column}>
-                <Text style={styles.subtitle}>{order.customer.name}</Text>
-            </View>
-
-            <View style={[styles.row,{ marginBottom: 0 }]}>
-                <Text style={styles.textBold}>Detalhes do pedido:</Text> 
+            <View style={[styles.column,{ marginBottom: 0 }]}>
+                <Text style={styles.subtitle}>Detalhes do pedido:</Text> 
+                <Text style={[styles.textBold,{ color: '#639DFF' }]}>
+                    {order.time} - 
+                    {order.status == 'waiting' && ` Aguardando entrega`}
+                    {order.status == 'done' && ` Pedido entregue`}
+                </Text>
             </View>
                 
             <FlatList
@@ -45,80 +82,20 @@ export default function Show() {
                 numColumns={1}
                 renderItem={({ item: product }) => (
                     <CardItem
-                        amount={product.amount}
-                        title={product.item.name}
-                        price={product.item.price}
+                        amount={product.quantity}
+                        title={product.product.name}
+                        price={product.product.price}
                     />
                 )}
-            />    
-            
-            
-            <View style={[styles.column, { flexGrow: 0, alignItems: 'flex-end' }]}>
-                <Text style={styles.text}>Total:</Text>
-                <Price value={order.value} style={[styles.title, { marginBottom: 80 }]}/>
-            </View>
-
-            <Checkout>
-                <View style={[styles.row, styles.alignCenterX]}>
-                    <ActionButton
-                        icon={'motorbike'}
-                        title={'Entrega'}
-                    />
-                </View>
-
-                <View style={styles.row}>
-                    <Text style={styles.textBold}>Pagamento:</Text>
-                </View>
-
-                <View style={styles.row}>
-                    
-                    <View style={[styles.column,{ paddingHorizontal: 0, flexGrow: 1 }]}>
-                        <Text style={styles.text}>Total</Text>
-                        <Price value={order.value} /> 
+                ListFooterComponent={
+                    <View style={{ marginTop: 16 }}>
+                        <Text style={styles.text}>Total:</Text>
+                        <Text style={styles.subtitle}>{treatPrice(order.value)}</Text>    
                     </View>
+                }
+            />    
 
-                    { order.paymentMethod.money ? <>
-                        <View style={[styles.column,{ paddingHorizontal: 0, flexGrow: 1 }]}>
-                            <Text style={styles.text}>Dinheiro</Text>
-                            <Price value={order.paymentMethod.money.amount} style={{ color: '#271814' }}/>   
-                        </View>
-                        <View style={[styles.column,{ paddingHorizontal: 0, flexGrow: 1 }]}>
-                            <Text style={[styles.text, { color: '#271814' }]}>Troco</Text>
-                            <Price value={order.paymentMethod.money.change} style={{ color: '#271814' }}/>   
-                        </View>
-                        </>: null
-                    }
-                    { order.paymentMethod.card ?
-                        <View style={[styles.column,{ paddingHorizontal: 0, flexGrow: 1 }]}>
-                            <Text style={styles.text}>Cartão</Text>
-                            <Text style={styles.subtitle}>
-                                {order.paymentMethod.card.method}
-                            </Text>    
-                        </View>
-                        :null
-                    }   
-                </View>
-
-                <View style={styles.row}>
-                    <Text style={styles.textBold}>Contato:</Text>
-                </View>
-
-                <View style={styles.row}>
-                    <ActionButton icon={'whatsapp'} style={{ marginRight: 8 }} action={sendWhatsapp}/> 
-                    <ActionButton icon={'map-marker'} action={navigateToDelivery}/> 
-                </View>
-
-                <View style={[styles.column,{ marginBottom: 32 }]}>
-                    <Text style={styles.textBold}>Entrega:</Text>
-                    <Text style={styles.text}>{order.customer.address}</Text>
-                </View>
-
-                <View style={styles.column}>
-                    <Button title='Encerrar Pedido' />
-                </View>
-
-            </Checkout>
-
+            <Checkout data={order} action={handleUpdate} />
 
         </SafeAreaView>
     )

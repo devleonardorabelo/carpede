@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { Text, SafeAreaView, ScrollView } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import styles from '../../global';
+import styles from '../../../global';
 import api from '../../../services/api';
 import { Header } from '../../../components/Header';
 import AuthContext from '../../../contexts/auth';

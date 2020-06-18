@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { SafeAreaView, ScrollView } from 'react-native';
+import { SafeAreaView, ScrollView, Alert } from 'react-native';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import apiReq from '../../../services/reqToken';
 
-import styles from '../../global';
+import styles from '../../../global';
 import { Header } from '../../../components/Header'
 import { PreviewImage } from '../../../components/Image';
 import { Input } from '../../../components/Input';
@@ -18,7 +18,7 @@ export default function EditCategory() {
     const category = route.params.category;
     const navigation = useNavigation();
 
-    const currentImage = {uri: `${API_DOMAIN}/uploads/${category.image}`}
+    const currentImage = category.image == null ? null : {uri: `${API_DOMAIN}/uploads/${category.image}`}
 
     const [ image, setImage ] = useState(currentImage);
     const [ name, setName ] = useState(category.name);
@@ -41,11 +41,10 @@ export default function EditCategory() {
 
         setStatus('loading');
 
-        if(image === currentImage) {
-            var setImage = category.image 
-        } else {
-            var setImage = await uploadImage(image);
-        }
+        let setImage;
+
+        if(image === currentImage) setImage = category.image
+        if(image != currentImage) setImage = await uploadImage(image);
 
         const { data } = await apiReq.post('categories/edit', {
             id,
@@ -60,21 +59,37 @@ export default function EditCategory() {
         };
 
         setStatus('done');
+
+        setTimeout(() => navigation.navigate('StoreCategories', {
+            method: 'update',
+            category: data.category
+        }), 500)
     }
 
     async function handleDelete(id) {
 
-        const { data } = await apiReq.post('categories/delete', {
-            id
-        });
+        Alert.alert(
+            'Apagar Pedido',
+            'Deseja mesmo apagar esta categoria? Categorias apagadas não poderão ser mais recuperadas e todos os produtos relacionados com esta categorias serão apagados.',
+            [
+                { text: 'Cancelar', onPress: () => { return }, style: 'cancel' },
+                { text: 'Apagar', onPress: async () => {
+                    setStatus('loading');
+                    const { data } = await apiReq.post('categories/delete', { id });
+                    if(data) navigation.navigate('StoreCategories', {
+                        method: 'destroy',
+                        category: data.category
+                    }); 
+                }}
+            ]
+        )
 
-        if(data) navigation.navigate('StoreCategories');
     }
 
-    return(<>
+    return(
         <SafeAreaView style={styles.container}>
 
-            <Header title={category.name}>
+            <Header title={name}>
                 <LinearButton icon={'trash-can-outline'} action={() => handleDelete(category._id)}/>
             </Header>
 
@@ -100,5 +115,5 @@ export default function EditCategory() {
                 
             </ScrollView>
         </SafeAreaView>
-    </>)
+    )
 }

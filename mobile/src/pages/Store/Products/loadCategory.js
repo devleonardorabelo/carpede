@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { FlatList, SafeAreaView, View, Text } from 'react-native';
+import { FlatList, SafeAreaView, View, Text, Image } from 'react-native';
 import apiReq from '../../../services/reqToken';
-import styles from '../../global';
+import styles from '../../../global';
 import { useNavigation, useRoute } from '@react-navigation/native';
 
 import Loading from '../../../components/Loading';
 import { Header } from '../../../components/Header';
 import { Card } from '../../../components/Item';
 import { Button } from '../../../components/Button';
+
+import img_category from '../../../assets/illustrations/categories.png';
 
 export default function Categories() {
 
@@ -43,11 +45,11 @@ export default function Categories() {
         setLoading(false);
     }
 
-    const navigateToEditProduct = category => navigation.navigate('StoreProductEdit', { category: category.name });
+    const navigateToEditProduct = category => navigation.navigate('StoreProductEdit', { category });
 
-    const navigateToNewProduct = category => navigation.navigate('StoreProductNew', { category: category.name })
+    const navigateToNewProduct = category => navigation.navigate('StoreProductNew', { category })
 
-    const navigateToNew = () => navigation.navigate('StoreProductNew');
+    const navigateToNew = () => navigation.navigate('StoreCategoryNew');
 
     useEffect(() => {
         loadCategories();
@@ -62,10 +64,10 @@ export default function Categories() {
                 <>
                     <View style={styles.column}>
                         <Text style={styles.title}>Ops...</Text>
-                        <Text style={[styles.subtitle,{ marginBottom: 16 }]}>Você ainda não tem nenhuma categoria</Text>
-                        <Text style={styles.text}>Clique no botão abaixo para adicionar.</Text>
+                        <Text style={styles.textBold}>Você ainda não tem nenhuma categoria!</Text>
                     </View>
                     <View style={styles.column}>
+                        <Image style={styles.illustration} source={img_category} />
                         <Button action={navigateToNew} title='Adicionar Categoria'/>
                     </View>
                 </>

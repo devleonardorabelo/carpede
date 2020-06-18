@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
-import { Text, SafeAreaView, ScrollView } from 'react-native';
+import { SafeAreaView, ScrollView } from 'react-native';
 import apiReq from '../../../services/reqToken';
 import { useNavigation } from '@react-navigation/native';
 import { Header } from '../../../components/Header';
 import { PreviewImage } from '../../../components/Image';
 import { Input } from '../../../components/Input';
-import { Button, LinearButton } from '../../../components/Button';
+import { Button } from '../../../components/Button';
 import { imagePicker, cameraPicker, uploadImage } from '../../../utils/ImagePicker';
 
-import styles from '../../global';
+import styles from '../../../global';
 
 export default function NewCategory() {
 
@@ -33,7 +33,7 @@ export default function NewCategory() {
 
     async function handleNewCategory() {
 
-        setStatus(true);
+        setStatus('loading');
 
         if(image) var previewImage = await uploadImage(image);
         
@@ -50,16 +50,17 @@ export default function NewCategory() {
 
         setStatus('done');
 
-        setTimeout(() => { navigation.navigate('StoreCategories') }, 2000);
+        setTimeout(() => { navigation.navigate('StoreCategories', {
+            method: 'create', 
+            category: data.category
+        }) }, 500);
 
     }
  
     return(<>
         <SafeAreaView style={styles.container}>
 
-            <Header title='nova categoria'>
-                <LinearButton icon={'trash-can-outline'} action={() => handleDelete(category._id)}/>
-            </Header>
+            <Header title='nova categoria' />
 
             <ScrollView showsVerticalScrollIndicator={false} style={styles.column}>
                 <PreviewImage
@@ -73,7 +74,7 @@ export default function NewCategory() {
                     title={'Nome'}
                     name={'name'}
                     action={e => setName(e)}
-                    maxLength={40}
+                    maxLength={40}           
                     error={alert}
                 />
                 

@@ -1,6 +1,6 @@
 import React from 'react';
 import { View, Text, TextInput, TouchableOpacity } from 'react-native';
-import styles from '../pages/global';
+import styles from '../global';
 
 export function Input(props) {
 
@@ -10,22 +10,16 @@ export function Input(props) {
     }
 
     function treatContent(content){
-
-        if(typeof content === 'number') {
-            return content.toFixed(2);
-        }
-
+        if(typeof content === 'number') return content.toFixed(2);
         return content;
-
     }
-
 
     return (
         <View style={[styles.groupInput, props.style ]}>
             <View style={styles.labelInput}>
                 <Text
                     style={[styles.labelText,{
-                        color: err() ? '#E63B2E' : '#333'
+                        color: err() ? '#E63B2E' : '#333333'
                     }]}>
                     {props.title}
                 </Text>
@@ -43,11 +37,7 @@ export function Input(props) {
                 maxLength={props.maxLength || 20}
                 autoCapitalize= { props.capitalize || 'sentences' }
             />
-            {err() ?
-                <Text style={styles.inputTextAlert}>{props.error.text}</Text>
-                :
-                null 
-            } 
+            {err() && <Text style={styles.inputTextAlert}>{props.error.text}</Text>} 
         </View>
     )
 }
@@ -64,7 +54,7 @@ export function InputPassword(props) {
             <View style={styles.labelInput}>
                 <Text
                     style={[styles.labelText,{
-                        color: err()  ? '#E63B2E' : '#333'
+                        color: err()  ? '#E63B2E' : '#333333'
                     }]}>
                     {props.title}
                 </Text>
@@ -80,11 +70,7 @@ export function InputPassword(props) {
                 placeholder={props.placeholder}
                 maxLength={20}                 
             />
-            {err() ?
-                <Text style={styles.inputTextAlert}>{props.error.text}</Text>
-                :
-                null 
-            } 
+            {err() && <Text style={styles.inputTextAlert}>{props.error.text}</Text>} 
         </View>
     )
 }
@@ -123,7 +109,7 @@ export function Select(props){
             <View style={styles.labelInput}>
                 <Text
                     style={[styles.labelText,{
-                        color: err()  ? '#E63B2E' : '#333'
+                        color: err()  ? '#E63B2E' : '#333333'
                     }]}>
                     {props.title}
                 </Text>
@@ -138,11 +124,7 @@ export function Select(props){
             ]}>
                 {props.text}
             </Text>
-            {err() ?
-                <Text style={styles.inputTextAlert}>{props.error.text}</Text>
-                :
-                null 
-            }   
+            {err() && <Text style={styles.inputTextAlert}>{props.error.text}</Text>}   
         </TouchableOpacity>
         
         

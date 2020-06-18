@@ -1,22 +1,24 @@
-import React, { useState, useCallback } from 'react';
-import { SafeAreaView, FlatList, View } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { SafeAreaView, FlatList, TouchableOpacity, View, Text } from 'react-native';
 import apiReq from '../../../services/reqToken';
-import styles from '../../global';
+import { useNavigation, useRoute } from '@react-navigation/native';
 
-import Loading from '../../../components/Loading';
+import styles from '../../../global';
+import Skeleton from '../../../components/Skeleton';
 import { Header } from '../../../components/Header';
-import { CardOrder } from '../../../components/Item'
-import { useNavigation, useFocusEffect } from '@react-navigation/native';
+import { CardOrder, Card } from '../../../components/Item';
 
 export default function Order() {
 
     const [ orders, setOrders ] = useState([]);
+    const [ status, setStatus ] = useState('waiting');
     const [ total, setTotal ] = useState(0)
     const [ page, setPage ] = useState(1);
     const [ loading, setLoading ] = useState(false);
-    const [ loadedPage, setLoadedPage ] = useState(false);
 
     const navigation = useNavigation();
+    const { params } = useRoute();
+    let route = params;
 
     async function loadOrders() {
         
@@ -27,10 +29,8 @@ export default function Order() {
         setLoading(true);
 
         const { data, headers } = await apiReq.get('orders', {
-            params: { page }
+            params: { page, status },
         });
-
-        if(loadedPage === false) setLoadedPage(true);
 
         if(data.length) {
             setOrders([...orders, ...data]);
@@ -42,42 +42,107 @@ export default function Order() {
 
     }
 
-    useFocusEffect(
-        useCallback(() => {
-            loadOrders();
-        }, [])
-    )    
-
-    function navigateToOrder(order) {
-        navigation.navigate('StoreOrder', { order });
+    function loadOrdersWithParams(selectStatus) {
+        if(selectStatus != status && !loading) {
+            setTotal(0);
+            setOrders([]);
+            setPage(1);
+            setStatus(selectStatus);
+        }
     }
 
-    return (<>{loadedPage ?
+    const navigateToOrder = order => navigation.navigate('StoreOrder', { order });
+
+    useEffect(() => {
+        loadOrders();
+
+        if(route) {
+            let index = orders.findIndex(( obj => obj._id === route.order._id ));
+
+
+            if(index != -1 && route.method == 'destroy' || route.method == 'update') {
+                orders.splice(index, 1);
+                setOrders([...orders]);
+                route = {};
+                return;
+            }
+            if (index == -1 && route.method == 'create') {
+                setOrders([...orders, route.order]);
+                route = {};
+                return;
+            }
+        }
+
+    },[route, status])
+
+    return (
         <SafeAreaView style={styles.container}>
+
             <Header title={'pedidos'}/>
-            <View style={styles.column}>
-                <FlatList
-                    data={orders}
-                    keyExtractor={order => String(order._id)}
-                    showsVerticalScrollIndicator={false}
-                    onEndReached={loadOrders}
-                    onEndReachedThreshold={0.3}
-                    numColumns={1}
-                    renderItem={({ item: order }) => (
-                        
-                        <CardOrder
-                            action={() => navigateToOrder(order)}
-                            title={order.customer.name}
-                            address={order.customer.address}
-                            time={order.time}
-                            price={order.value}
-                        />
-                    )}
-                />     
+
+            <View style={styles.row}>
+                <TouchableOpacity
+                    style={[
+                        styles.buttonTag,
+                        status == 'waiting' && { backgroundColor: '#639DFF' }
+                    ]}
+                    onPress={() => loadOrdersWithParams('waiting')}
+                >
+                    <Text style={[styles.buttonBlackText, status == 'waiting' && { color: '#FFFFFF' } ]}>
+                        Aguardando
+                    </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                    style={[
+                        styles.buttonTag,
+                        status == 'done' && { backgroundColor: '#639DFF' }
+                    ]}
+                    onPress={() => loadOrdersWithParams('done')}
+                >
+                    <Text style={[styles.buttonBlackText, status == 'done' && { color: '#FFFFFF' } ]}>
+                        Entregue
+                    </Text>
+                </TouchableOpacity>
             </View>
-            
+
+            <FlatList
+                style={styles.column}
+                data={orders}
+                keyExtractor={order => String(order._id)}
+                showsVerticalScrollIndicator={false}
+                onEndReached={loadOrders}
+                onEndReachedThreshold={0.3}
+                numColumns={1}
+                renderItem={({ item: order }) => (
+                    
+                    <CardOrder
+                        action={() => navigateToOrder(order)}
+                        title={`#${order.order_id}`}
+                        subtitle={order.customer.name}
+                        address={`${order.customer.address} ${order.customer.complement} ${order.customer.number}`}
+                        time={order.time}
+                        price={order.value}
+                        status={order.time}
+                    />
+                )}
+                ListEmptyComponent={
+                    loading &&
+                        <Skeleton>
+                            <Card style={{ backgroundColor: '#F5F5F5' }} />
+                            <Card style={{ backgroundColor: '#F5F5F5' }} />
+                            <Card style={{ backgroundColor: '#F5F5F5' }} />
+                            <Card style={{ backgroundColor: '#F5F5F5' }} />
+                            <Card style={{ backgroundColor: '#F5F5F5' }} />
+                            <Card style={{ backgroundColor: '#F5F5F5' }} />
+                            <Card style={{ backgroundColor: '#F5F5F5' }} />
+                            <Card style={{ backgroundColor: '#F5F5F5' }} />
+                            <Card style={{ backgroundColor: '#F5F5F5' }} />
+                            <Card style={{ backgroundColor: '#F5F5F5' }} />
+                        </Skeleton> 
+                }
+            />     
+
+
         </SafeAreaView>
-    :
-        <Loading />
-    }</>)
+    )
 }

@@ -1,5 +1,5 @@
 const Category = require('../models/Category');
-const Order = require('../models/Order');
+const Product = require('../models/Product');
 
 module.exports = {
 
@@ -23,7 +23,7 @@ module.exports = {
         const { page } = req.query;
 
         try {
-            const categories = await Category.find({store_id: store.id}).limit(6).skip((page - 1) * 6)
+            const categories = await Category.find({store_id: store.id}).limit(6).skip((page - 1) * 6).sort('name')
             return res.json(categories);
 
         } catch (err) {
@@ -37,7 +37,7 @@ module.exports = {
 
         const { name, image } = req.body;
 
-        if(!name) return res.json({ error: { text: 'Mínimo de 5 caracteres', input: 'name' } });
+        if(!name || name.length < 5) return res.json({ error: { text: 'Mínimo de 5 caracteres', input: 'name' } });
 
         const newCategory = {
             image,
@@ -46,8 +46,8 @@ module.exports = {
         }
 
         try {
-            await new Category(newCategory).save();
-            return res.json({status: 'Categoria criada com sucesso'})
+            let category = await new Category(newCategory).save();
+            return res.json({status: 'Categoria criada com sucesso', category})
 
         } catch (err) {
             return res.json({error: 'Houve um erro ao listar suas categorias, tente novamente'})
@@ -60,7 +60,7 @@ module.exports = {
 
         const { image, name, id } = req.body;
 
-        if(!name) return res.json({ error: { text: 'Mínimo de 5 caracteres', input: 'name' } });
+        if(!name || name.length < 5) return res.json({ error: { text: 'Mínimo de 5 caracteres', input: 'name' } });
 
         try{
             await Category.updateOne({
@@ -68,10 +68,18 @@ module.exports = {
                 _id: id
             },{
                 image,
-                name,
+                name
             })
 
-            return res.json({status: 'Alterado com sucesso'})            
+            return res.json({
+                status: 'Alterado com sucesso',
+                category: {
+                    _id: id,
+                    store_id: store.id,
+                    image,
+                    name 
+                }
+            })            
         } catch (err) {
             return res.json({error: 'Houve um erro ao alterar sua categoria, tente novamente'})
         }
@@ -84,8 +92,15 @@ module.exports = {
         if(!id) return res.json({error: 'Houve um problema ao deletar sua categoria, tente novamente'});
 
         try {
-            await Category.deleteOne({_id: id})
-            return res.json({status: 'Categoria apagada com sucesso'});
+            await Category.deleteOne({_id: id});
+            await Product.deleteMany({"category._id": id});
+            
+            return res.json({
+                status: 'Categoria apagada com sucesso',
+                category: {
+                    _id: id
+                }
+            });
         } catch (err) {
             return res.json({error: 'Houve um erro ao alterar sua categoria, tente novamente'})
         }     

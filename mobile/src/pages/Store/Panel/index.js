@@ -2,10 +2,13 @@ import React, { useState, useContext, useEffect } from 'react';
 import AuthContext from '../../../contexts/auth';
 import { SafeAreaView, View } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
-import styles from '../../global';
+import styles from '../../../global';
 import { API_DOMAIN } from '../../../constants/api';
 import { NavItem, Avatar } from '../../../components/Item';
 import { CustomHeader } from '../../../components/Header';
+
+import { format } from '@buttercup/react-formatted-input';
+import { WhatsappFormat } from '../../../utils/treatString';
 
 export default function Panel() {
 
@@ -17,7 +20,7 @@ export default function Panel() {
 
 	async function loadPanel() {
 		setName(store.name);
-		setWhatsapp(store.whatsapp);
+		setWhatsapp(format(store.whatsapp, WhatsappFormat));
 		if(store.avatar) setAvatar({uri: `${API_DOMAIN}/uploads/${store.avatar}`})
 	};
 	
@@ -38,14 +41,14 @@ export default function Panel() {
 			<Avatar
 				image={avatar}
 				title={name}
-				subtitle={whatsapp}
+				subtitle={whatsapp.formatted}
 			/>	
 
 			<View style={styles.column}>
 
 				<NavItem
 					action={() => navigate('StoreOrders')}
-					icon='motorbike'
+					icon='bike'
 					title='Pedidos'
 					subtitle='Lista de pedidos ativos'
 				/>
@@ -57,13 +60,13 @@ export default function Panel() {
 				/>
 				<NavItem
 					action={() => navigate('StoreCategories')}
-					icon='animation'
+					icon='tag-outline'
 					title='Categorias'
 					subtitle='Categoria dos pedidos'
 				/>	
 				<NavItem
 					action={() => navigate('StoreProfile')}
-					icon='account'
+					icon='account-circle-outline'
 					title='Perfil'
 					subtitle='Informações da Loja'
 				/>	

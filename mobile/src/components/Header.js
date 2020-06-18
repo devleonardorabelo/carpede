@@ -2,7 +2,7 @@ import React from 'react';
 import { TouchableOpacity, View, Text } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { MaterialCommunityIcons as MI } from '@expo/vector-icons';
-import styles from '../pages/global';
+import styles from '../global';
 
 export function Header(props) {
 
@@ -18,13 +18,14 @@ export function Header(props) {
                 <TouchableOpacity
                     onPress={navigateToBack}
                 >
-                    <MI name="arrow-left" size={32} color="#ff6e73" />
+                    <MI
+                        name="arrow-left"
+                        size={32}
+                        color="#333333"
+                    />
                 </TouchableOpacity>
             </View>
-            {props.title ?
-                <Text style={[styles.textBold,{ textTransform: 'uppercase' }]}>{props.title}</Text>
-            :null
-            }
+            {props.title && <Text style={[styles.textBold,{ textTransform: 'uppercase' }]}>{props.title}</Text>}
             {props.children ?
                 <View>{props.children}</View>
                 :
@@ -42,7 +43,11 @@ export function CustomHeader(props) {
                 <TouchableOpacity
                     onPress={props.action}
                 >
-                    <MI name={props.icon} size={32} color="#ff6e73" />
+                    <MI
+                        name={props.icon}
+                        size={32}
+                        color="#333333"
+                    />
                 </TouchableOpacity>
             </View>
             <View>
@@ -72,7 +77,7 @@ export function TransparentHeader(props) {
                 <TouchableOpacity
                     onPress={navigateToBack}
                 >
-                    <MI name="arrow-left" size={32} color="#ff6e73" />
+                    <MI name="arrow-left" size={32} color="#333333" />
                 </TouchableOpacity>      
             </View>
             <View style={{
