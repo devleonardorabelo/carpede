@@ -1,4 +1,5 @@
 const Category = require('../models/Category');
+const Product = require('../models/Product');
 
 module.exports = {
 
@@ -22,7 +23,7 @@ module.exports = {
         const { page } = req.query;
 
         try {
-            const categories = await Category.find({store_id: store.id}).limit(6).skip((page - 1) * 6)
+            const categories = await Category.find({store_id: store.id}).limit(6).skip((page - 1) * 6).sort('name')
             return res.json(categories);
 
         } catch (err) {
@@ -91,7 +92,9 @@ module.exports = {
         if(!id) return res.json({error: 'Houve um problema ao deletar sua categoria, tente novamente'});
 
         try {
-            await Category.deleteOne({_id: id})
+            await Category.deleteOne({_id: id});
+            await Product.deleteMany({"category._id": id});
+            
             return res.json({
                 status: 'Categoria apagada com sucesso',
                 category: {

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, SafeAreaView, ScrollView } from 'react-native';
+import { View, SafeAreaView, ScrollView, Alert } from 'react-native';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import apiReq from '../../../services/reqToken';
 
@@ -74,11 +74,21 @@ export default function EditProduct() {
     }
 
     async function handleDelete(id) {
-        const { data } = await apiReq.post('products/delete', { id });
-        if(data) navigation.navigate('StoreProducts', {
-            method: 'destroy',
-            product: data.product
-        });
+
+        Alert.alert(
+            'Apagar Pedido',
+            'Deseja mesmo apagar este produto? Produtos apagados não poderão ser mais recuperados e todos os pedidos que possuem este produto serão excluidos permanentemente.',
+            [
+                { text: 'Cancelar', onPress: () => { return }, style: 'cancel' },
+                { text: 'Apagar', onPress: async () => {
+                    const { data } = await apiReq.post('products/delete', { id });
+                    if(data) navigation.navigate('StoreProducts', {
+                        method: 'destroy',
+                        product: data.product
+                    });  
+                }}
+            ]
+        )
     }
 
     const navigateToSelectCategory = () => navigation.navigate('StoreLoadCategory', { type: 'edit' });

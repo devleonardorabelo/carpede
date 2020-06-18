@@ -13,9 +13,9 @@ module.exports = {
             let products;
 
             if(category) 
-                products = await Product.find({store_id: store.id, "category._id": category}).limit(15).skip((page - 1) * 15);
+                products = await Product.find({store_id: store.id, "category._id": category}).limit(15).skip((page - 1) * 15).sort('name');
             else
-                products = await Product.find({store_id: store.id}).limit(15).skip((page - 1) * 15);
+                products = await Product.find({store_id: store.id}).limit(15).skip((page - 1) * 15).sort('name');
             
             const categories = await Category.find({store_id: store.id});
             

@@ -33,7 +33,7 @@ export default function NewCategory() {
 
     async function handleNewCategory() {
 
-        setStatus(true);
+        setStatus('loading');
 
         if(image) var previewImage = await uploadImage(image);
         

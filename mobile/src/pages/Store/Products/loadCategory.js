@@ -64,7 +64,7 @@ export default function Categories() {
                 <>
                     <View style={styles.column}>
                         <Text style={styles.title}>Ops...</Text>
-                        <Text style={styles.subtitle}>Você ainda não tem nenhuma categoria!</Text>
+                        <Text style={styles.textBold}>Você ainda não tem nenhuma categoria!</Text>
                     </View>
                     <View style={styles.column}>
                         <Image style={styles.illustration} source={img_category} />

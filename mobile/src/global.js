@@ -71,7 +71,7 @@ export default StyleSheet.create({
     iconAction: {
         alignItems: 'center',
         justifyContent: 'center',
-        width: widthDP('12%'),
+        paddingRight: widthDP('4%'),
         borderTopLeftRadius: widthDP('2%'),
         borderBottomLeftRadius: widthDP('2%'),
     },
@@ -100,7 +100,6 @@ export default StyleSheet.create({
         borderRadius: widthDP('2%'),
         padding: widthDP('2%'),
         marginBottom: widthDP('2%'),
-        minHeight: widthDP('24%'),
         backgroundColor: '#F9F9F9',
     },
     boxImage: {
@@ -141,15 +140,10 @@ export default StyleSheet.create({
         fontSize: widthDP('8%'),
         color: '#333333',
     },
-    grayTitle: {
+    subtitle: {
         color: '#666666',
         fontSize: widthDP('6%'),
         fontFamily: 'montserrat-medium'
-    },
-    subtitle: {
-        fontSize: widthDP('4%'),
-        fontFamily: 'montserrat-bold',
-        color: '#666666'
     },
     text: {
         fontSize: widthDP('4%'),
@@ -305,13 +299,6 @@ export default StyleSheet.create({
     map: {
         flex:1,
     },
-    orderView: {
-        height: heightDP('80%'),
-        backgroundColor: '#FFFFFF',
-        paddingHorizontal: widthDP('8%'),
-        paddingTop: widthDP('4%'),
-        paddingBottom: widthDP('20%'),
-    },
     orderList: {
         padding: widthDP('4%'),
         borderRadius: widthDP('2%'),
@@ -320,12 +307,10 @@ export default StyleSheet.create({
         borderBottomColor: '#DFDFDF',
     },  
     orderCheckout: {
-        height: 500,
-        backgroundColor: '#FCFCFC',
+        backgroundColor: '#FFFFFF',
         position: 'absolute',
         right: 0,
         left: 0,
-        bottom: -430,
         shadowColor: "#000000",
         shadowOffset: {
             width: 0,
@@ -333,8 +318,21 @@ export default StyleSheet.create({
         },
         shadowOpacity: 0.32,
         shadowRadius: 5.46,
-
         elevation: 9,
+    },
+    orderHeader:{
+        width: '100%',
+        backgroundColor: '#639DFF',
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        height: 128
+    },
+    orderDropButton: {
+        height: 64,
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     deliveryInfo: {
         backgroundColor: '#639DFF',

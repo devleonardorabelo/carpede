@@ -16,7 +16,7 @@ export default function Delivery(){
             <LocationMap latitude={order.location.coordinates[1]} longitude={order.location.coordinates[0]} />    
             <View style={[styles.column, styles.deliveryInfo, { marginBottom: 0 }]}>
                 <Text style={[styles.textBold,{ color: '#FFFFFF' }]}>Endereço</Text>
-                <Text style={[styles.subtitle,{ color: '#FFFFFF' }]}>{order.customer.address}</Text>
+                <Text style={[styles.textBold,{ color: '#FFFFFF' }]}>{order.customer.address}</Text>
             </View>
         </SafeAreaView>
     )

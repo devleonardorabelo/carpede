@@ -49,7 +49,7 @@ export default function Signin(){
             <Header title={'entrar'}/>
             <View style={styles.column}>
                 <Text style={[styles.title,{ marginBottom: 0 }]}>Entrar</Text>
-                <Text style={[styles.grayTitle,{ marginBottom: 16 }]}>Gerenciar o seu negócio</Text>
+                <Text style={[styles.subtitle,{ marginBottom: 16 }]}>Gerenciar o seu negócio</Text>
                 <Input
                     title={'Email'}
                     name={'email'}

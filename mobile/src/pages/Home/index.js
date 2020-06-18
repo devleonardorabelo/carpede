@@ -16,7 +16,7 @@ export default function Home() {
 
 			<View style={[styles.column,{ marginTop: 80 }]}>
 				<Text style={[styles.title, { marginBottom: 10 }]}>Seja bem-vindo ao Carpede!</Text>
-				<Text style={styles.grayTitle}>Proporcione aos seus clientes um atendimento personalizado</Text>
+				<Text style={styles.subtitle}>Proporcione aos seus clientes um atendimento personalizado</Text>
 				<Image style={[styles.illustration, { marginTop: 50 }]} source={img_business} />
 				<Button title={'Quero criar a minha Loja'} action={navigateToSignin} />
 			</View>

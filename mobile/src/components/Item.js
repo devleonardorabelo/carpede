@@ -1,32 +1,28 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { TouchableOpacity, View, Text, Image, Animated } from 'react-native';
 import styles from '../global';
 import { MaterialCommunityIcons as MI } from '@expo/vector-icons';
 import { API_DOMAIN } from '../constants/api';
-import { PanGestureHandler, State } from 'react-native-gesture-handler'
+import { PanGestureHandler, State } from 'react-native-gesture-handler';
+
+import { regexMed, treatPrice } from '../utils/treatString';
+
+import { InfoOrder } from '../components/Info';
 
 import cardImage from '../assets/illustrations/repeat_food.png';
-
-function regexName(name) {
-    if(name.length > 30) {
-        let nameCut = name.match(/^[\s\S]{0,30}/) + '...'
-        return nameCut;
-    }
-    return name;
-}
 
 export function NavItem(props) {
     return (
         <TouchableOpacity style={styles.action} onPress={props.action}>
             <View style={styles.iconAction}>
-                <MI name={props.icon} size={24} color="#333333" />	
+                <MI name={props.icon} size={32} color="#333333" />	
             </View>
             <View style={{flexGrow: 1, justifyContent: 'center'}}>
                 <Text style={styles.textAction}>{props.title}</Text>
                 <Text style={styles.subtitleTextAction}>{props.subtitle}</Text>
             </View>
             <View style={styles.arrowAction}>
-                <MI name="chevron-right" size={24} color="#666666" />	
+                <MI name="chevron-right" size={32} color="#666666" />	
             </View>
         </TouchableOpacity>
     )
@@ -101,15 +97,10 @@ export function Card(props) {
             
             <View style={styles.boxBody}>
                 <View style={{ flexDirection: 'row' }}>
-                    <Text style={[styles.textWrap, styles.textBold]}>{props.title && regexName(props.title)}</Text>
+                    <Text style={[styles.textWrap, styles.textBold]}>{props.title && regexMed(props.title)}</Text>
                 </View>
                 { props.price &&
-                    <Text style={styles.price}>
-                        {Intl.NumberFormat('pt-BR', {
-                            style: 'currency',
-                            currency: 'BRL'
-                        }).format(props.price)}
-                    </Text>
+                    <Text style={styles.price}>{treatPrice(props.price)}</Text>
                 }
                 
             </View>
@@ -123,17 +114,12 @@ export function CardOrder(props) {
     return (
         <TouchableOpacity style={styles.box} onPress={props.action}>
             <View style={{ flexGrow: 1 }}>
-                <Text style={[styles.textBold, styles.textWrap]}>{regexName(props.title)}</Text>
-                <Text style={[styles.text, styles.textWrap]}>{props.address}</Text>    
+                <Text style={styles.textBold}>{regexMed(props.title).toUpperCase()}</Text>
+                <Text style={[styles.text]}>{regexMed(props.address).toUpperCase()}</Text>    
             </View>
             <View>
-                <Text style={[styles.price, { marginTop: 0 }]}>
-                    {Intl.NumberFormat('pt-BR', {
-                        style: 'currency',
-                        currency: 'BRL'
-                    }).format(props.price)}
-                </Text>
-                <Text style={[styles.text, { alignSelf: 'flex-end' }]}>{props.time}</Text>    
+                <Text style={[styles.price, { marginTop: 0 }]}>{treatPrice(props.price)}</Text>
+                <Text style={[styles.textBold, { alignSelf: 'flex-end', color: '#639DFF' }]}>{props.time}</Text>
             </View>
             
         </TouchableOpacity>
@@ -143,24 +129,28 @@ export function CardOrder(props) {
 export function CardItem(props) {
 
     return (
-        <View style={{ flexDirection: 'row', marginBottom: 8 }}>
-            <Text style={styles.text}>{props.amount}x </Text>
-            <Text style={[styles.textWrap, styles.text]}>{regexName(props.title)}</Text>
-            <Text style={[styles.price, { marginTop: 0 }]}>
-                {Intl.NumberFormat('pt-BR', {
-                    style: 'currency',
-                    currency: 'BRL'
-                }).format(props.price)}
-            </Text>
+        <View style={[styles.box, { flexDirection: 'row', marginBottom: 8 }]}>
+            <Text style={[styles.text,{ marginRight: 8}]}>{props.amount}x</Text>
+            <Text style={[styles.textWrap, styles.text]}>{regexMed(props.title)}</Text>
+            <Text style={[styles.price, { marginTop: 0 }]}>{treatPrice(props.price)}</Text>
         </View>
     )
 }
 
 export function Checkout(props) {
 
-    let offset = 0;
+    const [ wasClicked, setWasClicked ] = useState(false);
+    const [ viewSize, setViewSize ] = useState(0);
 
     const translateY = new Animated.Value(0);
+    const marginAnim = new Animated.Value(-16);
+
+    let offset = 0;
+
+    const sendInfoClicked = () => {
+        setWasClicked(true);
+        setTimeout(() => setWasClicked(false), 1000)
+    }
 
     const animatedEvent = Animated.event([
         {
@@ -168,7 +158,7 @@ export function Checkout(props) {
                 translationY: translateY
             }
         }
-    ], { useNativeDriver: true })
+    ], { useNativeDriver: true });
 
     function onHandlerStateChanged(event) {
         if(event.nativeEvent.oldState === State.ACTIVE) {
@@ -197,6 +187,11 @@ export function Checkout(props) {
                 translateY.setValue(0);
             });
 
+            Animated.timing(marginAnim, {
+                toValue: opened ? -16 : 16,
+                duration: 300
+            }).start();
+
         }
     }
 
@@ -206,20 +201,75 @@ export function Checkout(props) {
             onHandlerStateChange={onHandlerStateChanged}
         >
             <Animated.View
+                onLayout={
+                    event => {
+                        const { height } = event.nativeEvent.layout;
+                        setViewSize(-(height - 64));
+                    }
+                }
                 style={[
-                    styles.orderCheckout, {
+                    styles.orderCheckout,
+                    {
+                        bottom: viewSize,
                         transform: [{
                             translateY: translateY.interpolate({
-                                inputRange: [-430, 0],
-                                outputRange: [-430, 0],
+                                inputRange: [viewSize, 0],
+                                outputRange: [viewSize, 0],
                                 extrapolate: 'clamp'
                             })
-                        }
-                        ]
+                        }],
                     }
                 ]}
             >
-                {props.children}
+                <Animated.View
+                    style={[styles.orderHeader,
+                        {
+                        zIndex: 99,
+                        opacity: translateY.interpolate({
+                            inputRange: [ -50, 0 ],
+                            outputRange:[ 0, 1 ]
+                        })
+
+                    }]}
+                >
+                    <TouchableOpacity
+                        style={styles.orderDropButton}
+                        onPress={sendInfoClicked}
+                    >
+                        {wasClicked ?
+                            <View style={{ alignItems: 'center' }}>
+                                <MI name='menu-up' color='#FFFFFF' size={32}/>
+                                <Text style={[styles.text,{ marginTop: -10, color: '#FFFFFF' }]}>Segure e arraste pra cima</Text>
+                            </View>
+                        :
+                            <>
+                            <View>
+                                <MI name='bike' color='#FFFFFF' size={32}/>  
+                            </View>
+                            </> 
+                        }   
+                    </TouchableOpacity>     
+                </Animated.View>
+
+                <View
+                    style={[
+                        styles.orderHeader,
+                        {backgroundColor: '#FFFFFF'}
+                    ]}
+                >
+                    <TouchableOpacity
+                        style={styles.orderDropButton}
+                        onPress={sendInfoClicked}
+                    >
+                        <View>
+                            <MI name='chevron-down' color='#639DFF' size={32}/>
+                        </View>
+                    </TouchableOpacity>
+                    
+                </View>              
+                
+                <InfoOrder data={props.data} action={props.action}/>
+
             </Animated.View>
         </PanGestureHandler>  
     )
@@ -227,11 +277,6 @@ export function Checkout(props) {
 
 export function Price(props) {
     return (
-        <Text style={[styles.subtitle, props.style ]}>
-            {Intl.NumberFormat('pt-BR', {
-                style: 'currency',
-                currency: 'BRL'
-            }).format(props.value)}
-        </Text> 
+        <Text style={[styles.textBold, props.style ]}>{treatPrice(props.value)}</Text> 
     )
 }

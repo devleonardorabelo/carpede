@@ -9,6 +9,9 @@ import { Button } from '../../../components/Button';
 import apiReq from '../../../services/reqToken';
 import { API_DOMAIN } from '../../../constants/api';
 
+import { format } from '@buttercup/react-formatted-input';
+import { WhatsappFormat, PhoneFormat } from '../../../utils/treatString';
+
 import { imagePicker, uploadImage } from '../../../utils/ImagePicker';
 
 export default function Profile() {
@@ -37,8 +40,8 @@ export default function Profile() {
         
         setName(data.name);
         setDescription(data.description);
-        setWhatsapp(data.whatsapp);
-        setPhone(data.phone);
+        setWhatsapp(format(data.whatsapp, WhatsappFormat));
+        setPhone(format(data.phone, PhoneFormat));
         setTags(data.tags);
         setLoadedPage(true);
     }
@@ -64,8 +67,8 @@ export default function Profile() {
             avatar: fileName,
             name,
             description,
-            whatsapp,
-            phone,
+            whatsapp: whatsapp.raw,
+            phone: phone.raw,
             tags
         });
 
@@ -76,7 +79,12 @@ export default function Profile() {
         };
 
         setStatus('done');
+
+        setTimeout(() => { navigation.navigate('StorePanel') }, 500);
     }
+
+    const maskWhatsapp = phone => setWhatsapp(format(phone, WhatsappFormat))
+    const maskPhone = phone => setPhone(format(phone, PhoneFormat))
 
     if(!loadedPage) return <Loading />
 
@@ -93,7 +101,7 @@ export default function Profile() {
                 <Avatar
                     image={avatar}
                     title={name}
-                    subtitle={whatsapp}
+                    subtitle={whatsapp.formatted}
                     action={getImage}
                     icon='image'
                     transparent={avatar}
@@ -114,18 +122,18 @@ export default function Profile() {
                 <Input
                     title={'Whatsapp'}
                     name={'whatsapp'}
-                    default={whatsapp}
-                    action={e => setWhatsapp(e)}
-                    keyboard={'numeric'}
-                    maxLength={11}
+                    default={whatsapp.formatted}
+                    action={number => maskWhatsapp(number)}
+                    keyboard={'phone-pad'}
+                    maxLength={16}
                     error={alert}
                 />
                 <Input
                     title={'Telefone'}
-                    default={phone}
-                    action={e => setPhone(e)}
+                    default={phone.formatted}
+                    action={number => maskPhone(number)}
                     keyboard={'numeric'}
-                    maxLength={11}
+                    maxLength={14}
                 />
                 <TextArea
                     title={'Principais Produtos'}

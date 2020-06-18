@@ -38,7 +38,7 @@ export default function NewProduct() {
 
     async function handleNewProduct() {
 
-        setStatus(true);
+        setStatus('loading');
 
         if(image) var previewImage = await uploadImage(image);
         

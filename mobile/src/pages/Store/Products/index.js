@@ -1,23 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import { FlatList, SafeAreaView, View, Text, Image, TouchableOpacity } from 'react-native';
+import { FlatList, SafeAreaView, View, Text, TouchableOpacity } from 'react-native';
 import apiReq from '../../../services/reqToken';
-import styles from '../../../global';
 import { useNavigation, useRoute } from '@react-navigation/native';
 
+import styles from '../../../global';
 import Skeleton from '../../../components/Skeleton';
 import { Header } from '../../../components/Header';
 import { Card } from '../../../components/Item';
-import { ActionButton } from '../../../components/Button';
-
+import { ActionButton, FilterButton } from '../../../components/Button';
 
 export default function Products() {
 
     const [ products, setProducts ] = useState([]);
     const [ categories, setCategories ] = useState(null);
     const [ category, setCategory ] = useState(null);
+    const [ sort, setSort ] = useState(1);
     const [ total, setTotal ] = useState(0);
     const [ page, setPage ] = useState(1);
-    const [ loadedPage, setLoadedPage ] = useState(false);
     const [ loading, setLoading ] = useState(false);
 
     const navigation = useNavigation();
@@ -33,13 +32,8 @@ export default function Products() {
         setLoading(true);
 
         const { data, headers } = await apiReq.get('products',{ 
-            params: {
-                page,
-                category
-            },
+            params: { page, category },
         });
-
-        if(loadedPage === false) setLoadedPage(true);
 
         if(data.products.length) {
             setProducts([...products, ...data.products]);
@@ -56,9 +50,25 @@ export default function Products() {
             setTotal(0);
             setProducts([]);
             setPage(1);
+            setSort(1);
             setCategory(selectCategory)    
         }
         return;
+    }
+
+    function sortProducts() {
+        products.sort((a, b) => {
+            if(sort == 1) {
+                if(a.name < b.name) return 1;
+                if(a.name > b.name) return -1;    
+            }
+            if(sort == -1) {
+                if(a.name < b.name) return -1;
+                if(a.name > b.name) return 1; 
+            }
+            return 0;
+        });
+        setProducts([...products])
     }
 
     const navigateToEdit = product => navigation.navigate('StoreProductEdit', { product });
@@ -100,7 +110,22 @@ export default function Products() {
     return(
 
         <SafeAreaView style={styles.container}>
-            <Header title={'produtos'} />
+            
+            <Header title={'produtos'}>
+                <FilterButton
+                    action={() => {
+                        if(sort != 1) {
+                            setSort(1);
+                            sortProducts();
+                        } else{
+                            setSort(-1);
+                            sortProducts();
+                        }
+                    }}
+                    icon='filter-outline'
+                    subIcon={sort == 1 ? 'alpha-z-box' : 'alpha-a-box'}
+                />
+            </Header>
 
             <View style={styles.scrollHorizontal}>
 
@@ -141,15 +166,16 @@ export default function Products() {
                             >Todos</Text>
                         </TouchableOpacity>
                     }
-                    ListEmptyComponent={
+                    ListEmptyComponent={<>
+                        {loading &&
                         <Skeleton style={{ flexDirection: 'row' }}>
                             <TouchableOpacity style={styles.buttonTag} />
                             <TouchableOpacity style={styles.buttonTag} />
                             <TouchableOpacity style={styles.buttonTag} />
                             <TouchableOpacity style={styles.buttonTag} />
                             <TouchableOpacity style={styles.buttonTag} />
-                        </Skeleton>
-                    }
+                        </Skeleton>}       
+                    </>}
                 />
             </View>
                 
@@ -170,19 +196,27 @@ export default function Products() {
                         price={product.price}
                     />
                 )}
-                //ListFooterComponent={} 
                 ListEmptyComponent={
                     loading &&
-                        <Skeleton>
-                            <Card style={{ backgroundColor: '#F5F5F5' }} />
-                            <Card style={{ backgroundColor: '#F5F5F5' }} />
-                            <Card style={{ backgroundColor: '#F5F5F5' }} />
-                            <Card style={{ backgroundColor: '#F5F5F5' }} />
-                            <Card style={{ backgroundColor: '#F5F5F5' }} />
-                        </Skeleton>
+                    <Skeleton>
+                        <Card style={{ backgroundColor: '#F5F5F5' }} />
+                        <Card style={{ backgroundColor: '#F5F5F5' }} />
+                        <Card style={{ backgroundColor: '#F5F5F5' }} />
+                        <Card style={{ backgroundColor: '#F5F5F5' }} />
+                        <Card style={{ backgroundColor: '#F5F5F5' }} />
+                        <Card style={{ backgroundColor: '#F5F5F5' }} />
+                        <Card style={{ backgroundColor: '#F5F5F5' }} />
+                        <Card style={{ backgroundColor: '#F5F5F5' }} />
+                        <Card style={{ backgroundColor: '#F5F5F5' }} />
+                        <Card style={{ backgroundColor: '#F5F5F5' }} />
+                        <Card style={{ backgroundColor: '#F5F5F5' }} />
+                        <Card style={{ backgroundColor: '#F5F5F5' }} />
+                        <Card style={{ backgroundColor: '#F5F5F5' }} />
+                        <Card style={{ backgroundColor: '#F5F5F5' }} />
+                    </Skeleton>
                 }               
             />
-
+            
             <View style={styles.absoluteBottomRight}>
                 <ActionButton icon={'plus'} action={navigateToNew}/>
             </View>        

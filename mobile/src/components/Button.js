@@ -26,6 +26,11 @@ export function Button(props) {
             setContent(<Text style={styles.buttonWhiteText}>Feito!</Text>)
             setDisabled(true);
         }
+        if(props.disabled == true) {
+            setColor('#F5F5F5');
+            setContent(<Text style={styles.buttonBlackText}>{props.disabledText}</Text>);
+            setDisabled(true);
+        }
     }, [props])
 
     return(
@@ -74,9 +79,8 @@ export function ActionButton(props) {
             <MI
                 name={props.icon}
                 size={32}
-                color={ props.title ? '#85B71B' : '#FFFFFF' }
+                color='#FFFFFF'
             />
-            {props.title && <Text style={[styles.text, { color: '#85B71B' }]}>{props.title}</Text>}
         </TouchableOpacity>
     )
 }
@@ -88,6 +92,27 @@ export function LinearButton(props) {
                 name={props.icon}
                 size={32}
                 color='#333333'
+            />
+        </TouchableOpacity>
+    )
+}
+
+export function FilterButton(props) {
+    return (
+        <TouchableOpacity
+            onPress={props.action}
+        >
+            <MI name={props.icon} size={32} color="#333333" />
+            <MI
+                style={{
+                    position: 'absolute',
+                    top: 8,
+                    left: -12,
+                }}
+                name={props.subIcon}
+                size={24}
+                color='#639DFF'
+
             />
         </TouchableOpacity>
     )

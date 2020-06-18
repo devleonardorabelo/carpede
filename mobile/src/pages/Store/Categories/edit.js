@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { SafeAreaView, ScrollView } from 'react-native';
+import { SafeAreaView, ScrollView, Alert } from 'react-native';
 import { useRoute, useNavigation } from '@react-navigation/native';
 import apiReq from '../../../services/reqToken';
 
@@ -68,12 +68,21 @@ export default function EditCategory() {
 
     async function handleDelete(id) {
 
-        const { data } = await apiReq.post('categories/delete', { id });
-
-        if(data) navigation.navigate('StoreCategories', {
-            method: 'destroy',
-            category: data.category
-        });
+        Alert.alert(
+            'Apagar Pedido',
+            'Deseja mesmo apagar esta categoria? Categorias apagadas não poderão ser mais recuperadas e todos os produtos relacionados com esta categorias serão apagados.',
+            [
+                { text: 'Cancelar', onPress: () => { return }, style: 'cancel' },
+                { text: 'Apagar', onPress: async () => {
+                    setStatus('loading');
+                    const { data } = await apiReq.post('categories/delete', { id });
+                    if(data) navigation.navigate('StoreCategories', {
+                        method: 'destroy',
+                        category: data.category
+                    }); 
+                }}
+            ]
+        )
 
     }
 
