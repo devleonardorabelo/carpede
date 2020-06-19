@@ -14,7 +14,7 @@ export function InfoOrder(props) {
 
     const customerWhatsapp = format(props.data.customer.whatsapp, WhatsappFormat);
 
-    const sendWhatsapp = () => Linking.openURL(`whatsapp://send?phone=${props.data.customer.whatsapp}`)
+    const sendWhatsapp = () => Linking.openURL(`whatsapp://send?phone=55${props.data.customer.whatsapp}`)
 
     const navigateToDelivery = () => navigation.navigate('StoreDelivery', { order: props.data });
 
@@ -50,7 +50,8 @@ export function InfoOrder(props) {
                     <View style={[styles.box, styles.column,{ marginRight: 16 }]}>
                         <Text style={styles.text}>Cartão</Text>
                         <Text style={styles.textBold}>
-                            {props.data.paymentMethod.card.method}
+                            {props.data.paymentMethod.card.method == 'credit' && `Crédito`}
+                            {props.data.paymentMethod.card.method == 'debit' && `Dédito`}
                         </Text>    
                     </View>
                 }   

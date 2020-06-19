@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { TouchableOpacity, View, Text, Image, Animated } from 'react-native';
+import { TouchableOpacity, View, Text, Image, Animated, SafeAreaView } from 'react-native';
 import styles from '../global';
 import { MaterialCommunityIcons as MI } from '@expo/vector-icons';
 import { API_DOMAIN } from '../constants/api';
@@ -10,6 +10,7 @@ import { regexMed, treatPrice } from '../utils/treatString';
 import { InfoOrder } from '../components/Info';
 
 import cardImage from '../assets/illustrations/repeat_food.png';
+import { LinearButton } from './Button';
 
 export function NavItem(props) {
     return (
@@ -275,8 +276,19 @@ export function Checkout(props) {
     )
 }
 
-export function Price(props) {
+export function Modal(props) {
+
     return (
-        <Text style={[styles.textBold, props.style ]}>{treatPrice(props.value)}</Text> 
+        props.active ?
+        <View style={styles.backgroundModal}>
+            <View style={styles.modal}>
+                <View style={styles.headerModal}>
+                    <Text style={[styles.textBold,{ width:'85%' }]}>{props.title}</Text>
+                    <LinearButton style={{ width: '10%' }} icon='close' action={props.actionClose} />
+                </View>
+                <Text style={styles.text}>{props.text}</Text>
+            </View>
+        </View>
+        :null
     )
 }
