@@ -87,11 +87,14 @@ export function ActionButton(props) {
 
 export function LinearButton(props) {
     return (
-        <TouchableOpacity onPress={props.action}>
+        <TouchableOpacity
+            style={props.style}
+            onPress={props.action}
+        >
             <MI
                 name={props.icon}
                 size={32}
-                color='#333333'
+                color={props.color || '#333333'}
             />
         </TouchableOpacity>
     )

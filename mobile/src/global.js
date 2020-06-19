@@ -292,7 +292,7 @@ export default StyleSheet.create({
         alignSelf: 'center'
     },
     boxFluid: {
-        paddingHorizontal: widthDP('8%'),
+        paddingHorizontal: widthDP('4%'),
         paddingTop: Constants.statusBarHeight + widthDP('4%'),
         width: widthDP('100%'),
     },
@@ -335,8 +335,33 @@ export default StyleSheet.create({
         alignItems: 'center'
     },
     deliveryInfo: {
+        flexDirection: 'row',
         backgroundColor: '#639DFF',
-        paddingVertical: 20
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        padding: widthDP('4%'),
     },
+    backgroundModal: {
+        position: 'absolute',
+        left: 0,
+        right: 0,
+        bottom: 0,
+        top: 0,
+        flex: 1,
+        backgroundColor: 'rgba(0,0,0,0.5)',
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    modal: {
+        backgroundColor: '#FFFFFF',
+        padding: widthDP('4%'),
+        maxWidth: widthDP('92%')
+    },
+    headerModal: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        marginBottom: 16
+    }
 
 })
