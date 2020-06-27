@@ -48,6 +48,7 @@ module.exports = {
             category,
             store_id: store.id
         }
+        console.log(newProduct);
 
         try {
             let product = await new Product(newProduct).save();
