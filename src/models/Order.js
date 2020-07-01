@@ -35,7 +35,7 @@ const OrdersSchema = new mongoose.Schema({
             type: Object,
             ref: Products
         },
-        amount: {
+        quantity: {
             type: Number
         },
     }],
