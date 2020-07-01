@@ -31,8 +31,8 @@ const OrdersSchema = new mongoose.Schema({
         }
     },
     products: [{
-        item: {
-            type: String,
+        product: {
+            type: Object,
             ref: Products
         },
         amount: {
