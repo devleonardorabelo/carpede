@@ -1,5 +1,9 @@
 const express = require('express');
 const routes = express.Router();
+const multer = require('multer');	
+const path = require ('path');	
+const sharp = require('sharp');	
+const fs = require('fs')
 
 const AuthController = require('./controllers/AuthController');
 const PanelController = require('./controllers/PanelController');
@@ -9,6 +13,26 @@ const CategoriesController = require('./controllers/CategoriesController');
 const OrdersController = require('./controllers/OrdersController');
 
 const CheckAuth = require('./middlewares/auth');
+const storage = require('./configs/storage');
+const upload = multer({ storage });
+
+routes.post('/upload', upload.single('fileData'), async (req, res) => {
+    const { filename: image } = req.file;
+
+    await sharp(req.file.path)	
+    .jpeg({	
+        quality: 100	
+    })	
+    .withMetadata()	
+    .toFile(	
+        path.resolve(req.file.destination, `r${image}`)	
+    )	
+    let imageResize = `r${image}`	
+
+    fs.unlinkSync(req.file.path);	
+    res.json({file: imageResize});
+
+})
 
 routes.post('/signin', AuthController.signin);
 routes.post('/signup', AuthController.signup);
