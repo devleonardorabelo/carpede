@@ -2,10 +2,11 @@ const Order = require('../models/Order');
 const { findConnections, sendMessage } = require('../websocket');
 
 let date = new Date();
+let timezone = -2;
 let day = String(date.getDate()).padStart(2, '0');
 let month = String(date.getMonth() + 1).padStart(2, '0');
 let year = String(date.getFullYear());
-let hour = String(date.getHours()).padStart(2, '0');
+let hour = String(date.getHours() - timezone).padStart(2, '0');
 let minutes = String(date.getMinutes()).padStart(2, '0');
 let time = `${hour}:${minutes}`;
 let fullDate = `${day}/${month}/${year}`;
@@ -114,8 +115,6 @@ module.exports = {
                     deliveredAt: `${fullDate} ás ${time}`
                 })
             }
-            
-
 
             return res.json({
                 status: 'Alterado com sucesso',
