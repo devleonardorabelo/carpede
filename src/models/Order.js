@@ -20,6 +20,10 @@ const OrdersSchema = new mongoose.Schema({
         complement: String,
         number: String,
     },
+    fees: {
+        delivery: Number,
+        payment: Number
+    },
     value: Number,
     paymentMethod: {
         card: {
@@ -27,7 +31,6 @@ const OrdersSchema = new mongoose.Schema({
         },
         money: {
             amount: Number,
-            change: Number,
         }
     },
     products: [{

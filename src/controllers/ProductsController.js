@@ -40,11 +40,13 @@ module.exports = {
 
         if(!category) return res.json({ error: { text: 'Escolha uma categoria', input: 'category' } });
 
+        let treatPrice = price.replace(",", ".")
+
         const newProduct = {
             image,
             name,
             description,
-            price,
+            price: treatPrice,
             category,
             store_id: store.id
         }

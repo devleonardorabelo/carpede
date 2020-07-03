@@ -2,7 +2,7 @@ const Order = require('../models/Order');
 const { findConnections, sendMessage } = require('../websocket');
 
 let date = new Date();
-let timezone = -2;
+let timezone = 1;
 let day = String(date.getDate()).padStart(2, '0');
 let month = String(date.getMonth() + 1).padStart(2, '0');
 let year = String(date.getFullYear());
@@ -43,7 +43,7 @@ module.exports = {
     },
     async store(req, res) {
 
-        const { store_id ,customer, value, paymentMethod, products, latitude, longitude } = req.body;
+        const { store_id ,customer, value, fees, paymentMethod, products, latitude, longitude } = req.body;
 
         let payment;
 
@@ -56,8 +56,7 @@ module.exports = {
         } else {
             payment = {
                 money: {
-                    amount: paymentMethod.money.amount,
-                    change: paymentMethod.money.change
+                    amount: paymentMethod.money.amount
                 }
             }
         }
@@ -76,6 +75,7 @@ module.exports = {
             time,
             date: fullDate,
             customer,
+            fees,
             value,
             paymentMethod: payment,
             products,
@@ -100,7 +100,7 @@ module.exports = {
 
         try {
             
-            if(order_date == date) {
+            if(order_date == fullDate) {
                 await Order.updateOne({
                     _id: id
                 },{
