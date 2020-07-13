@@ -2,7 +2,7 @@ const Order = require('../models/Order');
 const { findConnections, sendMessage } = require('../websocket');
 
 let date = new Date();
-let timezone = 1;
+let timezone = 0;
 let day = String(date.getDate()).padStart(2, '0');
 let month = String(date.getMonth() + 1).padStart(2, '0');
 let year = String(date.getFullYear());
@@ -45,23 +45,10 @@ module.exports = {
 
         const { store_id ,customer, value, fees, paymentMethod, products, latitude, longitude } = req.body;
 
-        let payment;
-
-        if(paymentMethod.card.method != null) {
-            payment = {
-                card: {
-                    method: paymentMethod.card.method
-                }
-            }
-        } else {
-            payment = {
-                money: {
-                    amount: paymentMethod.money.amount
-                }
-            }
-        }
 
         let order_id = Math.random().toString(36).substring(7);
+
+        console.log(time)
 
 
         const location = {
@@ -77,7 +64,7 @@ module.exports = {
             customer,
             fees,
             value,
-            paymentMethod: payment,
+            paymentMethod,
             products,
             location,
             status: 'waiting'
