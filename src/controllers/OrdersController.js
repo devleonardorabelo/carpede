@@ -1,15 +1,6 @@
 const Order = require('../models/Order');
 const { findConnections, sendMessage } = require('../websocket');
-
-let date = new Date();
-let timezone = 0;
-let day = String(date.getDate()).padStart(2, '0');
-let month = String(date.getMonth() + 1).padStart(2, '0');
-let year = String(date.getFullYear());
-let hour = String(date.getHours() - timezone).padStart(2, '0');
-let minutes = String(date.getMinutes()).padStart(2, '0');
-let time = `${hour}:${minutes}`;
-let fullDate = `${day}/${month}/${year}`;
+const { getCurrentTime, getFullDate } = require('../utils/treatDate');
 
 module.exports = {
 
@@ -25,13 +16,13 @@ module.exports = {
 
             switch (status) {
                 case 'waiting':
-                    orders = await Order.find({store_id: store.id, status, date: fullDate}).limit(6).skip((page - 1) * 6).populate('products.item'); 
+                    orders = await Order.find({store_id: store.id, status, date: getFullDate()}).limit(6).skip((page - 1) * 6).populate('products.item'); 
                     break;
                 case 'done':
                     orders = await Order.find({store_id: store.id, status}).limit(6).skip((page - 1) * 6).populate('products.item');
                     break;
                 case 'lost':
-                    orders = await Order.find({store_id: store.id, date: { $lt: fullDate }, status: 'waiting' }).limit(6).skip((page - 1) * 6).populate('products.item');
+                    orders = await Order.find({store_id: store.id, date: { $lt: getFullDate() }, status: 'waiting' }).limit(6).skip((page - 1) * 6).populate('products.item');
             }
                 
             return res.json(orders);
@@ -48,9 +39,6 @@ module.exports = {
 
         let order_id = Math.random().toString(36).substring(7);
 
-        console.log(time)
-
-
         const location = {
             type: 'Point',
             coordinates: [longitude, latitude]
@@ -59,8 +47,8 @@ module.exports = {
         let order = await Order.create({
             order_id,
             store_id,
-            time,
-            date: fullDate,
+            time: getCurrentTime(),
+            date: getFullDate(),
             customer,
             fees,
             value,
@@ -74,7 +62,7 @@ module.exports = {
 
         sendMessage(sendSocketMessageTo, 'new-order', {
             order_id,
-            time
+            time: getCurrentTime()
         })
 
         return res.json(order);
@@ -87,19 +75,19 @@ module.exports = {
 
         try {
             
-            if(order_date == fullDate) {
+            if(order_date == getFullDate()) {
                 await Order.updateOne({
                     _id: id
                 },{
                     status,
-                    deliveredAt: `${fullDate} ás ${time}`
+                    deliveredAt: `${getFullDate()} ás ${getCurrentTime}`
                 })    
             } else {
                 await Order.updateOne({
                     _id: id
                 },{
                     status: 'lost',
-                    deliveredAt: `${fullDate} ás ${time}`
+                    deliveredAt: `${getFullDate()} ás ${getCurrentTime}`
                 })
             }
 
