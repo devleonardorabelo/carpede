@@ -1,7 +1,6 @@
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const Store = require('../models/Store');
-const { findOne } = require('../models/Store');
 
 module.exports = {
 
