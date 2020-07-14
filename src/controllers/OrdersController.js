@@ -16,13 +16,13 @@ module.exports = {
 
             switch (status) {
                 case 'waiting':
-                    orders = await Order.find({store_id: store.id, status, date: getFullDate()}).limit(6).skip((page - 1) * 6).populate('products.item'); 
+                    orders = await Order.find({store_id: store.id, status, date: getFullDate()}).limit(20).skip((page - 1) * 20).populate('products.item'); 
                     break;
                 case 'done':
-                    orders = await Order.find({store_id: store.id, status}).limit(6).skip((page - 1) * 6).populate('products.item');
+                    orders = await Order.find({store_id: store.id, status}).limit(20).skip((page - 1) * 20).populate('products.item');
                     break;
                 case 'lost':
-                    orders = await Order.find({store_id: store.id, date: { $lt: getFullDate() }, status: 'waiting' }).limit(6).skip((page - 1) * 6).populate('products.item');
+                    orders = await Order.find({store_id: store.id, date: { $lt: getFullDate() }, status: 'waiting' }).limit(20).skip((page - 1) * 20).populate('products.item');
             }
                 
             return res.json(orders);
@@ -80,14 +80,14 @@ module.exports = {
                     _id: id
                 },{
                     status,
-                    deliveredAt: `${getFullDate()} ás ${getCurrentTime}`
+                    deliveredAt: `${getFullDate()} ás ${getCurrentTime()}`
                 })    
             } else {
                 await Order.updateOne({
                     _id: id
                 },{
                     status: 'lost',
-                    deliveredAt: `${getFullDate()} ás ${getCurrentTime}`
+                    deliveredAt: `${getFullDate()} ás ${getCurrentTime()}`
                 })
             }
 
