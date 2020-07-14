@@ -48,9 +48,9 @@ module.exports = {
             description,
             price: treatPrice,
             category,
-            store_id: store.id
+            store_id: store.id,
+            onSaleValue: treatPrice,
         }
-        console.log(newProduct);
 
         try {
             let product = await new Product(newProduct).save();

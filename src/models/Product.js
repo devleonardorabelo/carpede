@@ -11,6 +11,12 @@ const ProductsSchema = new mongoose.Schema({
         ref: Category
     },
     store_id: String,
+    sold: Number,
+    onSale: {
+        type: Boolean,
+        default: false,
+    },
+    onSaleValue: Number
 });
 
 module.exports = mongoose.model('Products', ProductsSchema);
