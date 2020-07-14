@@ -30,7 +30,7 @@ module.exports = {
 
         const store = req.headers.user;
 
-        const { name, description, price, category, image } = req.body;
+        const { name, description, price, category, image, onSaleValue, onSale } = req.body;
 
         if(!name) return res.json({ error: { text: 'Mínimo de 5 caracteres', input: 'name' } });
 
@@ -40,16 +40,20 @@ module.exports = {
 
         if(!category) return res.json({ error: { text: 'Escolha uma categoria', input: 'category' } });
 
-        let treatPrice = price.replace(",", ".")
+        if(onSaleValue > price) return res.json({ error: { text: 'Menor que o preço', input: 'onsalevalue' } });
+
+
+        const treatPrice = (value) => value.replace(",", ".");
 
         const newProduct = {
             image,
             name,
             description,
-            price: treatPrice,
+            price: treatPrice(price),
             category,
             store_id: store.id,
-            onSaleValue: treatPrice,
+            onSale,
+            onSaleValue: treatPrice(onSaleValue),
         }
 
         try {
@@ -65,7 +69,7 @@ module.exports = {
 
         const store = req.headers.user;
 
-        const { image, name, description, price, category, id } = req.body;
+        const { image, name, description, price, category, id, onSaleValue, onSale } = req.body;
 
         if(!name) return res.json({ error: { text: 'Mínimo de 5 caracteres', input: 'name' } });
 
@@ -74,8 +78,6 @@ module.exports = {
         if(!price) return res.json({ error: { text: 'Dê um preço para seu produto', input: 'price' } });
 
         if(!category) return res.json({ error: { text: 'Escolha uma categoria', input: 'category' } });
-
-        let treatPrice = price.replace(",", ".")
 
         try{
             await Product.updateOne({
@@ -86,7 +88,9 @@ module.exports = {
                 description,
                 name,
                 category,
-                price: treatPrice
+                price: treatPrice(price),
+                onSale,
+                onSaleValue: treatPrice(onSaleValue)
             })
 
             return res.json({
@@ -98,7 +102,9 @@ module.exports = {
                     description,
                     name,
                     category,
-                    price: treatPrice
+                    price: treatPrice(price),
+                    onSale,
+                    onSaleValue: treatPrice(onSaleValue)
                 }
             })            
         } catch (err) {
