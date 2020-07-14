@@ -79,6 +79,9 @@ module.exports = {
 
         if(!category) return res.json({ error: { text: 'Escolha uma categoria', input: 'category' } });
 
+        if(onSaleValue > price) return res.json({ error: { text: 'Menor que o preço', input: 'onsalevalue' } });
+
+
         try{
             await Product.updateOne({
                 store_id: store.id,
