@@ -5,15 +5,17 @@ const Category = require('../models/Category');
 module.exports = {
 
     async index(req, res) {
-''
+
         const store = req.headers.user;
-        const { page, category } = req.query;
+        const { page, category, onSale } = req.query;
         
         try {
             let products;
 
             if(category) 
                 products = await Product.find({store_id: store.id, "category._id": category}).limit(15).skip((page - 1) * 15).sort('name');
+            else if(onSale)
+                products = await Product.find({store_id: store.id, onSale}).limit(15).skip((page - 1) * 15).sort('name');
             else
                 products = await Product.find({store_id: store.id}).limit(15).skip((page - 1) * 15).sort('name');
             
