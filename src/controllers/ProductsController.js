@@ -42,7 +42,11 @@ module.exports = {
 
         if(onSaleValue > price) return res.json({ error: { text: 'Menor que o preço', input: 'onsalevalue' } });
 
-        const treatPrice = (value) => value.replace(",", ".");
+        const treatPrice = (value) => {
+            let treat = value.replace(",", ".");
+            let number = Number(treat).toFixed(2);
+            return number;
+        };
 
         const newProduct = {
             image,
@@ -97,7 +101,7 @@ module.exports = {
                 category,
                 price: treatPrice(price),
                 onSale,
-                onSaleValue: treatPrice(onSaleValue)
+                onSaleValue: Number(onSaleValue) === 0 ? treatPrice(price) : treatPrice(onSaleValue),
             })
 
             return res.json({
@@ -111,7 +115,7 @@ module.exports = {
                     category,
                     price: treatPrice(price),
                     onSale,
-                    onSaleValue: treatPrice(onSaleValue)
+                    onSaleValue: Number(onSaleValue) === 0 ? treatPrice(price) : treatPrice(onSaleValue),
                 }
             })            
         } catch (err) {
