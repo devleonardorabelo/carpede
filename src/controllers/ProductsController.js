@@ -42,7 +42,6 @@ module.exports = {
 
         if(onSaleValue > price) return res.json({ error: { text: 'Menor que o preço', input: 'onsalevalue' } });
 
-
         const treatPrice = (value) => value.replace(",", ".");
 
         const newProduct = {
@@ -53,7 +52,7 @@ module.exports = {
             category,
             store_id: store.id,
             onSale,
-            onSaleValue: treatPrice(onSaleValue),
+            onSaleValue: Number(onSaleValue) === 0 ? treatPrice(price) : treatPrice(onSaleValue),
         }
 
         try {
@@ -81,6 +80,11 @@ module.exports = {
 
         if(onSaleValue > price) return res.json({ error: { text: 'Menor que o preço', input: 'onsalevalue' } });
 
+        const treatPrice = (value) => {
+            let treat = value.replace(",", ".");
+            let number = Number(treat).toFixed(2);
+            return number;
+        };
 
         try{
             await Product.updateOne({
@@ -111,7 +115,7 @@ module.exports = {
                 }
             })            
         } catch (err) {
-            return res.json({error: 'Houve um erro ao alterar seu produto, tente novamente'})
+            return res.json({error: 'Houve um erro ao alterar seu produto, tente novamente', err})
         }
 
     },

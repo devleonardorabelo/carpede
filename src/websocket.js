@@ -13,8 +13,6 @@ exports.setupWebSocket = server => {
             id: socket.id,
             store_id
         })
-
-        console.log(connections)
     })
 };
 

@@ -12,10 +12,7 @@ const ProductsSchema = new mongoose.Schema({
     },
     store_id: String,
     sold: Number,
-    onSale: {
-        type: Boolean,
-        default: false,
-    },
+    onSale: Boolean,
     onSaleValue: Number
 });
 
