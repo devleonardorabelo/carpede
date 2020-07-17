@@ -32,41 +32,12 @@ module.exports = {
         }
 
     },
-    async store(req, res) {
-
-        const { store_id ,customer, value, fees, paymentMethod, products, latitude, longitude } = req.body;
-
-
-        let order_id = Math.random().toString(36).substring(7);
-
-        const location = {
-            type: 'Point',
-            coordinates: [longitude, latitude]
-        }
-
-        let order = await Order.create({
-            order_id,
-            store_id,
-            time: getCurrentTime(),
-            date: getFullDate(),
-            customer,
-            fees,
-            value,
-            paymentMethod,
-            products,
-            location,
-            status: 'waiting'
-        })
-
+    async notify(req, res) {
+        const { store_id } = req.query;
         const sendSocketMessageTo = findConnections(store_id);
-
-        sendMessage(sendSocketMessageTo, 'new-order', {
-            order_id,
+        return sendMessage(sendSocketMessageTo, 'new-order', {
             time: getCurrentTime()
         })
-
-        return res.json(order);
-    
     },
 
     async update(req, res) {

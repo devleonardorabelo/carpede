@@ -26,7 +26,7 @@ routes.post('/categories/new', CheckAuth, CategoriesController.store);
 routes.post('/categories/edit', CheckAuth, CategoriesController.update);
 routes.post('/categories/delete', CheckAuth, CategoriesController.destroy);
 routes.get('/orders', CheckAuth, OrdersController.index);
-routes.post('/orders/new', OrdersController.store);
+routes.post('/orders/notify', OrdersController.notify);
 routes.post('/orders/edit', OrdersController.update);
 routes.post('/orders/delete', OrdersController.destroy);
 
