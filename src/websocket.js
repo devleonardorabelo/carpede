@@ -6,9 +6,7 @@ const connections = []; //salvar no banco de dados para evitar gargalo da memori
 exports.setupWebSocket = server => {
     io = socketio(server);
     io.on('connection', socket => {
-
         const { store_id } = socket.handshake.query;
-
         connections.push({
             id: socket.id,
             store_id

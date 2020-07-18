@@ -33,7 +33,7 @@ module.exports = {
 
     },
     async notify(req, res) {
-        const { store_id } = req.query;
+        const { store_id } = req.body;
         const sendSocketMessageTo = findConnections(store_id);
         return sendMessage(sendSocketMessageTo, 'new-order', {
             time: getCurrentTime()
