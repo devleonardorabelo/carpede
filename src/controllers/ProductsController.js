@@ -42,13 +42,13 @@ module.exports = {
 
         if(!category) return res.json({ error: { text: 'Escolha uma categoria', input: 'category' } });
 
-        if(onSaleValue > price) return res.json({ error: { text: 'Menor que o preço', input: 'onsalevalue' } });
-
         const treatPrice = (value) => {
             let treat = value.replace(",", ".");
             let number = Number(treat).toFixed(2);
             return number;
         };
+
+        if(treatPrice(onSaleValue) > treatPrice(price)) return res.json({ error: { text: 'Menor que o preço', input: 'onsalevalue' } });
 
         const newProduct = {
             image,
@@ -84,13 +84,13 @@ module.exports = {
 
         if(!category) return res.json({ error: { text: 'Escolha uma categoria', input: 'category' } });
 
-        if(onSaleValue > price) return res.json({ error: { text: 'Menor que o preço', input: 'onsalevalue' } });
-
         const treatPrice = (value) => {
             let treat = value.replace(",", ".");
             let number = Number(treat).toFixed(2);
             return number;
         };
+
+        if(treatPrice(onSaleValue) > treatPrice(price)) return res.json({ error: { text: 'Menor que o preço', input: 'onsalevalue' } });
 
         try{
             await Product.updateOne({
