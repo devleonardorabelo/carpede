@@ -1,8 +1,7 @@
 exports.getCurrentTime = () => {
   let date = new Date();
-  let timezone = 0;
-  let hour = String(date.getHours() - timezone).padStart(2, '0');
-  let minutes = String(date.getMinutes()).padStart(2, '0');
+  let hour = String(date.getHours()).padStart(2, '0');
+  let minutes = String(date.getMinutes() + 7).padStart(2, '0');
   let time = `${hour}:${minutes}`;
 
   return time;
