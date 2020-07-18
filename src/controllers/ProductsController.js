@@ -44,8 +44,6 @@ module.exports = {
 
         if(onSaleValue > price) return res.json({ error: { text: 'Menor que o preço', input: 'onsalevalue' } });
 
-        console.log(onSaleValue, price)
-
         const treatPrice = (value) => {
             let treat = value.replace(",", ".");
             let number = Number(treat).toFixed(2);
@@ -104,7 +102,7 @@ module.exports = {
                 name,
                 category,
                 price: treatPrice(price),
-                onSale,
+                onSale: onSaleValue === price ? false : onSale,
                 onSaleValue: Number(onSaleValue) === 0 ? treatPrice(price) : treatPrice(onSaleValue),
             })
 
