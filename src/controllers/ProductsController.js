@@ -116,7 +116,7 @@ module.exports = {
                     name,
                     category,
                     price: treatPrice(price),
-                    onSale,
+                    onSale: onSaleValue === price ? false : onSale,
                     onSaleValue: Number(onSaleValue) === 0 ? treatPrice(price) : treatPrice(onSaleValue),
                 }
             })            
