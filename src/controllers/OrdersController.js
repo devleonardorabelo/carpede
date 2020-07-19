@@ -1,10 +1,13 @@
 const admin = require('firebase-admin');
 const serviceAccount = require('../config/carpede-main-firebase-adminsdk-9ix5i-1d44537760.json');
 const Order = require('../models/Order');
-const { findConnections, sendMessage } = require('../websocket');
-const { getCurrentTime, getFullDate } = require('../utils/treatDate');
-const { database } = require('firebase-admin');
 const Store = require('../models/Store');
+const { getCurrentTime, getFullDate } = require('../utils/treatDate');
+
+admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount),
+    databaseURL: "https://carpede-main.firebaseio.com",
+});
 
 
 module.exports = {
@@ -40,11 +43,6 @@ module.exports = {
     async notify(req, res) {
 
         const { store_id } = req.body;
-
-        admin.initializeApp({
-            credential: admin.credential.cert(serviceAccount),
-            databaseURL: "https://carpede-main.firebaseio.com",
-        });
 
         const store = await Store.findOne({ _id: store_id });
 
