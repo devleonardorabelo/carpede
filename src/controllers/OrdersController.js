@@ -1,6 +1,11 @@
+const admin = require('firebase-admin');
+const serviceAccount = require('../config/carpede-main-firebase-adminsdk-9ix5i-1d44537760.json');
 const Order = require('../models/Order');
 const { findConnections, sendMessage } = require('../websocket');
 const { getCurrentTime, getFullDate } = require('../utils/treatDate');
+const { database } = require('firebase-admin');
+const Store = require('../models/Store');
+
 
 module.exports = {
 
@@ -33,11 +38,34 @@ module.exports = {
 
     },
     async notify(req, res) {
+
         const { store_id } = req.body;
-        const sendSocketMessageTo = findConnections(store_id);
-        return sendMessage(sendSocketMessageTo, 'new-order', {
-            time: getCurrentTime()
-        })
+
+        admin.initializeApp({
+            credential: admin.credential.cert(serviceAccount),
+            databaseURL: "https://carpede-main.firebaseio.com",
+        });
+
+        const store = await Store.findOne({ _id: store_id });
+
+        const registrationToken = store.firebaseTokenNotification;
+
+        const payload = {
+            notification: {
+                title: 'Novo Pedido',
+                body: 'Um novo pedido foi feito agora!'
+            }
+        };
+
+        const options = {
+            priority: "high",
+            timeToLive: 60 * 60,
+        }
+
+        await admin.messaging().sendToDevice(registrationToken, payload, options);
+
+        return res.json(200);
+
     },
 
     async update(req, res) {
