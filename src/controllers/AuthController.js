@@ -89,8 +89,10 @@ module.exports = {
 				password: await bcrypt.hash(password, 10),
 				operation,
 				averageDeliveryTime,
-				deviceToken
+				firebaseTokenNotification: deviceToken
 			}
+
+			console.log(storeSchema)
 
 			const newStore = await new Store(storeSchema).save();
 
