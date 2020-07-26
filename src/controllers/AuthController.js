@@ -87,6 +87,8 @@ module.exports = {
 				whatsapp,
 				name,
 				password: await bcrypt.hash(password, 10),
+				operation,
+				averageDeliveryTime,
 			}
 
 			const newStore = await new Store(storeSchema).save();
