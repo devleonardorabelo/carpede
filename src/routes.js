@@ -7,6 +7,7 @@ const ProfileController = require('./controllers/ProfileController');
 const ProductsController = require('./controllers/ProductsController');
 const CategoriesController = require('./controllers/CategoriesController');
 const OrdersController = require('./controllers/OrdersController');
+const SubscribeController = require('./controllers/SubscribeController');
 
 const CheckAuth = require('./middlewares/auth');
 
@@ -29,6 +30,7 @@ routes.get('/orders', CheckAuth, OrdersController.index);
 routes.post('/orders/notify', OrdersController.notify);
 routes.post('/orders/edit', OrdersController.update);
 routes.post('/orders/delete', OrdersController.destroy);
+routes.post('/subscribe', SubscribeController.store);
 
 module.exports = routes
  

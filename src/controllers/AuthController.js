@@ -70,7 +70,7 @@ module.exports = {
 			}
 
 			if(!name || name.length < 5) return res.json({ error: { text: 'Mínimo de 5 caracteres', input: 'name' } });
-			if(!whatsapp || whatsapp.length < 10) return res.json({ error: { text: 'Ex: 01 2 3456 7890', input: 'whatsapp' } });
+			if(!whatsapp || whatsapp.length < 11) return res.json({ error: { text: 'Ex: 01 2 3456 7890', input: 'whatsapp' } });
 			if(!email || email.length < 13 || emailTest === false) return res.json({ error: { text: 'Verifique o email preenchido', input: 'email' } });
 			if(!password || password.length < 8) return res.json({ error: { text: 'Senha muito curta, mínimo de 8 caracteres', input: 'password' } });
 			if(!operation.opening) return res.json({ error: { text: 'Preencha', input: 'opening' } });
