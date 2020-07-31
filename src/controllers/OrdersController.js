@@ -2,6 +2,7 @@ const admin = require('firebase-admin');
 const serviceAccount = require('../config/carpede-main-firebase-adminsdk-9ix5i-1d44537760.json');
 const Order = require('../models/Order');
 const Store = require('../models/Store');
+const Customer = require('../models/Customer');
 const { getCurrentTime, getFullDate } = require('../utils/treatDate');
 
 admin.initializeApp({
@@ -42,16 +43,23 @@ module.exports = {
     },
     async notify(req, res) {
 
-        const { store_id } = req.body;
+        const { title, body, store_id, to, whatsapp } = req.body;
 
-        const store = await Store.findOne({ _id: store_id });
+        let registrationToken;
 
-        const registrationToken = store.firebaseTokenNotification;
-
+        switch (to) {
+            case 'store':
+                const store = await Store.findOne({ _id: store_id });
+                registrationToken = store.firebaseTokenNotification;
+            case 'customer':
+                const customer = await Customer.findOne({ whatsapp });
+                registrationToken = customer.deviceToken;
+        }
+        
         const payload = {
             notification: {
-                title: 'Novo Pedido',
-                body: 'Um novo pedido foi feito agora!'
+                title,
+                body,
             }
         };
 

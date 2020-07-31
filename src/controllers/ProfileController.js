@@ -5,16 +5,18 @@ module.exports = {
         
         const store = req.headers.user;
 
-        const { avatar, name, whatsapp, phone, operation, averageDeliveryTime } = await Store.findOne({_id: store.id});
+        const { avatar, name, whatsapp, phone, operation, fees, averageDeliveryTime } = await Store.findOne({_id: store.id});
 
-        return res.json({ avatar, name, whatsapp, phone, operation, averageDeliveryTime })
+        return res.json({ avatar, name, whatsapp, phone, operation, fees, averageDeliveryTime })
 
     },
     async update(req, res) {
 
         const store = req.headers.user;
 
-        const { avatar, name, whatsapp, phone, operation, averageDeliveryTime } = req.body;
+        const { avatar, name, whatsapp, phone, operation, delivery, payment, averageDeliveryTime } = req.body;
+
+        console.log(delivery, payment)
 
         if(!name) return res.json({ error: { text: 'Mínimo de 5 caracteres', input: 'name' } });
         if(!whatsapp) return res.json({ error: { text: 'Ex: (01) 2 3456 7890', input: 'whatsapp' } });
@@ -25,14 +27,26 @@ module.exports = {
         if(operation.opening.length !== 5) return res.json({ error: { text: 'Incompleto', input: 'opening' } });
         if(operation.closure.length !== 5) return res.json({ error: { text: 'Incompleto', input: 'closure' } });
         if(!averageDeliveryTime) return res.json({ error: { text: 'Dê um valor', input: 'average' } });
-        
+        if(!delivery || delivery < 0) return res.json({ error: { text: 'Incorreto', input: 'delivery' } });
+        if(!payment || payment < 0) return res.json({ error: { text: 'Incorreto', input: 'payment' } });
+
+        const treatPrice = (value) => {
+            let treat = value.replace(",", ".");
+            let number = Number(treat).toFixed(2);
+            return number;
+        };
+
         await Store.updateOne({ _id: store.id }, {
             avatar,
             name,
             whatsapp,
             phone,
             operation,
-            averageDeliveryTime
+            fees: {
+                payment: treatPrice(payment),
+                delivery: treatPrice(delivery),
+            },
+            averageDeliveryTime,
         });
 
         return res.json({
