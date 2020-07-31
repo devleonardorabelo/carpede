@@ -47,13 +47,14 @@ module.exports = {
 
         let registrationToken;
 
-        switch (to) {
-            case 'store':
-                const store = await Store.findOne({ _id: store_id });
-                registrationToken = store.firebaseTokenNotification;
-            case 'customer':
-                const customer = await Customer.findOne({ whatsapp });
-                registrationToken = customer.deviceToken;
+        if (to === 'store') {
+            const store = await Store.findOne({ _id: store_id });
+            registrationToken = store.firebaseTokenNotification;
+        } else if (to === 'customer') {
+            const customer = await Customer.findOne({ whatsapp });
+            registrationToken = customer.deviceToken;
+        } else {
+            return;
         }
         
         const payload = {
